@@ -1,0 +1,54 @@
+{
+    "language": "Indonesia",
+    "profile": "Profil",
+    "settings": "Pengaturan",
+    "home_news": "Lihat apa yang baru!",
+    "home_events": "Lihat event kami!",
+    "home_members": "Anggota kami!",
+    "home_locations": "Lokasi latihan kami!",
+    
+    "news": "Berita",
+    "events": "Event",
+    "members": "Anggota",
+    "locations": "Lokasi",
+    
+    "home_members_slide": "Geser untuk membuka menu!",
+
+    "profile_aboutme": "Tentang saya",
+    "profile_achivements": "Pencapaian",
+    "profile_galley": "Galeri",
+
+    "profile_edit_changeavatar": "Ubah foto profil",
+
+    "settings_languages": "Bahasa",
+    "settings_sportsmode": "Mode Olahraga",
+    "settings_signout": "Keluar",
+
+    "signin_header": "Selamat Datang",
+    "signin_header_description": "Masuk untuk melanjutkan",
+
+    "signin_forgotpassword": "Lupa password ?",
+
+    "signin_button_signin": "Masuk",
+    "signin_button_createaccount": "Buat akun",
+
+    "signup_header": "Registrasi Akun",
+    "signup_header_description": "Daftarkan akunmu",
+
+    "signup_button_signup": "Daftar",
+    "signup_button_back": "Saya sudah memiliki akun",
+
+    "recovery_header": "Pemulihan Akun",
+    "recovery_header_description": "Reset password",
+
+    "recovery_button_signin": "Pulihkan",
+    "recovery_button_back": "Kembali",
+    
+    "verification_header": "Verifikasi Akun",
+    "verification_header_description": "Verifikasi akun anda",
+
+    "verification_message": "Email sudah terkirim ke: ",
+
+    "verification_button_sendlink": "Kirim link!",
+    "verification_button_back": "Kembali"
+}

@@ -1,0 +1,76 @@
+name: lions_flutter
+description: A Lions Club App
+
+publish_to: "none"
+
+version: 1.0.3+31
+
+environment:
+  sdk: ">=2.18.2 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  flutter_launcher_icons: ^0.11.0
+  flutter_native_splash: ^2.2.13
+  firebase_core: ^2.1.1
+  page_transition: ^2.0.9
+  dropdown_button2: ^1.8.9
+  firebase_auth: ^4.1.0
+  intl: any
+  cloud_firestore: ^4.0.3
+  http: ^0.13.5
+  url_launcher: ^6.1.6
+  flutter_slidable: ^2.0.0
+  awesome_dialog: ^3.0.2
+  cached_network_image: ^3.2.2
+  flutter_html: ^3.0.0-alpha.6
+  expandable: ^5.0.1
+  image_picker: ^0.8.6
+  firebase_storage: ^11.0.3
+  provider: ^6.0.4
+  shared_preferences: ^2.0.15
+  image_cropper: ^3.0.1
+  pull_to_refresh: ^2.0.0
+  google_sign_in: ^5.4.2
+  crypto: ^3.0.2
+  ntp: ^2.0.0
+  video_player: ^2.4.7
+  flutter_image_compress: ^1.1.3
+  path: ^1.8.2
+  path_provider: ^2.0.11
+  get: ^4.6.5
+  shimmer: ^2.0.0
+  infinite_scroll_pagination: ^3.2.0
+  youtube_player_iframe: ^4.0.1
+  getwidget: ^3.0.1
+  flutter_staggered_animations: ^1.1.1
+  firebase_remote_config: ^3.0.9
+  firebase_analytics: ^10.1.0
+  flutter_staggered_grid_view: ^0.6.2
+  flag: ^6.0.0
+  zoom_tap_animation: ^1.1.0
+  flutter_markdown: ^0.6.14
+  table_calendar: ^3.0.8
+  freezed_annotation: ^2.2.0
+  json_annotation: ^4.8.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+  build_runner: ^2.3.3
+  freezed: ^2.3.2
+  json_serializable: ^6.6.1
+
+flutter:
+  generate: true
+  uses-material-design: true
+
+  assets:
+    - assets/

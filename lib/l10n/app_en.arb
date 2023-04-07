@@ -1,0 +1,55 @@
+{
+    "language": "English",
+    "settings": "Settings",
+    "profile": "Profile",
+    "settings": "Settings",
+    "home_news": "See what's new!",
+    "home_events": "See our events!",
+    "home_members": "Our members!",
+    "home_locations": "Our training locations!",
+
+    "news": "News",
+    "events": "Events",
+    "members": "Members",
+    "locations": "Locations",
+    
+    "home_members_slide": "Slide to expand!",
+
+    "profile_aboutme": "About me",
+    "profile_achivements": "Achivements",
+    "profile_galley": "Gallery",
+
+    "profile_edit_changeavatar": "Change profile image",
+
+    "settings_languages": "Language",
+    "settings_sportsmode": "Sports mode",
+    "settings_signout": "Sign out",
+
+    "signin_header": "Welcome Back",
+    "signin_header_description": "Sign in to continue",
+
+    "signin_forgotpassword": "Forgot password ?",
+
+    "signin_button_signin": "Sign in",
+    "signin_button_createaccount": "Create account",
+
+    "signup_header": "Create Account",
+    "signup_header_description": "Register your account",
+
+    "signup_button_signup": "Sign up",
+    "signup_button_back": "I've already have an account",
+
+    "recovery_header": "Recover your account",
+    "recovery_header_description": "Reset your password",
+
+    "recovery_button_signin": "Recover",
+    "recovery_button_back": "Back",
+    
+    "verification_header": "Account verification_button_back",
+    "verification_header_description": "Check your Email",
+
+    "verification_message": "Email has been sent to: ",
+
+    "verification_button_sendlink": "Send link!",
+    "verification_button_back": "Back"
+}
