@@ -4,6 +4,8 @@
 
 import 'dart:developer';
 
+import 'package:lions_flutter/models/single_image/single_image.dart';
+
 class UserData {
   int id = 0;
   String username = "";
@@ -17,8 +19,8 @@ class UserData {
   String name = "";
   String about = "";
   String address = "";
-  List<UserDistrict> districts = [];
-  List<Club> clubs = [];
+  UserDistrict district = UserDistrict();
+  String club = "";
   List<UserAward> awards = [];
   List<UserAchivement> achivements = [];
   UserSocial social = UserSocial();
@@ -36,8 +38,8 @@ class UserData {
     name,
     about,
     address,
-    districts,
-    clubs,
+    district,
+    club,
     awards,
     achivements,
     social,
@@ -54,8 +56,8 @@ class UserData {
     this.name = name ?? "";
     this.about = about ?? "";
     this.address = address ?? "";
-    this.districts = districts ?? [];
-    this.clubs = clubs ?? [];
+    this.district = district ?? UserDistrict();
+    this.club = club ?? "";
     this.awards = awards ?? [];
     this.achivements = achivements ?? [];
     this.social = social ?? UserSocial();
@@ -69,15 +71,14 @@ class UserData {
       provider: json["provider"] ?? "",
       confirmed: json["confirmed"] ?? false,
       blocked: json["blocked"] ?? false,
-      avatar: SingleImage.fromMap(json["avatar"] ?? {}),
+      avatar: SingleImage.fromJson(json["avatar"] ?? {}),
       birthDate: DateTime.parse(json["birthDate"] ?? DateTime.now().toString()),
       phone: json["phone"] ?? "",
       name: json["name"] ?? "",
       about: json["about"] ?? "",
       address: json["address"] ?? "",
-      districts: List<UserDistrict>.from(
-          (json["districts"] ?? []).map((x) => UserDistrict.fromMap(x))),
-      clubs: List<Club>.from((json["clubs"] ?? []).map((x) => Club.fromMap(x))),
+      district: UserDistrict.fromMap(json["district"] ?? {}),
+      club: json["club"] ?? "",
       awards: List<UserAward>.from(
           (json["awards"] ?? []).map((x) => UserAward.fromMap(x))),
       achivements: List<UserAchivement>.from(
@@ -93,14 +94,14 @@ class UserData {
         "provider": provider,
         "confirmed": confirmed,
         "blocked": blocked,
-        "avatar": avatar.toMap(),
+        "avatar": avatar.toJson(),
         "birthDate": birthDate.toIso8601String(),
         "phone": phone,
         "name": name,
         "about": about,
         "address": address,
-        "districts": List<dynamic>.from(districts.map((x) => x.toMap())),
-        "clubs": List<dynamic>.from(clubs.map((x) => x.toMap())),
+        "district": district.toMap(),
+        "club": club,
         "awards": List<dynamic>.from(awards.map((x) => x.toMap())),
         "achivements": List<dynamic>.from(achivements.map((x) => x.toMap())),
         "social": social.toMap(),
@@ -119,8 +120,8 @@ class UserData {
     String? name,
     String? about,
     String? address,
-    List<UserDistrict>? districts,
-    List<Club>? clubs,
+    List<UserDistrict>? district,
+    String? club,
     List<UserAward>? awards,
     List<UserAchivement>? achivements,
     UserSocial? social,
@@ -138,8 +139,8 @@ class UserData {
         name: name ?? this.name,
         about: about ?? this.about,
         address: address ?? this.address,
-        districts: districts ?? this.districts,
-        clubs: clubs ?? this.clubs,
+        district: district ?? this.district,
+        club: club ?? this.club,
         awards: awards ?? this.awards,
         achivements: achivements ?? this.achivements,
         social: social ?? this.social,
@@ -199,64 +200,6 @@ class UserAward {
         "id": id,
         "title": title,
         "body": body,
-      };
-}
-
-class SingleImage {
-  int id = 0;
-  String name = "";
-  int width = 0;
-  int height = 0;
-  ImageFormats formats = ImageFormats();
-  String hash = "";
-  double size = 0;
-  String url = "";
-  String previewUrl = "";
-
-  SingleImage({
-    id,
-    name,
-    width,
-    height,
-    formats,
-    hash,
-    size,
-    url,
-    previewUrl,
-  }) {
-    this.id = id ?? 0;
-    this.name = name ?? "";
-    this.width = width ?? 0;
-    this.height = height ?? 0;
-    this.formats = formats ?? ImageFormats();
-    this.hash = hash ?? "";
-    this.size = size ?? 0;
-    this.url = url ?? "";
-    this.previewUrl = previewUrl ?? "";
-  }
-
-  SingleImage.fromMap(Map<String, dynamic> json) {
-    id = json["id"] ?? 0;
-    name = json["name"] ?? "";
-    width = json["width"] ?? 0;
-    height = json["height"] ?? 0;
-    formats = ImageFormats.fromMap(json["formats"] ?? {});
-    hash = json["hash"] ?? "";
-    size = json["size"] ?? 0;
-    url = json["url"] ?? "";
-    previewUrl = json["previewUrl"] ?? "";
-  }
-
-  Map<String, dynamic> toMap() => {
-        "id": id,
-        "name": name,
-        "width": width,
-        "height": height,
-        "formats": formats.toMap(),
-        "hash": hash,
-        "size": size,
-        "url": url,
-        "previewUrl": previewUrl,
       };
 }
 
@@ -340,11 +283,11 @@ class ImageFormat {
       };
 }
 
-class Club {
+class UserDistrict {
   int id = 0;
   String title = "";
 
-  Club({
+  UserDistrict({
     id,
     title,
   }) {
@@ -352,7 +295,7 @@ class Club {
     this.title = title ?? "";
   }
 
-  factory Club.fromMap(Map<String, dynamic> json) => Club(
+  factory UserDistrict.fromMap(Map<String, dynamic> json) => UserDistrict(
         id: json["id"] ?? 0,
         title: json["title"] ?? "",
       );
@@ -360,29 +303,6 @@ class Club {
   Map<String, dynamic> toMap() => {
         "id": id,
         "title": title,
-      };
-}
-
-class UserDistrict {
-  int id = 0;
-  String name = "";
-
-  UserDistrict({
-    id,
-    name,
-  }) {
-    this.id = id ?? 0;
-    this.name = name ?? "";
-  }
-
-  factory UserDistrict.fromMap(Map<String, dynamic> json) => UserDistrict(
-        id: json["id"] ?? 0,
-        name: json["name"] ?? "",
-      );
-
-  Map<String, dynamic> toMap() => {
-        "id": id,
-        "name": name,
       };
 }
 

@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:lions_flutter/Data/ArticleData.dart';
 import 'package:lions_flutter/app/app_config.dart';
+import 'package:lions_flutter/models/article_data/article_data.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -41,7 +41,7 @@ class _NewsViewPageState extends State<NewsViewPage> {
               foregroundColor: Colors.white,
             ),
             onPressed: () {
-              launchUrlString(widget._articleData.attributes.url,
+              launchUrlString(widget._articleData.url,
                   mode: LaunchMode.externalApplication);
             },
             icon: const Icon(
@@ -65,7 +65,7 @@ class _NewsViewPageState extends State<NewsViewPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                widget._articleData.attributes.title,
+                widget._articleData.title,
                 style: TextStyle(
                   fontSize:
                       Theme.of(context).textTheme.headlineMedium!.fontSize,
@@ -81,7 +81,7 @@ class _NewsViewPageState extends State<NewsViewPage> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: CachedNetworkImage(
-                  imageUrl: widget._articleData.attributes.coverImage.url,
+                  imageUrl: widget._articleData.coverImage.url,
                   fit: BoxFit.cover,
                   errorWidget: (context, url, error) {
                     return const Image(
@@ -104,7 +104,7 @@ class _NewsViewPageState extends State<NewsViewPage> {
                 height: 16,
               ),
               Text(
-                "By ${widget._articleData.attributes.author}",
+                "By ${widget._articleData.author}",
                 textAlign: TextAlign.right,
                 style: TextStyle(
                   fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
@@ -125,14 +125,14 @@ class _NewsViewPageState extends State<NewsViewPage> {
                   controller: null,
                   softLineBreak: true,
                   selectable: true,
-                  data: widget._articleData.attributes.body,
+                  data: widget._articleData.body,
                 ),
               ),
               const Divider(
                 color: Colors.grey,
               ),
               Text(
-                widget._articleData.attributes.url,
+                widget._articleData.url,
                 style: TextStyle(
                   fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
                 ),

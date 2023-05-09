@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:lions_flutter/Data/AppException.dart';
-import 'package:lions_flutter/Data/LocationData.dart';
 import 'package:lions_flutter/api/api.dart';
+import 'package:lions_flutter/api/models/article.dart';
 import 'package:lions_flutter/api/network.dart';
 import 'package:lions_flutter/api/rest_api.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:lions_flutter/models/location_data/location_data.dart';
+
 
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -22,64 +24,43 @@ class HomeLocations extends StatefulWidget {
 }
 
 class _HomeLocationsState extends State<HomeLocations> {
-  List<LocationData> _data = [];
-  int _currentPage = 0;
-  ScrollController _controller = ScrollController();
+  late LionsCollection _collection;
 
   Future<List<LocationData>> _fetchData() async {
-    String endpoint = getEndpoint();
-    endpoint += 'api/locations';
-    endpoint += '?';
+    Map<String, String> parameters = {'populate': '*'};
 
-    endpoint += "populate=*&";
-    endpoint += "pagination[page]=$_currentPage&";
-    endpoint += "sort=id:desc&";
+    dynamic result = await _collection.fetch(parameters: parameters);
 
-    if (!(await isConnectedToInternet())) {
-      throw AppException(code: 1, message: "No Internet Connection");
+    List<LocationData> data = [];
+
+    for (dynamic item in result['data']) {
+      var article = _processItem(item);
+      data.add(article);
     }
 
-    try {
-      final response = await RestAPI.get(Uri.parse(endpoint));
+    return data;
+  }
 
-      List<LocationData> newData = [];
+  LocationData _processItem(item) {
+    item.addAll(item['attributes']);
+    item.remove('attributes');
 
-      var body = json.decode(response.body);
-      var data = body['data'];
+    var article = LocationData.fromJson(item);
 
-      for (var data in data) {
-        newData.add(LocationData.fromJson(data));
-      }
-
-      setState(() {
-        _data.addAll(newData);
-      });
-    } on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(code: 0, message: "Unknown Error");
-    }
-
-    return _data;
+    return article;
   }
 
   @override
   void initState() {
     super.initState();
-    _controller = ScrollController();
-    _controller.addListener(() {
-      if (_controller.position.pixels == _controller.position.maxScrollExtent) {
-        _currentPage++;
-        _fetchData();
-      }
-    });
-    _fetchData();
+
+    _collection = LionsCollection();
+    _collection.path = '/locations';
   }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      controller: _controller,
       physics: const BouncingScrollPhysics(),
       child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -87,27 +68,7 @@ class _HomeLocationsState extends State<HomeLocations> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildHeader(),
-            if (_data.isNotEmpty)
-              ListView.builder(
-                primary: false,
-                shrinkWrap: true,
-                itemCount: _data.length,
-                itemBuilder: (context, index) {
-                  return AnimationLimiter(
-                    child: AnimationConfiguration.staggeredList(
-                      position: index,
-                      child: SlideAnimation(
-                        horizontalOffset: -100.0,
-                        child: FadeInAnimation(
-                          child: _buildLocationCard(_data[index]),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              )
-            else
-              _buildLoadingView(),
+            _renderCards(),
           ]),
     );
   }
@@ -132,12 +93,46 @@ class _HomeLocationsState extends State<HomeLocations> {
     );
   }
 
+  Widget _renderCards() {
+    return FutureBuilder<List<LocationData>>(
+      future: _fetchData(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            primary: false,
+            shrinkWrap: true,
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              LocationData article = snapshot.data![index];
+              return AnimationLimiter(
+                child: AnimationConfiguration.staggeredList(
+                  position: index,
+                  child: ScaleAnimation(
+                    scale: 1.25,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeOutExpo,
+                    child: FadeInAnimation(
+                      child: _buildLocationCard(article),
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+
+        return _buildLoadingView();
+      },
+    );
+  }
+
   Widget _buildLoadingView() {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
       child: ListView.builder(
-        controller: _controller,
         primary: false,
         shrinkWrap: true,
         itemCount: 15,
@@ -146,8 +141,9 @@ class _HomeLocationsState extends State<HomeLocations> {
           return AnimationLimiter(
             child: AnimationConfiguration.staggeredList(
               position: index,
-              child: SlideAnimation(
-                horizontalOffset: -100.0,
+              child: FlipAnimation(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeOutExpo,
                 child: FadeInAnimation(
                   child: Padding(
                     padding: const EdgeInsets.only(
@@ -202,7 +198,7 @@ class _HomeLocationsState extends State<HomeLocations> {
             children: [
               SlidableAction(
                 onPressed: (context) {
-                  launchUrlString(locationData.attributes.link,
+                  launchUrlString(locationData.link,
                       mode: LaunchMode.externalApplication);
                 },
                 backgroundColor: Colors.green,
@@ -213,7 +209,7 @@ class _HomeLocationsState extends State<HomeLocations> {
               SlidableAction(
                 onPressed: (context) {
                   launchUrlString(
-                      "tel:${locationData.attributes.contactNumber}");
+                      "tel:${locationData.contactNumber}");
                 },
                 backgroundColor: Colors.red,
                 foregroundColor: Colors.white,
@@ -232,7 +228,7 @@ class _HomeLocationsState extends State<HomeLocations> {
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 8),
                   child: Text(
-                    locationData.attributes.title,
+                    locationData.title,
                     style: const TextStyle(
                       color: Color(0xFF2D3436),
                       fontWeight: FontWeight.bold,
@@ -256,7 +252,7 @@ class _HomeLocationsState extends State<HomeLocations> {
                       ),
                       Expanded(
                         child: Text(
-                          locationData.attributes.address,
+                          locationData.address,
                           style: const TextStyle(
                             color: Color(0xFF2D3436),
                             fontSize: 16,
@@ -281,7 +277,7 @@ class _HomeLocationsState extends State<HomeLocations> {
                       ),
                       Expanded(
                         child: Text(
-                          locationData.attributes.contactNumber,
+                          locationData.contactNumber,
                           style: const TextStyle(
                             color: Color(0xFF2D3436),
                             fontSize: 16,

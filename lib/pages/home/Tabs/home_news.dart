@@ -1,19 +1,13 @@
-import 'dart:convert';
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:lions_flutter/Classes/user/user_data.dart';
-import 'package:lions_flutter/Data/AppException.dart';
-import 'package:lions_flutter/Data/ArticleData.dart';
 import 'package:lions_flutter/Pages/news_view_page.dart';
-import 'package:lions_flutter/api/api.dart';
-import 'package:lions_flutter/api/network.dart';
-import 'package:lions_flutter/api/rest_api.dart';
+import 'package:lions_flutter/api/models/article.dart';
+import 'package:lions_flutter/models/article_data/article_data.dart';
+import 'package:lions_flutter/models/single_image/single_image.dart';
 
-import 'package:lions_flutter/sports_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -26,95 +20,90 @@ class HomeNews extends StatefulWidget {
 }
 
 class _HomeNewsState extends State<HomeNews> {
-  List<ArticleData> _data = [];
-  int _currentPage = 1;
-  ScrollController _controller = ScrollController();
+  late LionsCollection _collection;
 
-  Future _fetchData() async {
-    String endpoint = getEndpoint();
-    endpoint += 'api/articles';
-    endpoint += '?';
+  Future<List<ArticleData>> _fetchData() async {
+    Map<String, String> parameters = {'populate': '*'};
 
-    endpoint += "populate=*&";
-    endpoint += "pagination[page]=$_currentPage&";
-    endpoint += "sort=id:desc&";
+    dynamic data = await _collection.fetch(parameters: parameters);
 
-    if (!(await isConnectedToInternet())) {
-      throw AppException(code: 1, message: "No Internet Connection");
+    List<ArticleData> articles = [];
+
+    for (dynamic item in data['data']) {
+      var article = _processItem(item);
+      articles.add(article);
     }
 
-    final response = await RestAPI.get(Uri.parse(endpoint));
+    return articles;
+  }
 
-    List<ArticleData> newData = [];
+  ArticleData _processItem(item) {
+    item.addAll(item['attributes']);
+    item.remove('attributes');
 
-    var body = json.decode(response.body);
-    var dataMap = body['data'];
+    item['coverImage'].addAll(item['coverImage']['data']);
+    item['coverImage'].remove('data');
 
-    for (var data in dataMap) {
-      ArticleData article = ArticleData.fromMap(data);
+    item['coverImage'].addAll(item['coverImage']['attributes']);
+    item['coverImage'].remove('attributes');
 
-      newData.add(article);
-    }
+    var article = ArticleData.fromJson(item);
 
-    setState(() {
-      _data.addAll(newData);
-    });
-    try {} on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(code: 0, message: "Unknown Error: $e");
-    }
+    return article;
   }
 
   @override
   void initState() {
     super.initState();
-    _controller = ScrollController();
-    _controller.addListener(() {
-      if (_controller.position.pixels == _controller.position.maxScrollExtent) {
-        _currentPage++;
-        _fetchData();
-      }
-    });
-    _fetchData();
+
+    _collection = LionsCollection();
+    _collection.path = '/articles';
   }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      controller: _controller,
       physics: const BouncingScrollPhysics(),
       child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildHeader(),
-            if (_data.isNotEmpty)
-              ListView.builder(
-                primary: false,
-                shrinkWrap: true,
-                itemCount: _data.length,
-                itemBuilder: (context, index) {
-                  ArticleData article = _data[index];
-                  return AnimationLimiter(
-                    child: AnimationConfiguration.staggeredList(
-                      position: index,
-                      child: ScaleAnimation(
-                        scale: 1.25,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeOutExpo,
-                        child: FadeInAnimation(
-                          child: _buildNewsCard(article),
-                        ),
-                      ),
+          children: [_buildHeader(), _renderCards()]),
+    );
+  }
+
+  Widget _renderCards() {
+    return FutureBuilder<List<ArticleData>>(
+      future: _fetchData(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            primary: false,
+            shrinkWrap: true,
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              ArticleData article = snapshot.data![index];
+              return AnimationLimiter(
+                child: AnimationConfiguration.staggeredList(
+                  position: index,
+                  child: ScaleAnimation(
+                    scale: 1.25,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeOutExpo,
+                    child: FadeInAnimation(
+                      child: _buildNewsCard(article),
                     ),
-                  );
-                },
-              )
-            else
-              _buildLoadingView(),
-          ]),
+                  ),
+                ),
+              );
+            },
+          );
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+
+        return _buildLoadingView();
+      },
     );
   }
 
@@ -185,8 +174,8 @@ class _HomeNewsState extends State<HomeNews> {
   }
 
   Widget _buildNewsCard(ArticleData articleDatas) {
-    String articleTitle = articleDatas.attributes.title;
-    SingleImage articleCover = articleDatas.attributes.coverImage;
+    String articleTitle = articleDatas.title;
+    SingleImage articleCover = articleDatas.coverImage;
 
     return ZoomTapAnimation(
       end: 1.05,
@@ -272,7 +261,7 @@ class _HomeNewsState extends State<HomeNews> {
                       ),
                     ),
                     Text(
-                      articleDatas.attributes.author,
+                      articleDatas.author,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize:

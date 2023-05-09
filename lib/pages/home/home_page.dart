@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
           foregroundColor: Colors.black,
           actions: [
             Text(
-              "Lions Club 307",
+              "Lions Club 307 B1",
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 20,

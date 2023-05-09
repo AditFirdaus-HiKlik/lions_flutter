@@ -1,5 +1,5 @@
 name: lions_flutter
-description: A Lions Club App
+description: A Lions 307 Club App
 
 publish_to: "none"
 
@@ -57,7 +57,7 @@ dependencies:
   flutter_markdown: ^0.6.14
   table_calendar: ^3.0.8
   freezed_annotation: ^2.2.0
-  json_annotation: ^4.8.0
+  json_annotation: ^4.8.1
 
 dev_dependencies:
   flutter_test:
@@ -65,8 +65,8 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
   build_runner: ^2.3.3
-  freezed: ^2.3.2
-  json_serializable: ^6.6.1
+  freezed: ^2.3.3
+  json_serializable: ^6.6.2
 
 flutter:
   generate: true

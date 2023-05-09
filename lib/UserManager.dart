@@ -90,14 +90,14 @@ class UserManager {
     UserData data = userData;
 
     String endpoint = getEndpoint();
-    endpoint += "api/users/${data.id}";
+    endpoint += "api/users/me";
     endpoint += '?';
 
     endpoint += "populate[avatar][populate][0]=image&";
     endpoint += "populate[awards][populate][1]=image&";
     endpoint += "populate[achivements][populate][2]=*&";
-    endpoint += "populate[clubs][populate][3]=*&";
-    endpoint += "populate[districts][populate][4]=*&";
+    endpoint += "populate[club][populate][3]=*&";
+    endpoint += "populate[district][populate][4]=*&";
 
     var header = {
       'content-type': 'application/json;encoding=utf-8',
@@ -111,8 +111,6 @@ class UserManager {
     var getResponse = await http.get(uri, headers: header);
 
     var bodyResponse = json.decode(getResponse.body);
-
-    log("User data: $bodyResponse");
 
     userDataMap = bodyResponse;
   }
@@ -128,6 +126,8 @@ class UserManager {
     var body = userData.toMap();
 
     body["avatar"] = userData.avatar.id;
+
+    body["district"] = userData.district.id;
 
     int awardsIteration = 0;
     body["awards"] = userData.awards
@@ -148,8 +148,6 @@ class UserManager {
         .toList();
 
     var bodyJson = json.encode(body);
-
-    log(bodyJson);
 
     var bodyText = utf8.encode(bodyJson);
 

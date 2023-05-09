@@ -4,11 +4,13 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:lions_flutter/Classes/user/user_data.dart';
 import 'package:lions_flutter/UserManager.dart';
+import 'package:lions_flutter/pages/account/Window/district_select_page.dart';
 
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -43,15 +45,15 @@ class _AccountEditPageState extends State<AccountEditPage> {
         File file = File(_image!.path);
         var response = await UserManager.uploadImage(file);
 
-        userData.avatar.id = response[0]['id'];
+        // userData.avatar.id = response[0]['id'];
       } catch (e) {
-        log("Failed to upload image. Error: ${e}");
+        log("Failed to upload image. Error: $e");
       }
     }
 
     UserManager.userData = userData.copyWith();
 
-    var response = await UserManager.saveUser();
+    await UserManager.saveUser();
 
     setState(() {
       _isSaving = false;
@@ -173,6 +175,11 @@ class _AccountEditPageState extends State<AccountEditPage> {
           const SizedBox(
             height: 16,
           ),
+          _districtEdit(),
+          const SizedBox(
+            height: 16,
+          ),
+          _clubEdit(),
         ],
       ),
     );
@@ -385,6 +392,75 @@ class _AccountEditPageState extends State<AccountEditPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _districtEdit() {
+    return ZoomTapAnimation(
+      end: 1.1,
+      onTap: () async {
+        final UserDistrict picked = await Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (BuildContext context) => DistrictSelectPage(
+              userDistrict: userData.district,
+            ),
+          ),
+        ) as UserDistrict;
+
+        setState(() {
+          userData.district = picked;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 16,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.purple,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('District',
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                    )),
+            Text(
+              userData.district.title,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _clubEdit() {
+    return TextFormField(
+      initialValue: userData.club,
+      decoration: const InputDecoration(
+        labelText: 'Club',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 16,
+        ),
+        fillColor: Colors.white,
+        filled: true,
+      ),
+      onChanged: (String value) {
+        userData.club = value;
+      },
     );
   }
 

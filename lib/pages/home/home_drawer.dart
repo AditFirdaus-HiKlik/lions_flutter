@@ -102,7 +102,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 ),
               ),
               Text(
-                "Lions",
+                "Lions 307 ",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 12,

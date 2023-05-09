@@ -5,7 +5,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:lions_flutter/Pages/Account/setup_page.dart';
+import 'package:lions_flutter/Pages/home/home_page.dart';
 import 'package:lions_flutter/UserManager.dart';
 import 'package:lions_flutter/api/api.dart';
 import 'package:lions_flutter/sports_widget.dart';
@@ -103,7 +103,7 @@ class _VerificationPageState extends State<VerificationPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const SetupPage(),
+            builder: (context) => const HomePage(),
           ),
         );
       }

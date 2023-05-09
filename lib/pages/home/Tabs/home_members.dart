@@ -9,8 +9,10 @@ import 'package:lions_flutter/Classes/user/user_data.dart';
 import 'package:lions_flutter/Data/AppException.dart';
 import 'package:lions_flutter/UserManager.dart';
 import 'package:lions_flutter/api/api.dart';
+import 'package:lions_flutter/api/models/article.dart';
 import 'package:lions_flutter/api/network.dart';
 import 'package:lions_flutter/api/rest_api.dart';
+import 'package:lions_flutter/models/lions_member/lions_member.dart';
 import 'package:lions_flutter/pages/Auth/login_page.dart';
 import 'package:lions_flutter/pages/members_page.dart';
 import 'package:shimmer/shimmer.dart';
@@ -22,7 +24,7 @@ import 'package:http/http.dart' as http;
 class HomeMembers extends StatefulWidget {
   const HomeMembers({super.key});
 
-  static void toMembersPage(BuildContext context, UserData memberData) {
+  static void toMembersPage(BuildContext context, LionsMember memberData) {
     Navigator.push(
         context,
         CupertinoPageRoute(
@@ -35,204 +37,108 @@ class HomeMembers extends StatefulWidget {
 }
 
 class _HomeMembersState extends State<HomeMembers> {
-  List<UserData> _data = [];
-  int _currentPage = 1;
-  int _pageSize = 10;
-  ScrollController _controller = ScrollController();
+  late LionsCollection _collection;
 
-  final TextEditingController _searchController = TextEditingController();
+  Future<List<LionsMember>> _fetchData() async {
+    Map<String, String> parameters = {
+      'populate': '*',
+      'populate[0]': 'avatar',
+      'populate[1]': 'phone',
+      'populate[2]': 'district',
+      'populate[3]': 'club',
+      'populate[4]': 'awards',
+      'populate[5]': 'achivements',
+      'populate[6]': 'social',
+      'populate[7]': 'trainings',
+    };
 
-  bool mustLogin = true;
+    dynamic data = await _collection.fetch(parameters: parameters);
 
-  Future<List<UserData>> _fetchData() async {
-    var start = (_currentPage - 1) * _pageSize;
-    var limit = _pageSize;
+    List<LionsMember> members = [];
 
-    String endpoint = getEndpoint();
-    endpoint += "api/users";
-    endpoint += '?';
-
-    endpoint += "start=$start&";
-    endpoint += "limit=$limit&";
-    endpoint += "sort=id:desc&";
-    endpoint += "populate=avatar&";
-    endpoint += "populate=awards&";
-    endpoint += "populate=achivements&";
-    endpoint += '_q=${_searchController.text}&';
-
-    log(endpoint);
-
-    // var header = {'Authorization': "Bearer ${UserManager.jwtToken}"};
-
-    // if (!(await isConnectedToInternet())) {
-    //   return throw AppException(code: 1, message: "No Internet Connection");
-    // }
-
-    // if (!UserManager.isLoggedIn && mustLogin) {
-    //   return throw AppException(code: 2, message: "Not Signed In");
-    // }
-
-    final response = await http.get(Uri.parse(endpoint));
-
-    List<UserData> newData = [];
-
-    var datas = json.decode(response.body);
-
-    for (var data in datas) {
-      newData.add(UserData.fromMap(data));
+    for (dynamic item in data) {
+      var member = _processItem(item);
+      members.add(member);
     }
 
-    setState(() {
-      _data.addAll(newData);
-    });
+    return members;
+  }
 
-    try {} on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(code: 0, message: "Something went wrong");
-    }
+  LionsMember _processItem(item) {
+    var member = LionsMember.fromJson(item);
 
-    return _data;
+    return member;
   }
 
   @override
   void initState() {
     super.initState();
-    _controller = ScrollController();
-    _controller.addListener(() {
-      if (_controller.position.pixels == _controller.position.maxScrollExtent) {
-        _currentPage++;
-        _fetchData();
-      }
-    });
-    _fetchData();
+
+    _collection = LionsCollection();
+    _collection.path = '/users';
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!UserManager.isLoggedIn && mustLogin) {
-      return Center(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: ZoomTapAnimation(
-            onTap: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginPage(),
-                ),
-              );
-
-              _fetchData();
-
-              setState(() {});
-            },
-            child: Column(
-              children: const [
-                Icon(
-                  Icons.lock,
-                  size: 100,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Login to view this page",
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Click here to login",
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-
+    // Collumn with search
     return SingleChildScrollView(
-      controller: _controller,
-      padding: const EdgeInsets.all(16),
-      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.all(8.0),
       child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildHeader(),
-            const SizedBox(
-              height: 16,
-            ),
-            CupertinoSearchTextField(
-              backgroundColor: Colors.white,
-              controller: _searchController,
-              onChanged: (value) async {
-                setState(() {});
-                _data.clear();
-                _currentPage = 1;
-                await _fetchData();
-                setState(() {});
-              },
-            ),
-            const Divider(
-              thickness: 1,
-              height: 64,
-            ),
-            if (_data.isNotEmpty)
-              MasonryGridView.builder(
-                primary: false,
-                shrinkWrap: true,
-                itemCount: _data.length,
-                gridDelegate:
-                    const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                ),
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return AnimationLimiter(
-                    child: AnimationConfiguration.staggeredList(
-                      position: index,
-                      child: ScaleAnimation(
-                        scale: 1.5,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeOutExpo,
-                        child: FadeInAnimation(
-                          child: _buildMemberCard(_data[index]),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              )
-            else
-              _viewLoading(),
-          ]),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: const [
-        Text(
-          'Members',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
+        children: [
+          CupertinoSearchTextField(
+            placeholder: 'Search',
+            onSubmitted: (value) {
+              print(value);
+            },
           ),
-        ),
-      ],
+          // Filter button on the right
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton.icon(
+                icon: const Icon(Icons.filter_alt),
+                label: const Text('Filter'),
+                onPressed: () {},
+              ),
+            ],
+          ),
+          // Members list
+          FutureBuilder<List<LionsMember>>(
+            future: _fetchData(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return AnimationLimiter(
+                  child: MasonryGridView.builder(
+                    primary: false,
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.length,
+                    gridDelegate:
+                        const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                    ),
+                    itemBuilder: (context, index) {
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 250),
+                        child: SlideAnimation(
+                          verticalOffset: 100.0,
+                          child: FadeInAnimation(
+                            child: _buildMemberCard(snapshot.data![index]),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+
+              return _viewLoading();
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -279,7 +185,7 @@ class _HomeMembersState extends State<HomeMembers> {
     );
   }
 
-  Widget _buildMemberCard(UserData memberData) {
+  Widget _buildMemberCard(LionsMember memberData) {
     Widget avatarWidget = Center(
       child: SizedBox(
         width: 64,
@@ -374,7 +280,7 @@ class MemberAPI {
 
   static const bool mustLogin = false;
 
-  static Future<List<UserData>> fetchMembers(
+  static Future<List<LionsMember>> fetchMembers(
       {List<String> categories = const [],
       int page = 0,
       String query = ""}) async {
@@ -397,7 +303,7 @@ class MemberAPI {
       endpoint += 'filters[\$or][0][sports][name][\$eq]=$category&';
     }
 
-    List<UserData> members = [];
+    List<LionsMember> members = [];
 
     if (!(await isConnectedToInternet())) {
       return throw AppException(code: 1, message: "No Internet Connection");
@@ -413,7 +319,7 @@ class MemberAPI {
       var datas = json.decode(response.body);
 
       for (var data in datas) {
-        members.add(UserData.fromMap(data));
+        members.add(LionsMember.fromJson(data));
       }
     } on AppException {
       rethrow;

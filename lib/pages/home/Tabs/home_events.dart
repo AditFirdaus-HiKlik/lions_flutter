@@ -1,19 +1,12 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:lions_flutter/Classes/user/user_data.dart';
-import 'package:lions_flutter/Data/AppException.dart';
-import 'package:lions_flutter/Data/EventData.dart';
-import 'package:lions_flutter/api/api.dart';
-import 'package:lions_flutter/api/network.dart';
-import 'package:lions_flutter/api/rest_api.dart';
+import 'package:lions_flutter/api/models/article.dart';
+import 'package:lions_flutter/models/event_data/event_data.dart';
+import 'package:lions_flutter/models/single_image/single_image.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:table_calendar/table_calendar.dart';
-
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class HomeEvents extends StatefulWidget {
   const HomeEvents({super.key});
@@ -23,60 +16,58 @@ class HomeEvents extends StatefulWidget {
 }
 
 class _HomeEventsState extends State<HomeEvents> {
-  List<EventData> _data = [];
-  int _currentPage = 1;
-  ScrollController _controller = ScrollController();
+  List<EventData> data = [];
 
   late final ValueNotifier<List<EventData>> _selectedEvents =
       ValueNotifier(_getEventsForDay(_focusedDay));
+
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
+  late LionsCollection collection;
+
   Future<List<EventData>> _fetchData() async {
-    String endpoint = getEndpoint();
-    endpoint += 'api/events';
-    endpoint += '?';
+    Map<String, String> parameters = {'populate': '*'};
 
-    endpoint += "populate=*&";
+    var result = await collection.fetch(parameters: parameters);
 
-    if (!(await isConnectedToInternet())) {
-      throw AppException(code: 1, message: "No Internet Connection");
+    data = [];
+
+    for (dynamic item in result['data']) {
+      var article = _processItem(item);
+      data.add(article);
     }
 
-    try {
-      final response = await RestAPI.get(Uri.parse(endpoint));
+    return data;
+  }
 
-      List<EventData> newData = [];
+  EventData _processItem(item) {
+    item.addAll(item['attributes']);
+    item.remove('attributes');
 
-      var body = json.decode(response.body);
-      var data = body['data'];
+    item['coverImage'].addAll(item['coverImage']['data']);
+    item['coverImage'].remove('data');
 
-      for (var data in data) {
-        newData.add(EventData.fromJson(data));
-      }
+    item['coverImage'].addAll(item['coverImage']['attributes']);
+    item['coverImage'].remove('attributes');
 
-      setState(() {
-        _data.addAll(newData);
-      });
-    } on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(code: 0, message: "Unknown Error");
-    }
+    var article = EventData.fromJson(item);
 
-    return _data;
+    return article;
   }
 
   @override
   void initState() {
     super.initState();
-    _fetchData();
+
+    collection = LionsCollection();
+    collection.path = '/events';
   }
 
   List<EventData> _getEventsForDay(DateTime day) {
-    return _data.where((event) {
-      DateTime eventTime = event.attributes.datetime;
+    return data.where((event) {
+      DateTime eventTime = DateTime.parse(event.dateTime);
       final eventDay = DateTime(eventTime.year, eventTime.month, eventTime.day);
       return isSameDay(day, eventDay);
     }).toList();
@@ -96,7 +87,6 @@ class _HomeEventsState extends State<HomeEvents> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-        controller: _controller,
         physics: const BouncingScrollPhysics(),
         child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -122,29 +112,7 @@ class _HomeEventsState extends State<HomeEvents> {
                 },
               ),
               _buildHeader(),
-              ValueListenableBuilder<List<EventData>>(
-                valueListenable: _selectedEvents,
-                builder: (context, value, _) {
-                  return ListView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    itemCount: value.length,
-                    itemBuilder: (context, index) {
-                      return AnimationLimiter(
-                        child: AnimationConfiguration.staggeredList(
-                          position: index,
-                          child: ScaleAnimation(
-                            scale: 0.5,
-                            child: FadeInAnimation(
-                              child: _buildEventCard(value[index]),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+              _renderCards(),
             ]));
   }
 
@@ -168,13 +136,48 @@ class _HomeEventsState extends State<HomeEvents> {
     );
   }
 
+  Widget _renderCards() {
+    return FutureBuilder<List<EventData>>(
+      future: _fetchData(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            primary: false,
+            shrinkWrap: true,
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              EventData article = snapshot.data![index];
+              return AnimationLimiter(
+                child: AnimationConfiguration.staggeredList(
+                  position: index,
+                  child: ScaleAnimation(
+                    scale: 1.25,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeOutExpo,
+                    child: FadeInAnimation(
+                      child: _buildEventCard(article),
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
+
+        return _buildLoadingView();
+      },
+    );
+  }
+
   Widget _buildEventCard(EventData eventData) {
-    DateTime eventDate = eventData.attributes.datetime;
-    SingleImage? eventCover = eventData.attributes.coverImage;
-    String eventTitle = eventData.attributes.title;
-    String eventType = eventData.attributes.type;
-    String eventAddress = eventData.attributes.address;
-    String eventContactNumber = eventData.attributes.contactNumber;
+    DateTime eventDate = DateTime.parse(eventData.dateTime);
+    SingleImage eventCover = eventData.coverImage;
+    String eventTitle = eventData.title;
+    String eventType = eventData.organizingClub;
+    String eventAddress = eventData.location;
+    String eventContactNumber = eventData.title;
 
     return Container(
       margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
@@ -270,108 +273,49 @@ class _HomeEventsState extends State<HomeEvents> {
     );
   }
 
-  // Widget _buildNewsCard(ArticleData articleDatas) {
-  //   String articleTitle = articleDatas.attributes.title;
-  //   SingleImage articleCover = articleDatas.attributes.coverImage;
-
-  //   return ZoomTapAnimation(
-  //     end: 1.05,
-  //     beginDuration: const Duration(milliseconds: 100),
-  //     onTap: () {
-  //       // Using bottom sheet to show the news
-  //       Navigator.push(
-  //         context,
-  //         CupertinoPageRoute(
-  //           builder: (context) => NewsViewPage(
-  //             articleDatas,
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //     child: Container(
-  //       margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-  //       height: 256,
-  //       clipBehavior: Clip.antiAlias,
-  //       decoration: BoxDecoration(
-  //         color: Colors.black,
-  //         borderRadius: BorderRadius.circular(16),
-  //         boxShadow: [
-  //           BoxShadow(
-  //             color: Colors.grey.withOpacity(0.2),
-  //             spreadRadius: 2,
-  //             blurRadius: 5,
-  //             offset: const Offset(0, 3),
-  //           ),
-  //         ],
-  //       ),
-  //       child: Stack(
-  //         alignment: AlignmentDirectional.bottomStart,
-  //         fit: StackFit.expand,
-  //         children: [
-  //           CachedNetworkImage(
-  //             imageUrl: articleCover.url,
-  //             fit: BoxFit.cover,
-  //             errorWidget: (context, url, error) {
-  //               return const Image(
-  //                 image: AssetImage('assets/no_image.png'),
-  //               );
-  //             },
-  //             progressIndicatorBuilder: (context, url, progress) =>
-  //                 Shimmer.fromColors(
-  //               baseColor: Colors.grey[300]!,
-  //               highlightColor: Colors.grey[100]!,
-  //               child: Container(
-  //                 color: Colors.grey[300],
-  //                 height: 100,
-  //                 width: 100,
-  //               ),
-  //             ),
-  //           ),
-  //           Container(
-  //             decoration: BoxDecoration(
-  //               gradient: LinearGradient(
-  //                 begin: Alignment.topCenter,
-  //                 end: Alignment.bottomCenter,
-  //                 colors: [
-  //                   Colors.transparent,
-  //                   Colors.black.withOpacity(0.5),
-  //                 ],
-  //               ),
-  //             ),
-  //             height: 64,
-  //           ),
-  //           Align(
-  //             alignment: AlignmentDirectional.bottomStart,
-  //             child: Padding(
-  //               padding: const EdgeInsetsDirectional.all(16),
-  //               child: Column(
-  //                 mainAxisAlignment: MainAxisAlignment.end,
-  //                 crossAxisAlignment: CrossAxisAlignment.start,
-  //                 mainAxisSize: MainAxisSize.min,
-  //                 children: [
-  //                   Text(
-  //                     articleTitle,
-  //                     style: TextStyle(
-  //                       color: Colors.white,
-  //                       fontSize:
-  //                           Theme.of(context).textTheme.titleMedium!.fontSize,
-  //                     ),
-  //                   ),
-  //                   Text(
-  //                     articleDatas.attributes.author,
-  //                     style: TextStyle(
-  //                       color: Colors.white,
-  //                       fontSize:
-  //                           Theme.of(context).textTheme.labelMedium!.fontSize,
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget _buildLoadingView() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: ListView.builder(
+        primary: false,
+        shrinkWrap: true,
+        itemCount: 5,
+        physics: const BouncingScrollPhysics(),
+        itemBuilder: (context, index) {
+          return AnimationLimiter(
+            child: AnimationConfiguration.staggeredList(
+              position: index,
+              child: FlipAnimation(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeOutExpo,
+                child: FadeInAnimation(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 8, right: 8, top: 4, bottom: 4),
+                    child: Container(
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      height: 256,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
 }

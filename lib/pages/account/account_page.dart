@@ -30,7 +30,10 @@ class _AccountPageState extends State<AccountPage> {
 
   // Load
   Future LoadAccount() async {
-    await UserManager.loadUser();
+    var response = await UserManager.loadUser();
+
+    UserManager.userData = UserData.fromMap(response);
+
     setState(() {});
   }
 
@@ -114,6 +117,10 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                   ),
                 ),
+                const SizedBox(
+                  height: 16,
+                ),
+                _renderLogoutButton(),
               ],
             ),
           ),
@@ -143,30 +150,28 @@ class _AccountPageState extends State<AccountPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (userData.districts.isNotEmpty)
-                Shimmer.fromColors(
-                  baseColor: Colors.orange,
-                  highlightColor: Colors.yellow,
-                  child: Text(
-                    userData.districts[0].name,
-                    style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
-                      fontWeight: FontWeight.bold,
-                    ),
+              Shimmer.fromColors(
+                baseColor: Colors.orange,
+                highlightColor: Colors.yellow,
+                child: Text(
+                  userData.district.title,
+                  style: TextStyle(
+                    fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              if (userData.clubs.isNotEmpty)
-                Shimmer.fromColors(
-                  baseColor: Colors.blue,
-                  highlightColor: Colors.lightBlue[100]!,
-                  child: Text(
-                    userData.clubs[0].title,
-                    style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
-                      fontWeight: FontWeight.bold,
-                    ),
+              ),
+              Shimmer.fromColors(
+                baseColor: Colors.blue,
+                highlightColor: Colors.lightBlue[100]!,
+                child: Text(
+                  userData.club,
+                  style: TextStyle(
+                    fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
+              ),
             ],
           ),
           Divider(
@@ -504,7 +509,8 @@ class _AccountPageState extends State<AccountPage> {
         builder: (context) => const AccountEditPage(),
       ),
     );
-    LoadAccount();
+    setState(() {});
+    await LoadAccount();
   }
 
   Future editAwards() async {
@@ -541,6 +547,24 @@ class _AccountPageState extends State<AccountPage> {
     await UserManager.saveUser();
 
     setState(() {});
+  }
+
+  Widget _renderLogoutButton() {
+    return TextButton.icon(
+      style:  TextButton.styleFrom(
+        backgroundColor: Colors.red,
+        foregroundColor:  Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      onPressed: () async {
+        await AccountAPI.logout();
+        Navigator.of(context).pop();
+      },
+      icon: const Icon(Icons.logout),
+      label: const Text('Logout'),
+    );
   }
 }
 
