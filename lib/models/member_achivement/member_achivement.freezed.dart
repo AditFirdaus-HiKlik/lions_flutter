@@ -20,6 +20,7 @@ MemberAchivement _$MemberAchivementFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$MemberAchivement {
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get dateTime => throw _privateConstructorUsedError;
@@ -36,7 +37,7 @@ abstract class $MemberAchivementCopyWith<$Res> {
           MemberAchivement value, $Res Function(MemberAchivement) then) =
       _$MemberAchivementCopyWithImpl<$Res, MemberAchivement>;
   @useResult
-  $Res call({String title, String description, String dateTime});
+  $Res call({int id, String title, String description, String dateTime});
 }
 
 /// @nodoc
@@ -52,11 +53,16 @@ class _$MemberAchivementCopyWithImpl<$Res, $Val extends MemberAchivement>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? description = null,
     Object? dateTime = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -81,7 +87,7 @@ abstract class _$$_MemberAchivementCopyWith<$Res>
       __$$_MemberAchivementCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String title, String description, String dateTime});
+  $Res call({int id, String title, String description, String dateTime});
 }
 
 /// @nodoc
@@ -95,11 +101,16 @@ class __$$_MemberAchivementCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? description = null,
     Object? dateTime = null,
   }) {
     return _then(_$_MemberAchivement(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -122,11 +133,17 @@ class _$_MemberAchivement
     with DiagnosticableTreeMixin
     implements _MemberAchivement {
   const _$_MemberAchivement(
-      {this.title = "", this.description = "", this.dateTime = ""});
+      {this.id = 0,
+      this.title = "",
+      this.description = "",
+      this.dateTime = ""});
 
   factory _$_MemberAchivement.fromJson(Map<String, dynamic> json) =>
       _$$_MemberAchivementFromJson(json);
 
+  @override
+  @JsonKey()
+  final int id;
   @override
   @JsonKey()
   final String title;
@@ -139,7 +156,7 @@ class _$_MemberAchivement
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MemberAchivement(title: $title, description: $description, dateTime: $dateTime)';
+    return 'MemberAchivement(id: $id, title: $title, description: $description, dateTime: $dateTime)';
   }
 
   @override
@@ -147,6 +164,7 @@ class _$_MemberAchivement
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'MemberAchivement'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('dateTime', dateTime));
@@ -157,6 +175,7 @@ class _$_MemberAchivement
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_MemberAchivement &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -166,7 +185,8 @@ class _$_MemberAchivement
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, title, description, dateTime);
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, description, dateTime);
 
   @JsonKey(ignore: true)
   @override
@@ -184,13 +204,16 @@ class _$_MemberAchivement
 
 abstract class _MemberAchivement implements MemberAchivement {
   const factory _MemberAchivement(
-      {final String title,
+      {final int id,
+      final String title,
       final String description,
       final String dateTime}) = _$_MemberAchivement;
 
   factory _MemberAchivement.fromJson(Map<String, dynamic> json) =
       _$_MemberAchivement.fromJson;
 
+  @override
+  int get id;
   @override
   String get title;
   @override

@@ -7,10 +7,12 @@ part 'member_achivement.g.dart';
 @freezed
 class MemberAchivement with _$MemberAchivement {
   const factory MemberAchivement({
+    @Default(0) int id,
     @Default("") String title,
     @Default("") String description,
     @Default("") String dateTime,
   }) = _MemberAchivement;
 
-  factory MemberAchivement.fromJson(Map<String, dynamic> json) => _$MemberAchivementFromJson(json);
+  factory MemberAchivement.fromJson(Map<String, dynamic> json) =>
+      _$MemberAchivementFromJson(json);
 }

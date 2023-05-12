@@ -7,10 +7,12 @@ part 'member_social.g.dart';
 @freezed
 class MemberSocial with _$MemberSocial {
   const factory MemberSocial({
+    @Default(0) int id,
     @Default("") String platform,
-    @Default("") String user,
+    @Default("") String value,
     @Default(false) bool visible,
   }) = _MemberSocial;
 
-  factory MemberSocial.fromJson(Map<String, dynamic> json) => _$MemberSocialFromJson(json);
+  factory MemberSocial.fromJson(Map<String, dynamic> json) =>
+      _$MemberSocialFromJson(json);
 }

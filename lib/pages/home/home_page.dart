@@ -2,7 +2,6 @@
 
 import 'package:lions_flutter/pages/home/home_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:lions_flutter/Pages/Auth/login_page.dart';
 import 'Tabs/home_events.dart';
 import 'Tabs/home_locations.dart';
@@ -10,7 +9,6 @@ import 'Tabs/home_members.dart';
 import 'Tabs/home_news.dart';
 import 'package:lions_flutter/Pages/settings_page.dart';
 import 'package:lions_flutter/app/app_config.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -104,19 +102,19 @@ class _HomePageState extends State<HomePage> {
           tabs: [
             Tab(
               icon: const Icon(Icons.newspaper),
-              text: AppLocalizations.of(context)!.news,
+              text: "News",
             ),
             Tab(
               icon: const Icon(Icons.calendar_month),
-              text: AppLocalizations.of(context)!.events,
+              text: "Events",
             ),
             Tab(
               icon: const Icon(Icons.card_membership),
-              text: AppLocalizations.of(context)!.members,
+              text: "Members",
             ),
             Tab(
               icon: const Icon(Icons.location_on),
-              text: AppLocalizations.of(context)!.locations,
+              text: "Locations",
             ),
           ],
         ),
@@ -162,45 +160,6 @@ class QuickActionButton extends StatelessWidget {
                   color: color, fontSize: 8, fontWeight: FontWeight.w500),
             )
           ],
-        ),
-      ),
-    );
-  }
-}
-
-// Sport Toogle Buttons, multiple selection
-class SportToggleButtons extends StatefulWidget {
-  final List<String> sportList;
-  final List<bool> isSelected;
-  final void Function(List<bool>) onSelectionChanged;
-
-  const SportToggleButtons(
-      this.sportList, this.isSelected, this.onSelectionChanged,
-      {super.key});
-
-  @override
-  State<SportToggleButtons> createState() => _SportToggleButtonsState();
-}
-
-class _SportToggleButtonsState extends State<SportToggleButtons> {
-  @override
-  Widget build(BuildContext context) {
-    return GFButtonBar(
-      children: List.generate(
-        widget.sportList.length,
-        (index) => GFButton(
-          onPressed: () {
-            setState(() {
-              widget.isSelected[index] = !widget.isSelected[index];
-              widget.onSelectionChanged(widget.isSelected);
-            });
-          },
-          text: widget.sportList[index],
-          color: widget.isSelected[index] ? appSwatch[600]! : Colors.white,
-          textStyle: TextStyle(
-              color: widget.isSelected[index] ? Colors.white : Colors.black),
-          size: GFSize.SMALL,
-          shape: GFButtonShape.pills,
         ),
       ),
     );

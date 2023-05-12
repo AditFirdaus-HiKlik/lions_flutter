@@ -7,6 +7,7 @@ part 'member_training.g.dart';
 @freezed
 class MemberTraining with _$MemberTraining {
   const factory MemberTraining({
+    @Default(0) int id,
     @Default("") String title,
     @Default("") String description,
     @Default("") String trainingType,
@@ -14,5 +15,6 @@ class MemberTraining with _$MemberTraining {
     @Default("") String endDate,
   }) = _MemberTraining;
 
-  factory MemberTraining.fromJson(Map<String, dynamic> json) => _$MemberTrainingFromJson(json);
+  factory MemberTraining.fromJson(Map<String, dynamic> json) =>
+      _$MemberTrainingFromJson(json);
 }

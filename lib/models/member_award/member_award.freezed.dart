@@ -20,6 +20,7 @@ MemberAward _$MemberAwardFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$MemberAward {
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get dateTime => throw _privateConstructorUsedError;
@@ -36,7 +37,7 @@ abstract class $MemberAwardCopyWith<$Res> {
           MemberAward value, $Res Function(MemberAward) then) =
       _$MemberAwardCopyWithImpl<$Res, MemberAward>;
   @useResult
-  $Res call({String title, String description, String dateTime});
+  $Res call({int id, String title, String description, String dateTime});
 }
 
 /// @nodoc
@@ -52,11 +53,16 @@ class _$MemberAwardCopyWithImpl<$Res, $Val extends MemberAward>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? description = null,
     Object? dateTime = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -81,7 +87,7 @@ abstract class _$$_MemberAwardCopyWith<$Res>
       __$$_MemberAwardCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String title, String description, String dateTime});
+  $Res call({int id, String title, String description, String dateTime});
 }
 
 /// @nodoc
@@ -95,11 +101,16 @@ class __$$_MemberAwardCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? description = null,
     Object? dateTime = null,
   }) {
     return _then(_$_MemberAward(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -120,11 +131,17 @@ class __$$_MemberAwardCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_MemberAward with DiagnosticableTreeMixin implements _MemberAward {
   const _$_MemberAward(
-      {this.title = "", this.description = "", this.dateTime = ""});
+      {this.id = 0,
+      this.title = "",
+      this.description = "",
+      this.dateTime = ""});
 
   factory _$_MemberAward.fromJson(Map<String, dynamic> json) =>
       _$$_MemberAwardFromJson(json);
 
+  @override
+  @JsonKey()
+  final int id;
   @override
   @JsonKey()
   final String title;
@@ -137,7 +154,7 @@ class _$_MemberAward with DiagnosticableTreeMixin implements _MemberAward {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MemberAward(title: $title, description: $description, dateTime: $dateTime)';
+    return 'MemberAward(id: $id, title: $title, description: $description, dateTime: $dateTime)';
   }
 
   @override
@@ -145,6 +162,7 @@ class _$_MemberAward with DiagnosticableTreeMixin implements _MemberAward {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'MemberAward'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('dateTime', dateTime));
@@ -155,6 +173,7 @@ class _$_MemberAward with DiagnosticableTreeMixin implements _MemberAward {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_MemberAward &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -164,7 +183,8 @@ class _$_MemberAward with DiagnosticableTreeMixin implements _MemberAward {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, title, description, dateTime);
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, description, dateTime);
 
   @JsonKey(ignore: true)
   @override
@@ -182,13 +202,16 @@ class _$_MemberAward with DiagnosticableTreeMixin implements _MemberAward {
 
 abstract class _MemberAward implements MemberAward {
   const factory _MemberAward(
-      {final String title,
+      {final int id,
+      final String title,
       final String description,
       final String dateTime}) = _$_MemberAward;
 
   factory _MemberAward.fromJson(Map<String, dynamic> json) =
       _$_MemberAward.fromJson;
 
+  @override
+  int get id;
   @override
   String get title;
   @override

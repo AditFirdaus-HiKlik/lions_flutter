@@ -20,6 +20,7 @@ EventData _$EventDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$EventData {
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   SingleImage get coverImage => throw _privateConstructorUsedError;
   String get organizingClub => throw _privateConstructorUsedError;
@@ -40,7 +41,8 @@ abstract class $EventDataCopyWith<$Res> {
       _$EventDataCopyWithImpl<$Res, EventData>;
   @useResult
   $Res call(
-      {String title,
+      {int id,
+      String title,
       SingleImage coverImage,
       String organizingClub,
       String dateTime,
@@ -64,6 +66,7 @@ class _$EventDataCopyWithImpl<$Res, $Val extends EventData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? coverImage = null,
     Object? organizingClub = null,
@@ -73,6 +76,10 @@ class _$EventDataCopyWithImpl<$Res, $Val extends EventData>
     Object? donationAccount = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -121,7 +128,8 @@ abstract class _$$_EventDataCopyWith<$Res> implements $EventDataCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String title,
+      {int id,
+      String title,
       SingleImage coverImage,
       String organizingClub,
       String dateTime,
@@ -144,6 +152,7 @@ class __$$_EventDataCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? coverImage = null,
     Object? organizingClub = null,
@@ -153,6 +162,10 @@ class __$$_EventDataCopyWithImpl<$Res>
     Object? donationAccount = null,
   }) {
     return _then(_$_EventData(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -189,7 +202,8 @@ class __$$_EventDataCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_EventData with DiagnosticableTreeMixin implements _EventData {
   const _$_EventData(
-      {this.title = "",
+      {this.id = 0,
+      this.title = "",
       this.coverImage = const SingleImage(),
       this.organizingClub = "",
       this.dateTime = "",
@@ -200,6 +214,9 @@ class _$_EventData with DiagnosticableTreeMixin implements _EventData {
   factory _$_EventData.fromJson(Map<String, dynamic> json) =>
       _$$_EventDataFromJson(json);
 
+  @override
+  @JsonKey()
+  final int id;
   @override
   @JsonKey()
   final String title;
@@ -224,7 +241,7 @@ class _$_EventData with DiagnosticableTreeMixin implements _EventData {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EventData(title: $title, coverImage: $coverImage, organizingClub: $organizingClub, dateTime: $dateTime, location: $location, picContact: $picContact, donationAccount: $donationAccount)';
+    return 'EventData(id: $id, title: $title, coverImage: $coverImage, organizingClub: $organizingClub, dateTime: $dateTime, location: $location, picContact: $picContact, donationAccount: $donationAccount)';
   }
 
   @override
@@ -232,6 +249,7 @@ class _$_EventData with DiagnosticableTreeMixin implements _EventData {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'EventData'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('coverImage', coverImage))
       ..add(DiagnosticsProperty('organizingClub', organizingClub))
@@ -246,6 +264,7 @@ class _$_EventData with DiagnosticableTreeMixin implements _EventData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_EventData &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.coverImage, coverImage) ||
                 other.coverImage == coverImage) &&
@@ -263,7 +282,7 @@ class _$_EventData with DiagnosticableTreeMixin implements _EventData {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, title, coverImage,
+  int get hashCode => Object.hash(runtimeType, id, title, coverImage,
       organizingClub, dateTime, location, picContact, donationAccount);
 
   @JsonKey(ignore: true)
@@ -282,7 +301,8 @@ class _$_EventData with DiagnosticableTreeMixin implements _EventData {
 
 abstract class _EventData implements EventData {
   const factory _EventData(
-      {final String title,
+      {final int id,
+      final String title,
       final SingleImage coverImage,
       final String organizingClub,
       final String dateTime,
@@ -293,6 +313,8 @@ abstract class _EventData implements EventData {
   factory _EventData.fromJson(Map<String, dynamic> json) =
       _$_EventData.fromJson;
 
+  @override
+  int get id;
   @override
   String get title;
   @override

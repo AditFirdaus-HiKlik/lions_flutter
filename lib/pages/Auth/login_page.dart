@@ -6,7 +6,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:lions_flutter/Pages/Auth/register_page.dart';
 import 'package:lions_flutter/Pages/Auth/verification_page.dart';
-import 'package:lions_flutter/UserManager.dart';
 import 'package:lions_flutter/api/api.dart';
 import 'package:lions_flutter/pages/auth/recovery_page.dart';
 import 'package:lions_flutter/sports_widget.dart';
@@ -85,8 +84,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       if (_key.currentState!.validate()) {
-        var endpoint = getEndpoint();
-        endpoint += "api/auth/local";
+        var endpoint = "$apiEndpoint/auth/local";
 
         var response = await http.post(Uri.parse(endpoint), body: {
           "identifier": emailController.text,
@@ -110,9 +108,6 @@ class _LoginPageState extends State<LoginPage> {
         }
 
         if (bodyJwt != null) {
-          UserManager.jwtToken = bodyJwt;
-          UserManager.userDataMap = bodyUser;
-
           Navigator.pop(context);
         }
       }

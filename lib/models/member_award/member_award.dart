@@ -7,10 +7,12 @@ part 'member_award.g.dart';
 @freezed
 class MemberAward with _$MemberAward {
   const factory MemberAward({
+    @Default(0) int id,
     @Default("") String title,
     @Default("") String description,
     @Default("") String dateTime,
   }) = _MemberAward;
 
-  factory MemberAward.fromJson(Map<String, dynamic> json) => _$MemberAwardFromJson(json);
+  factory MemberAward.fromJson(Map<String, dynamic> json) =>
+      _$MemberAwardFromJson(json);
 }

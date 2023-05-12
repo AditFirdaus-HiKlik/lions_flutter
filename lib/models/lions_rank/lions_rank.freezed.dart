@@ -20,6 +20,7 @@ LionsRank _$LionsRankFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$LionsRank {
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -33,7 +34,7 @@ abstract class $LionsRankCopyWith<$Res> {
   factory $LionsRankCopyWith(LionsRank value, $Res Function(LionsRank) then) =
       _$LionsRankCopyWithImpl<$Res, LionsRank>;
   @useResult
-  $Res call({String title});
+  $Res call({int id, String title});
 }
 
 /// @nodoc
@@ -49,9 +50,14 @@ class _$LionsRankCopyWithImpl<$Res, $Val extends LionsRank>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -67,7 +73,7 @@ abstract class _$$_LionsRankCopyWith<$Res> implements $LionsRankCopyWith<$Res> {
       __$$_LionsRankCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String title});
+  $Res call({int id, String title});
 }
 
 /// @nodoc
@@ -81,9 +87,14 @@ class __$$_LionsRankCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
   }) {
     return _then(_$_LionsRank(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -95,18 +106,21 @@ class __$$_LionsRankCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_LionsRank with DiagnosticableTreeMixin implements _LionsRank {
-  const _$_LionsRank({this.title = ""});
+  const _$_LionsRank({this.id = 0, this.title = ""});
 
   factory _$_LionsRank.fromJson(Map<String, dynamic> json) =>
       _$$_LionsRankFromJson(json);
 
   @override
   @JsonKey()
+  final int id;
+  @override
+  @JsonKey()
   final String title;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'LionsRank(title: $title)';
+    return 'LionsRank(id: $id, title: $title)';
   }
 
   @override
@@ -114,6 +128,7 @@ class _$_LionsRank with DiagnosticableTreeMixin implements _LionsRank {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'LionsRank'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title));
   }
 
@@ -122,12 +137,13 @@ class _$_LionsRank with DiagnosticableTreeMixin implements _LionsRank {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_LionsRank &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, title);
+  int get hashCode => Object.hash(runtimeType, id, title);
 
   @JsonKey(ignore: true)
   @override
@@ -144,11 +160,13 @@ class _$_LionsRank with DiagnosticableTreeMixin implements _LionsRank {
 }
 
 abstract class _LionsRank implements LionsRank {
-  const factory _LionsRank({final String title}) = _$_LionsRank;
+  const factory _LionsRank({final int id, final String title}) = _$_LionsRank;
 
   factory _LionsRank.fromJson(Map<String, dynamic> json) =
       _$_LionsRank.fromJson;
 
+  @override
+  int get id;
   @override
   String get title;
   @override

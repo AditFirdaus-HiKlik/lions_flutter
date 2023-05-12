@@ -12,5 +12,6 @@ class SingleImage with _$SingleImage {
     @Default("") String url,
   }) = _SingleImage;
 
-  factory SingleImage.fromJson(Map<String, dynamic> json) => _$SingleImageFromJson(json);
+  factory SingleImage.fromJson(Map<String, dynamic> json) =>
+      _$SingleImageFromJson(json);
 }

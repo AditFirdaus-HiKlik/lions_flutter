@@ -79,9 +79,7 @@ class _RecoveryPageState extends State<RecoveryPage> {
 
     try {
       if (_key.currentState!.validate()) {
-        var endpoint = getEndpoint();
-
-        endpoint += "api/auth/forgot-password";
+        var endpoint = "$apiEndpoint/auth/forgot-password";
 
         var response = await http.post(
           Uri.parse(endpoint),

@@ -7,6 +7,7 @@ part of 'event_data.dart';
 // **************************************************************************
 
 _$_EventData _$$_EventDataFromJson(Map<String, dynamic> json) => _$_EventData(
+      id: json['id'] as int? ?? 0,
       title: json['title'] as String? ?? "",
       coverImage: json['coverImage'] == null
           ? const SingleImage()
@@ -20,6 +21,7 @@ _$_EventData _$$_EventDataFromJson(Map<String, dynamic> json) => _$_EventData(
 
 Map<String, dynamic> _$$_EventDataToJson(_$_EventData instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'title': instance.title,
       'coverImage': instance.coverImage,
       'organizingClub': instance.organizingClub,

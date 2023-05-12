@@ -1,18 +1,15 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:lions_flutter/Data/AppException.dart';
 import 'package:lions_flutter/api/api.dart';
-import 'package:lions_flutter/api/models/article.dart';
+import 'package:lions_flutter/api/models/LionsCollection.dart';
 import 'package:lions_flutter/api/network.dart';
 import 'package:lions_flutter/api/rest_api.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:lions_flutter/models/location_data/location_data.dart';
-
 
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -208,8 +205,7 @@ class _HomeLocationsState extends State<HomeLocations> {
               ),
               SlidableAction(
                 onPressed: (context) {
-                  launchUrlString(
-                      "tel:${locationData.contactNumber}");
+                  launchUrlString("tel:${locationData.contactNumber}");
                 },
                 backgroundColor: Colors.red,
                 foregroundColor: Colors.white,
@@ -320,50 +316,5 @@ class _HomeLocationsState extends State<HomeLocations> {
         ),
       ),
     );
-  }
-}
-
-class LocationAPI {
-  static RestPagination articlePagination = RestPagination("location");
-  static const String urlEvents = 'api/locations';
-
-  static Future<List<LocationData>> fetchLocations(
-      {List<String> categories = const [], int page = 0}) async {
-    page = articlePagination.page;
-
-    String endpoint = getEndpoint();
-    endpoint += urlEvents;
-    endpoint += '?';
-
-    endpoint += "populate=*&";
-    endpoint += "pagination[page]=$page&";
-    endpoint += "sort=id:desc&";
-
-    for (var category in categories) {
-      endpoint += 'filters[\$or][0][sports][name][\$eq]=$category&';
-    }
-
-    List<LocationData> locations = [];
-
-    if (!(await isConnectedToInternet())) {
-      return throw AppException(code: 1, message: "No Internet Connection");
-    }
-
-    try {
-      final response = await RestAPI.get(Uri.parse(endpoint));
-
-      var body = json.decode(response.body);
-      var datas = body['data'];
-
-      for (var data in datas) {
-        locations.add(LocationData.fromJson(data));
-      }
-    } on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(code: 0, message: "Unknown Error");
-    }
-
-    return locations;
   }
 }

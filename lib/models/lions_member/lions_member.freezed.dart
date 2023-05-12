@@ -20,12 +20,15 @@ LionsMember _$LionsMemberFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$LionsMember {
+  int get id => throw _privateConstructorUsedError;
+  String get memberID => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
   SingleImage get avatar => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get about => throw _privateConstructorUsedError;
   String get address => throw _privateConstructorUsedError;
-  String get phone => throw _privateConstructorUsedError;
+  MemberRank get rank => throw _privateConstructorUsedError;
+  MemberSocial get phone => throw _privateConstructorUsedError;
   LionsDistrict get district => throw _privateConstructorUsedError;
   LionsClub get club => throw _privateConstructorUsedError;
   List<MemberAward> get awards => throw _privateConstructorUsedError;
@@ -46,12 +49,15 @@ abstract class $LionsMemberCopyWith<$Res> {
       _$LionsMemberCopyWithImpl<$Res, LionsMember>;
   @useResult
   $Res call(
-      {String username,
+      {int id,
+      String memberID,
+      String username,
       SingleImage avatar,
       String name,
       String about,
       String address,
-      String phone,
+      MemberRank rank,
+      MemberSocial phone,
       LionsDistrict district,
       LionsClub club,
       List<MemberAward> awards,
@@ -60,6 +66,8 @@ abstract class $LionsMemberCopyWith<$Res> {
       List<MemberTraining> trainings});
 
   $SingleImageCopyWith<$Res> get avatar;
+  $MemberRankCopyWith<$Res> get rank;
+  $MemberSocialCopyWith<$Res> get phone;
   $LionsDistrictCopyWith<$Res> get district;
   $LionsClubCopyWith<$Res> get club;
 }
@@ -77,11 +85,14 @@ class _$LionsMemberCopyWithImpl<$Res, $Val extends LionsMember>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
+    Object? memberID = null,
     Object? username = null,
     Object? avatar = null,
     Object? name = null,
     Object? about = null,
     Object? address = null,
+    Object? rank = null,
     Object? phone = null,
     Object? district = null,
     Object? club = null,
@@ -91,6 +102,14 @@ class _$LionsMemberCopyWithImpl<$Res, $Val extends LionsMember>
     Object? trainings = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      memberID: null == memberID
+          ? _value.memberID
+          : memberID // ignore: cast_nullable_to_non_nullable
+              as String,
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
@@ -111,10 +130,14 @@ class _$LionsMemberCopyWithImpl<$Res, $Val extends LionsMember>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String,
+      rank: null == rank
+          ? _value.rank
+          : rank // ignore: cast_nullable_to_non_nullable
+              as MemberRank,
       phone: null == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
-              as String,
+              as MemberSocial,
       district: null == district
           ? _value.district
           : district // ignore: cast_nullable_to_non_nullable
@@ -152,6 +175,22 @@ class _$LionsMemberCopyWithImpl<$Res, $Val extends LionsMember>
 
   @override
   @pragma('vm:prefer-inline')
+  $MemberRankCopyWith<$Res> get rank {
+    return $MemberRankCopyWith<$Res>(_value.rank, (value) {
+      return _then(_value.copyWith(rank: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $MemberSocialCopyWith<$Res> get phone {
+    return $MemberSocialCopyWith<$Res>(_value.phone, (value) {
+      return _then(_value.copyWith(phone: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $LionsDistrictCopyWith<$Res> get district {
     return $LionsDistrictCopyWith<$Res>(_value.district, (value) {
       return _then(_value.copyWith(district: value) as $Val);
@@ -176,12 +215,15 @@ abstract class _$$_LionsMemberCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String username,
+      {int id,
+      String memberID,
+      String username,
       SingleImage avatar,
       String name,
       String about,
       String address,
-      String phone,
+      MemberRank rank,
+      MemberSocial phone,
       LionsDistrict district,
       LionsClub club,
       List<MemberAward> awards,
@@ -191,6 +233,10 @@ abstract class _$$_LionsMemberCopyWith<$Res>
 
   @override
   $SingleImageCopyWith<$Res> get avatar;
+  @override
+  $MemberRankCopyWith<$Res> get rank;
+  @override
+  $MemberSocialCopyWith<$Res> get phone;
   @override
   $LionsDistrictCopyWith<$Res> get district;
   @override
@@ -208,11 +254,14 @@ class __$$_LionsMemberCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
+    Object? memberID = null,
     Object? username = null,
     Object? avatar = null,
     Object? name = null,
     Object? about = null,
     Object? address = null,
+    Object? rank = null,
     Object? phone = null,
     Object? district = null,
     Object? club = null,
@@ -222,6 +271,14 @@ class __$$_LionsMemberCopyWithImpl<$Res>
     Object? trainings = null,
   }) {
     return _then(_$_LionsMember(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      memberID: null == memberID
+          ? _value.memberID
+          : memberID // ignore: cast_nullable_to_non_nullable
+              as String,
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
@@ -242,10 +299,14 @@ class __$$_LionsMemberCopyWithImpl<$Res>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String,
+      rank: null == rank
+          ? _value.rank
+          : rank // ignore: cast_nullable_to_non_nullable
+              as MemberRank,
       phone: null == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
-              as String,
+              as MemberSocial,
       district: null == district
           ? _value.district
           : district // ignore: cast_nullable_to_non_nullable
@@ -278,12 +339,15 @@ class __$$_LionsMemberCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_LionsMember with DiagnosticableTreeMixin implements _LionsMember {
   const _$_LionsMember(
-      {this.username = "",
+      {this.id = 0,
+      this.memberID = "",
+      this.username = "",
       this.avatar = const SingleImage(),
       this.name = "",
       this.about = "",
       this.address = "",
-      this.phone = "",
+      this.rank = const MemberRank(),
+      this.phone = const MemberSocial(),
       this.district = const LionsDistrict(),
       this.club = const LionsClub(),
       final List<MemberAward> awards = const [MemberAward()],
@@ -298,6 +362,12 @@ class _$_LionsMember with DiagnosticableTreeMixin implements _LionsMember {
   factory _$_LionsMember.fromJson(Map<String, dynamic> json) =>
       _$$_LionsMemberFromJson(json);
 
+  @override
+  @JsonKey()
+  final int id;
+  @override
+  @JsonKey()
+  final String memberID;
   @override
   @JsonKey()
   final String username;
@@ -315,7 +385,10 @@ class _$_LionsMember with DiagnosticableTreeMixin implements _LionsMember {
   final String address;
   @override
   @JsonKey()
-  final String phone;
+  final MemberRank rank;
+  @override
+  @JsonKey()
+  final MemberSocial phone;
   @override
   @JsonKey()
   final LionsDistrict district;
@@ -360,7 +433,7 @@ class _$_LionsMember with DiagnosticableTreeMixin implements _LionsMember {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'LionsMember(username: $username, avatar: $avatar, name: $name, about: $about, address: $address, phone: $phone, district: $district, club: $club, awards: $awards, achivements: $achivements, social: $social, trainings: $trainings)';
+    return 'LionsMember(id: $id, memberID: $memberID, username: $username, avatar: $avatar, name: $name, about: $about, address: $address, rank: $rank, phone: $phone, district: $district, club: $club, awards: $awards, achivements: $achivements, social: $social, trainings: $trainings)';
   }
 
   @override
@@ -368,11 +441,14 @@ class _$_LionsMember with DiagnosticableTreeMixin implements _LionsMember {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'LionsMember'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('memberID', memberID))
       ..add(DiagnosticsProperty('username', username))
       ..add(DiagnosticsProperty('avatar', avatar))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('about', about))
       ..add(DiagnosticsProperty('address', address))
+      ..add(DiagnosticsProperty('rank', rank))
       ..add(DiagnosticsProperty('phone', phone))
       ..add(DiagnosticsProperty('district', district))
       ..add(DiagnosticsProperty('club', club))
@@ -387,12 +463,16 @@ class _$_LionsMember with DiagnosticableTreeMixin implements _LionsMember {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_LionsMember &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.memberID, memberID) ||
+                other.memberID == memberID) &&
             (identical(other.username, username) ||
                 other.username == username) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.about, about) || other.about == about) &&
             (identical(other.address, address) || other.address == address) &&
+            (identical(other.rank, rank) || other.rank == rank) &&
             (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.district, district) ||
                 other.district == district) &&
@@ -409,11 +489,14 @@ class _$_LionsMember with DiagnosticableTreeMixin implements _LionsMember {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
+      memberID,
       username,
       avatar,
       name,
       about,
       address,
+      rank,
       phone,
       district,
       club,
@@ -438,12 +521,15 @@ class _$_LionsMember with DiagnosticableTreeMixin implements _LionsMember {
 
 abstract class _LionsMember implements LionsMember {
   const factory _LionsMember(
-      {final String username,
+      {final int id,
+      final String memberID,
+      final String username,
       final SingleImage avatar,
       final String name,
       final String about,
       final String address,
-      final String phone,
+      final MemberRank rank,
+      final MemberSocial phone,
       final LionsDistrict district,
       final LionsClub club,
       final List<MemberAward> awards,
@@ -455,6 +541,10 @@ abstract class _LionsMember implements LionsMember {
       _$_LionsMember.fromJson;
 
   @override
+  int get id;
+  @override
+  String get memberID;
+  @override
   String get username;
   @override
   SingleImage get avatar;
@@ -465,7 +555,9 @@ abstract class _LionsMember implements LionsMember {
   @override
   String get address;
   @override
-  String get phone;
+  MemberRank get rank;
+  @override
+  MemberSocial get phone;
   @override
   LionsDistrict get district;
   @override

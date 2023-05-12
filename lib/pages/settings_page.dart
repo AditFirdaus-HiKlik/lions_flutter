@@ -3,13 +3,11 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lions_flutter/Classes/user.dart';
 import 'package:lions_flutter/app/app_config.dart';
 import 'package:lions_flutter/l10n/l10n.dart';
 import 'package:lions_flutter/locale_provider.dart';
 import 'package:lions_flutter/sports_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -61,7 +59,7 @@ class _SettingsPageState extends State<SettingsPage> {
               color: appSwatch[600],
             )),
         title: Text(
-          AppLocalizations.of(context)!.settings,
+          "Settings",
           style: TextStyle(color: appSwatch[600]),
         ),
       ),
@@ -82,7 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.settings_languages,
+                    "AppLocalizations.of(context)!.settings_languages",
                     style: textH4,
                   ),
                   DropdownButton2<Locale>(
@@ -115,7 +113,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                   ),
                   Text(
-                    AppLocalizations.of(context)!.settings_sportsmode,
+                    "AppLocalizations.of(context)!.settings_sportsmode",
                     style: textH4,
                   ),
                   DropdownButton2(

@@ -20,6 +20,7 @@ LionsClub _$LionsClubFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$LionsClub {
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -33,7 +34,7 @@ abstract class $LionsClubCopyWith<$Res> {
   factory $LionsClubCopyWith(LionsClub value, $Res Function(LionsClub) then) =
       _$LionsClubCopyWithImpl<$Res, LionsClub>;
   @useResult
-  $Res call({String title});
+  $Res call({int id, String title});
 }
 
 /// @nodoc
@@ -49,9 +50,14 @@ class _$LionsClubCopyWithImpl<$Res, $Val extends LionsClub>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -67,7 +73,7 @@ abstract class _$$_LionsClubCopyWith<$Res> implements $LionsClubCopyWith<$Res> {
       __$$_LionsClubCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String title});
+  $Res call({int id, String title});
 }
 
 /// @nodoc
@@ -81,9 +87,14 @@ class __$$_LionsClubCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
   }) {
     return _then(_$_LionsClub(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -95,18 +106,21 @@ class __$$_LionsClubCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_LionsClub with DiagnosticableTreeMixin implements _LionsClub {
-  const _$_LionsClub({this.title = ""});
+  const _$_LionsClub({this.id = 0, this.title = ""});
 
   factory _$_LionsClub.fromJson(Map<String, dynamic> json) =>
       _$$_LionsClubFromJson(json);
 
   @override
   @JsonKey()
+  final int id;
+  @override
+  @JsonKey()
   final String title;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'LionsClub(title: $title)';
+    return 'LionsClub(id: $id, title: $title)';
   }
 
   @override
@@ -114,6 +128,7 @@ class _$_LionsClub with DiagnosticableTreeMixin implements _LionsClub {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'LionsClub'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title));
   }
 
@@ -122,12 +137,13 @@ class _$_LionsClub with DiagnosticableTreeMixin implements _LionsClub {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_LionsClub &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, title);
+  int get hashCode => Object.hash(runtimeType, id, title);
 
   @JsonKey(ignore: true)
   @override
@@ -144,11 +160,13 @@ class _$_LionsClub with DiagnosticableTreeMixin implements _LionsClub {
 }
 
 abstract class _LionsClub implements LionsClub {
-  const factory _LionsClub({final String title}) = _$_LionsClub;
+  const factory _LionsClub({final int id, final String title}) = _$_LionsClub;
 
   factory _LionsClub.fromJson(Map<String, dynamic> json) =
       _$_LionsClub.fromJson;
 
+  @override
+  int get id;
   @override
   String get title;
   @override

@@ -20,6 +20,7 @@ LionsDistrict _$LionsDistrictFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$LionsDistrict {
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -34,7 +35,7 @@ abstract class $LionsDistrictCopyWith<$Res> {
           LionsDistrict value, $Res Function(LionsDistrict) then) =
       _$LionsDistrictCopyWithImpl<$Res, LionsDistrict>;
   @useResult
-  $Res call({String title});
+  $Res call({int id, String title});
 }
 
 /// @nodoc
@@ -50,9 +51,14 @@ class _$LionsDistrictCopyWithImpl<$Res, $Val extends LionsDistrict>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -69,7 +75,7 @@ abstract class _$$_LionsDistrictCopyWith<$Res>
       __$$_LionsDistrictCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String title});
+  $Res call({int id, String title});
 }
 
 /// @nodoc
@@ -83,9 +89,14 @@ class __$$_LionsDistrictCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
   }) {
     return _then(_$_LionsDistrict(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -97,18 +108,21 @@ class __$$_LionsDistrictCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_LionsDistrict with DiagnosticableTreeMixin implements _LionsDistrict {
-  const _$_LionsDistrict({this.title = ""});
+  const _$_LionsDistrict({this.id = 0, this.title = ""});
 
   factory _$_LionsDistrict.fromJson(Map<String, dynamic> json) =>
       _$$_LionsDistrictFromJson(json);
 
   @override
   @JsonKey()
+  final int id;
+  @override
+  @JsonKey()
   final String title;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'LionsDistrict(title: $title)';
+    return 'LionsDistrict(id: $id, title: $title)';
   }
 
   @override
@@ -116,6 +130,7 @@ class _$_LionsDistrict with DiagnosticableTreeMixin implements _LionsDistrict {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'LionsDistrict'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title));
   }
 
@@ -124,12 +139,13 @@ class _$_LionsDistrict with DiagnosticableTreeMixin implements _LionsDistrict {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_LionsDistrict &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, title);
+  int get hashCode => Object.hash(runtimeType, id, title);
 
   @JsonKey(ignore: true)
   @override
@@ -146,11 +162,14 @@ class _$_LionsDistrict with DiagnosticableTreeMixin implements _LionsDistrict {
 }
 
 abstract class _LionsDistrict implements LionsDistrict {
-  const factory _LionsDistrict({final String title}) = _$_LionsDistrict;
+  const factory _LionsDistrict({final int id, final String title}) =
+      _$_LionsDistrict;
 
   factory _LionsDistrict.fromJson(Map<String, dynamic> json) =
       _$_LionsDistrict.fromJson;
 
+  @override
+  int get id;
   @override
   String get title;
   @override

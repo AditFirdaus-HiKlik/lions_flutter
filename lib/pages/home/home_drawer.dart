@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lions_flutter/Classes/user/user_data.dart';
-import 'package:lions_flutter/UserManager.dart';
 import 'package:lions_flutter/language_page.dart';
 import 'package:lions_flutter/pages/Auth/login_page.dart';
 import 'package:lions_flutter/pages/account/account_page.dart';
+import 'package:lions_flutter/services/account_manager.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({super.key});
@@ -14,8 +13,6 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
-  UserData _userData = UserData();
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -24,7 +21,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             _drawerHeader(),
-            if (UserManager.isLoggedIn)
+            if (AccountManager.isLoggedIn)
               _drawerItem(
                 icon: Icons.person,
                 text: "Account",

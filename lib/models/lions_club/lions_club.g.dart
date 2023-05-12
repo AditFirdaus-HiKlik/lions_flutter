@@ -7,10 +7,12 @@ part of 'lions_club.dart';
 // **************************************************************************
 
 _$_LionsClub _$$_LionsClubFromJson(Map<String, dynamic> json) => _$_LionsClub(
+      id: json['id'] as int? ?? 0,
       title: json['title'] as String? ?? "",
     );
 
 Map<String, dynamic> _$$_LionsClubToJson(_$_LionsClub instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'title': instance.title,
     };

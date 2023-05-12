@@ -1,16 +1,10 @@
-
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:lions_flutter/Pages/news_view_page.dart';
-import 'package:lions_flutter/api/models/article.dart';
+import 'package:lions_flutter/api/models/LionsCollection.dart';
 import 'package:lions_flutter/models/article_data/article_data.dart';
-import 'package:lions_flutter/models/single_image/single_image.dart';
+import 'package:lions_flutter/widgets/article_card.dart';
 
 import 'package:shimmer/shimmer.dart';
-
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class HomeNews extends StatefulWidget {
   const HomeNews({super.key});
@@ -68,11 +62,11 @@ class _HomeNewsState extends State<HomeNews> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [_buildHeader(), _renderCards()]),
+          children: [_buildHeader(), renderContents()]),
     );
   }
 
-  Widget _renderCards() {
+  Widget renderContents() {
     return FutureBuilder<List<ArticleData>>(
       future: _fetchData(),
       builder: (context, snapshot) {
@@ -82,20 +76,7 @@ class _HomeNewsState extends State<HomeNews> {
             shrinkWrap: true,
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
-              ArticleData article = snapshot.data![index];
-              return AnimationLimiter(
-                child: AnimationConfiguration.staggeredList(
-                  position: index,
-                  child: ScaleAnimation(
-                    scale: 1.25,
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeOutExpo,
-                    child: FadeInAnimation(
-                      child: _buildNewsCard(article),
-                    ),
-                  ),
-                ),
-              );
+              return buildCard(snapshot.data![index], index);
             },
           );
         } else if (snapshot.hasError) {
@@ -137,142 +118,40 @@ class _HomeNewsState extends State<HomeNews> {
         itemCount: 5,
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
-          return AnimationLimiter(
-            child: AnimationConfiguration.staggeredList(
-              position: index,
-              child: FlipAnimation(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeOutExpo,
-                child: FadeInAnimation(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 8, right: 8, top: 4, bottom: 4),
-                    child: Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      height: 256,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
+          return buildCardLoading(index);
         },
       ),
     );
   }
 
-  Widget _buildNewsCard(ArticleData articleDatas) {
-    String articleTitle = articleDatas.title;
-    SingleImage articleCover = articleDatas.coverImage;
+  Widget buildCard(ArticleData articleData, int index) {
+    return AnimationLimiter(
+      child: AnimationConfiguration.staggeredList(
+        position: index,
+        child: ScaleAnimation(
+          scale: 1.25,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeOutExpo,
+          child: FadeInAnimation(
+            child: ArticleCard(articleData),
+          ),
+        ),
+      ),
+    );
+  }
 
-    return ZoomTapAnimation(
-      end: 1.05,
-      beginDuration: const Duration(milliseconds: 100),
-      onTap: () {
-        // Using bottom sheet to show the news
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => NewsViewPage(
-              articleDatas,
+  Widget buildCardLoading(int index) {
+    return AnimationLimiter(
+      child: AnimationConfiguration.staggeredList(
+        position: index,
+        child: const FlipAnimation(
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeOutExpo,
+          child: FadeInAnimation(
+            child: Padding(
+              padding: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
             ),
           ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
-        height: 256,
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Stack(
-          alignment: AlignmentDirectional.bottomStart,
-          fit: StackFit.expand,
-          children: [
-            CachedNetworkImage(
-              imageUrl: articleCover.url,
-              fit: BoxFit.cover,
-              errorWidget: (context, url, error) {
-                return const Image(
-                  image: AssetImage('assets/no_image.png'),
-                );
-              },
-              progressIndicatorBuilder: (context, url, progress) =>
-                  Shimmer.fromColors(
-                baseColor: Colors.grey[300]!,
-                highlightColor: Colors.grey[100]!,
-                child: Container(
-                  color: Colors.grey[300],
-                  height: 100,
-                  width: 100,
-                ),
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Colors.black.withOpacity(0.5),
-                  ],
-                ),
-              ),
-              height: 64,
-            ),
-            Align(
-              alignment: AlignmentDirectional.bottomStart,
-              child: Padding(
-                padding: const EdgeInsetsDirectional.all(16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      articleTitle,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize:
-                            Theme.of(context).textTheme.titleMedium!.fontSize,
-                      ),
-                    ),
-                    Text(
-                      articleDatas.author,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize:
-                            Theme.of(context).textTheme.labelMedium!.fontSize,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );

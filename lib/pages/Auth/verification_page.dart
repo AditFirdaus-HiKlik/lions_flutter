@@ -6,7 +6,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lions_flutter/Pages/home/home_page.dart';
-import 'package:lions_flutter/UserManager.dart';
 import 'package:lions_flutter/api/api.dart';
 import 'package:lions_flutter/sports_widget.dart';
 
@@ -70,76 +69,11 @@ class _VerificationPageState extends State<VerificationPage> {
   Future checkEmailVerification() async {
     setState(() => _checking = true);
 
-    try {
-      var endpoint = getEndpoint();
-      endpoint += "api/auth/local";
-
-      var response = await http.post(Uri.parse(endpoint), body: {
-        "identifier": widget.email,
-        "password": widget.password,
-      });
-
-      var body = jsonDecode(response.body);
-
-      var bodyJwt = body['jwt'];
-      var bodyUser = body['user'];
-      var bodyError = body['error'];
-
-      if (bodyError != null) {
-        var errorMessage = bodyError['message'];
-
-        if (errorMessage == "Your account email is not confirmed") {
-          scaffoldMessage(context, 'Email not verified');
-        } else {
-          scaffoldMessage(context, errorMessage);
-        }
-      }
-
-      if (bodyJwt != null) {
-        UserManager.jwtToken = bodyJwt;
-        UserManager.userDataMap = bodyUser;
-
-        Navigator.popUntil(context, ModalRoute.withName('/'));
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(),
-          ),
-        );
-      }
-    } catch (e) {
-      log(e.toString());
-    }
-
     setState(() => _checking = false);
   }
 
   Future sendEmailVerification() async {
     setState(() => _sending = true);
-
-    try {
-      var endpoint = getEndpoint();
-      endpoint += "api/auth/send-email-confirmation";
-
-      var response = await http.post(Uri.parse(endpoint), body: {
-        "email": widget.email,
-      });
-
-      var body = jsonDecode(response.body);
-
-      var bodyEmail = body['email'];
-      var bodySent = body['sent'];
-
-      if (bodySent) {
-        scaffoldMessage(context, 'Email verification sent to $bodyEmail');
-      } else {
-        scaffoldMessage(context, 'Email verification failed');
-      }
-
-      log(body.toString());
-    } catch (e) {
-      log(e.toString());
-    }
 
     setState(() => _sending = false);
   }
@@ -226,19 +160,4 @@ class _VerificationPageState extends State<VerificationPage> {
       ],
     );
   }
-}
-
-Future<http.Response> sendEmailVerification(String email) async {
-  var endpoint = getEndpoint();
-
-  endpoint += "api/auth/send-email-confirmation";
-
-  final response = await http.post(
-    Uri.parse(endpoint),
-    body: {
-      'email': email,
-    },
-  );
-
-  return response;
 }

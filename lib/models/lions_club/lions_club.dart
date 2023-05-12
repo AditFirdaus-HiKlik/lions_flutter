@@ -7,8 +7,10 @@ part 'lions_club.g.dart';
 @freezed
 class LionsClub with _$LionsClub {
   const factory LionsClub({
+    @Default(0) int id,
     @Default("") String title,
   }) = _LionsClub;
 
-  factory LionsClub.fromJson(Map<String, dynamic> json) => _$LionsClubFromJson(json);
+  factory LionsClub.fromJson(Map<String, dynamic> json) =>
+      _$LionsClubFromJson(json);
 }

@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:lions_flutter/api/api.dart';
 import 'package:http/http.dart' as http;
+import 'package:lions_flutter/api/api.dart';
 import 'package:lions_flutter/sports_widget.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -95,8 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try {
       if (_key.currentState!.validate()) {
-        var endpoint = getEndpoint();
-        endpoint += "api/auth/local/register";
+        var endpoint = "$apiEndpoint/api/auth/local/register";
 
         var response = await http.post(Uri.parse(endpoint), body: {
           "username": usernameController.text,

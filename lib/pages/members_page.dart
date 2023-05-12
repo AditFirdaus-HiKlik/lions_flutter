@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:lions_flutter/Classes/user/user_data.dart';
 import 'package:lions_flutter/models/lions_member/lions_member.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -307,7 +306,7 @@ class _MemberPageState extends State<MemberPage> {
             dense: true,
             leading: const Icon(Icons.phone),
             title: Text(
-              memberData.phone,
+              memberData.phone.value,
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
               ),

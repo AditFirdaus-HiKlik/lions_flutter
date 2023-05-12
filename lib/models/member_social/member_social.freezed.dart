@@ -20,8 +20,9 @@ MemberSocial _$MemberSocialFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$MemberSocial {
+  int get id => throw _privateConstructorUsedError;
   String get platform => throw _privateConstructorUsedError;
-  String get user => throw _privateConstructorUsedError;
+  String get value => throw _privateConstructorUsedError;
   bool get visible => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -36,7 +37,7 @@ abstract class $MemberSocialCopyWith<$Res> {
           MemberSocial value, $Res Function(MemberSocial) then) =
       _$MemberSocialCopyWithImpl<$Res, MemberSocial>;
   @useResult
-  $Res call({String platform, String user, bool visible});
+  $Res call({int id, String platform, String value, bool visible});
 }
 
 /// @nodoc
@@ -52,18 +53,23 @@ class _$MemberSocialCopyWithImpl<$Res, $Val extends MemberSocial>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? platform = null,
-    Object? user = null,
+    Object? value = null,
     Object? visible = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       platform: null == platform
           ? _value.platform
           : platform // ignore: cast_nullable_to_non_nullable
               as String,
-      user: null == user
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
+      value: null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
               as String,
       visible: null == visible
           ? _value.visible
@@ -81,7 +87,7 @@ abstract class _$$_MemberSocialCopyWith<$Res>
       __$$_MemberSocialCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String platform, String user, bool visible});
+  $Res call({int id, String platform, String value, bool visible});
 }
 
 /// @nodoc
@@ -95,18 +101,23 @@ class __$$_MemberSocialCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? platform = null,
-    Object? user = null,
+    Object? value = null,
     Object? visible = null,
   }) {
     return _then(_$_MemberSocial(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       platform: null == platform
           ? _value.platform
           : platform // ignore: cast_nullable_to_non_nullable
               as String,
-      user: null == user
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
+      value: null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
               as String,
       visible: null == visible
           ? _value.visible
@@ -120,24 +131,27 @@ class __$$_MemberSocialCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_MemberSocial with DiagnosticableTreeMixin implements _MemberSocial {
   const _$_MemberSocial(
-      {this.platform = "", this.user = "", this.visible = false});
+      {this.id = 0, this.platform = "", this.value = "", this.visible = false});
 
   factory _$_MemberSocial.fromJson(Map<String, dynamic> json) =>
       _$$_MemberSocialFromJson(json);
 
   @override
   @JsonKey()
+  final int id;
+  @override
+  @JsonKey()
   final String platform;
   @override
   @JsonKey()
-  final String user;
+  final String value;
   @override
   @JsonKey()
   final bool visible;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MemberSocial(platform: $platform, user: $user, visible: $visible)';
+    return 'MemberSocial(id: $id, platform: $platform, value: $value, visible: $visible)';
   }
 
   @override
@@ -145,8 +159,9 @@ class _$_MemberSocial with DiagnosticableTreeMixin implements _MemberSocial {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'MemberSocial'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('platform', platform))
-      ..add(DiagnosticsProperty('user', user))
+      ..add(DiagnosticsProperty('value', value))
       ..add(DiagnosticsProperty('visible', visible));
   }
 
@@ -155,15 +170,16 @@ class _$_MemberSocial with DiagnosticableTreeMixin implements _MemberSocial {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_MemberSocial &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.platform, platform) ||
                 other.platform == platform) &&
-            (identical(other.user, user) || other.user == user) &&
+            (identical(other.value, value) || other.value == value) &&
             (identical(other.visible, visible) || other.visible == visible));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, platform, user, visible);
+  int get hashCode => Object.hash(runtimeType, id, platform, value, visible);
 
   @JsonKey(ignore: true)
   @override
@@ -181,17 +197,20 @@ class _$_MemberSocial with DiagnosticableTreeMixin implements _MemberSocial {
 
 abstract class _MemberSocial implements MemberSocial {
   const factory _MemberSocial(
-      {final String platform,
-      final String user,
+      {final int id,
+      final String platform,
+      final String value,
       final bool visible}) = _$_MemberSocial;
 
   factory _MemberSocial.fromJson(Map<String, dynamic> json) =
       _$_MemberSocial.fromJson;
 
   @override
+  int get id;
+  @override
   String get platform;
   @override
-  String get user;
+  String get value;
   @override
   bool get visible;
   @override

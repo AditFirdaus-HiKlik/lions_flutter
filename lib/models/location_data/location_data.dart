@@ -7,6 +7,7 @@ part 'location_data.g.dart';
 @freezed
 class LocationData with _$LocationData {
   const factory LocationData({
+    @Default(0) int id,
     @Default("") String title,
     @Default("") String address,
     @Default("") String contactName,
@@ -14,5 +15,6 @@ class LocationData with _$LocationData {
     @Default("") String link,
   }) = _LocationData;
 
-  factory LocationData.fromJson(Map<String, dynamic> json) => _$LocationDataFromJson(json);
+  factory LocationData.fromJson(Map<String, dynamic> json) =>
+      _$LocationDataFromJson(json);
 }

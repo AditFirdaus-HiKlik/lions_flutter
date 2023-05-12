@@ -20,6 +20,7 @@ ArticleData _$ArticleDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ArticleData {
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
   String get author => throw _privateConstructorUsedError;
@@ -40,7 +41,8 @@ abstract class $ArticleDataCopyWith<$Res> {
       _$ArticleDataCopyWithImpl<$Res, ArticleData>;
   @useResult
   $Res call(
-      {String title,
+      {int id,
+      String title,
       String url,
       String author,
       SingleImage coverImage,
@@ -63,6 +65,7 @@ class _$ArticleDataCopyWithImpl<$Res, $Val extends ArticleData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? url = null,
     Object? author = null,
@@ -71,6 +74,10 @@ class _$ArticleDataCopyWithImpl<$Res, $Val extends ArticleData>
     Object? citation = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -116,7 +123,8 @@ abstract class _$$_ArticleDataCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String title,
+      {int id,
+      String title,
       String url,
       String author,
       SingleImage coverImage,
@@ -138,6 +146,7 @@ class __$$_ArticleDataCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? url = null,
     Object? author = null,
@@ -146,6 +155,10 @@ class __$$_ArticleDataCopyWithImpl<$Res>
     Object? citation = null,
   }) {
     return _then(_$_ArticleData(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -178,7 +191,8 @@ class __$$_ArticleDataCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ArticleData with DiagnosticableTreeMixin implements _ArticleData {
   const _$_ArticleData(
-      {this.title = "",
+      {this.id = 0,
+      this.title = "",
       this.url = "",
       this.author = "",
       this.coverImage = const SingleImage(),
@@ -188,6 +202,9 @@ class _$_ArticleData with DiagnosticableTreeMixin implements _ArticleData {
   factory _$_ArticleData.fromJson(Map<String, dynamic> json) =>
       _$$_ArticleDataFromJson(json);
 
+  @override
+  @JsonKey()
+  final int id;
   @override
   @JsonKey()
   final String title;
@@ -209,7 +226,7 @@ class _$_ArticleData with DiagnosticableTreeMixin implements _ArticleData {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ArticleData(title: $title, url: $url, author: $author, coverImage: $coverImage, body: $body, citation: $citation)';
+    return 'ArticleData(id: $id, title: $title, url: $url, author: $author, coverImage: $coverImage, body: $body, citation: $citation)';
   }
 
   @override
@@ -217,6 +234,7 @@ class _$_ArticleData with DiagnosticableTreeMixin implements _ArticleData {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ArticleData'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('url', url))
       ..add(DiagnosticsProperty('author', author))
@@ -230,6 +248,7 @@ class _$_ArticleData with DiagnosticableTreeMixin implements _ArticleData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ArticleData &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.author, author) || other.author == author) &&
@@ -242,8 +261,8 @@ class _$_ArticleData with DiagnosticableTreeMixin implements _ArticleData {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, title, url, author, coverImage, body, citation);
+  int get hashCode => Object.hash(
+      runtimeType, id, title, url, author, coverImage, body, citation);
 
   @JsonKey(ignore: true)
   @override
@@ -261,7 +280,8 @@ class _$_ArticleData with DiagnosticableTreeMixin implements _ArticleData {
 
 abstract class _ArticleData implements ArticleData {
   const factory _ArticleData(
-      {final String title,
+      {final int id,
+      final String title,
       final String url,
       final String author,
       final SingleImage coverImage,
@@ -271,6 +291,8 @@ abstract class _ArticleData implements ArticleData {
   factory _ArticleData.fromJson(Map<String, dynamic> json) =
       _$_ArticleData.fromJson;
 
+  @override
+  int get id;
   @override
   String get title;
   @override

@@ -20,6 +20,7 @@ LocationData _$LocationDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$LocationData {
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get address => throw _privateConstructorUsedError;
   String get contactName => throw _privateConstructorUsedError;
@@ -39,7 +40,8 @@ abstract class $LocationDataCopyWith<$Res> {
       _$LocationDataCopyWithImpl<$Res, LocationData>;
   @useResult
   $Res call(
-      {String title,
+      {int id,
+      String title,
       String address,
       String contactName,
       String contactNumber,
@@ -59,6 +61,7 @@ class _$LocationDataCopyWithImpl<$Res, $Val extends LocationData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? address = null,
     Object? contactName = null,
@@ -66,6 +69,10 @@ class _$LocationDataCopyWithImpl<$Res, $Val extends LocationData>
     Object? link = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -99,7 +106,8 @@ abstract class _$$_LocationDataCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String title,
+      {int id,
+      String title,
       String address,
       String contactName,
       String contactNumber,
@@ -117,6 +125,7 @@ class __$$_LocationDataCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? address = null,
     Object? contactName = null,
@@ -124,6 +133,10 @@ class __$$_LocationDataCopyWithImpl<$Res>
     Object? link = null,
   }) {
     return _then(_$_LocationData(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -152,7 +165,8 @@ class __$$_LocationDataCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_LocationData with DiagnosticableTreeMixin implements _LocationData {
   const _$_LocationData(
-      {this.title = "",
+      {this.id = 0,
+      this.title = "",
       this.address = "",
       this.contactName = "",
       this.contactNumber = "",
@@ -161,6 +175,9 @@ class _$_LocationData with DiagnosticableTreeMixin implements _LocationData {
   factory _$_LocationData.fromJson(Map<String, dynamic> json) =>
       _$$_LocationDataFromJson(json);
 
+  @override
+  @JsonKey()
+  final int id;
   @override
   @JsonKey()
   final String title;
@@ -179,7 +196,7 @@ class _$_LocationData with DiagnosticableTreeMixin implements _LocationData {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'LocationData(title: $title, address: $address, contactName: $contactName, contactNumber: $contactNumber, link: $link)';
+    return 'LocationData(id: $id, title: $title, address: $address, contactName: $contactName, contactNumber: $contactNumber, link: $link)';
   }
 
   @override
@@ -187,6 +204,7 @@ class _$_LocationData with DiagnosticableTreeMixin implements _LocationData {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'LocationData'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('address', address))
       ..add(DiagnosticsProperty('contactName', contactName))
@@ -199,6 +217,7 @@ class _$_LocationData with DiagnosticableTreeMixin implements _LocationData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_LocationData &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.address, address) || other.address == address) &&
             (identical(other.contactName, contactName) ||
@@ -211,7 +230,7 @@ class _$_LocationData with DiagnosticableTreeMixin implements _LocationData {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, title, address, contactName, contactNumber, link);
+      runtimeType, id, title, address, contactName, contactNumber, link);
 
   @JsonKey(ignore: true)
   @override
@@ -229,7 +248,8 @@ class _$_LocationData with DiagnosticableTreeMixin implements _LocationData {
 
 abstract class _LocationData implements LocationData {
   const factory _LocationData(
-      {final String title,
+      {final int id,
+      final String title,
       final String address,
       final String contactName,
       final String contactNumber,
@@ -238,6 +258,8 @@ abstract class _LocationData implements LocationData {
   factory _LocationData.fromJson(Map<String, dynamic> json) =
       _$_LocationData.fromJson;
 
+  @override
+  int get id;
   @override
   String get title;
   @override

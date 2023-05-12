@@ -1,25 +1,17 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:lions_flutter/Classes/user/user_data.dart';
-import 'package:lions_flutter/Data/AppException.dart';
-import 'package:lions_flutter/UserManager.dart';
-import 'package:lions_flutter/api/api.dart';
-import 'package:lions_flutter/api/models/article.dart';
+import 'package:lions_flutter/api/models/LionsCollection.dart';
 import 'package:lions_flutter/api/network.dart';
 import 'package:lions_flutter/api/rest_api.dart';
 import 'package:lions_flutter/models/lions_member/lions_member.dart';
-import 'package:lions_flutter/pages/Auth/login_page.dart';
 import 'package:lions_flutter/pages/members_page.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
-
-import 'package:http/http.dart' as http;
 
 class HomeMembers extends StatefulWidget {
   const HomeMembers({super.key});
@@ -271,62 +263,5 @@ class _HomeMembersState extends State<HomeMembers> {
             ],
           ),
         ));
-  }
-}
-
-class MemberAPI {
-  static RestPagination articlePagination = RestPagination("member");
-  static const String urlMembers = 'api/users';
-
-  static const bool mustLogin = false;
-
-  static Future<List<LionsMember>> fetchMembers(
-      {List<String> categories = const [],
-      int page = 0,
-      String query = ""}) async {
-    page = articlePagination.page;
-
-    String endpoint = getEndpoint();
-    endpoint += urlMembers;
-    endpoint += '?';
-
-    endpoint += "populate=avatar&";
-    endpoint += "populate=sports&";
-    endpoint += "populate=jobs&";
-    endpoint += "populate=achivements&";
-    endpoint += "populate=gallery.image&";
-    endpoint += "sort=id:desc&";
-    endpoint += "pagination[page]=$page&";
-    endpoint += '_q=$query&';
-
-    for (var category in categories) {
-      endpoint += 'filters[\$or][0][sports][name][\$eq]=$category&';
-    }
-
-    List<LionsMember> members = [];
-
-    if (!(await isConnectedToInternet())) {
-      return throw AppException(code: 1, message: "No Internet Connection");
-    }
-
-    if (!UserManager.isLoggedIn && mustLogin) {
-      return throw AppException(code: 2, message: "Not Signed In");
-    }
-
-    try {
-      final response = await RestAPI.get(Uri.parse(endpoint));
-
-      var datas = json.decode(response.body);
-
-      for (var data in datas) {
-        members.add(LionsMember.fromJson(data));
-      }
-    } on AppException {
-      rethrow;
-    } catch (e) {
-      throw AppException(code: 0, message: "Something went wrong");
-    }
-
-    return members;
   }
 }

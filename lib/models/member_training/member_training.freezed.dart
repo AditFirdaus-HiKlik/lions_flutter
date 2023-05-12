@@ -20,6 +20,7 @@ MemberTraining _$MemberTrainingFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$MemberTraining {
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get trainingType => throw _privateConstructorUsedError;
@@ -39,7 +40,8 @@ abstract class $MemberTrainingCopyWith<$Res> {
       _$MemberTrainingCopyWithImpl<$Res, MemberTraining>;
   @useResult
   $Res call(
-      {String title,
+      {int id,
+      String title,
       String description,
       String trainingType,
       String startDate,
@@ -59,6 +61,7 @@ class _$MemberTrainingCopyWithImpl<$Res, $Val extends MemberTraining>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? description = null,
     Object? trainingType = null,
@@ -66,6 +69,10 @@ class _$MemberTrainingCopyWithImpl<$Res, $Val extends MemberTraining>
     Object? endDate = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -99,7 +106,8 @@ abstract class _$$_MemberTrainingCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String title,
+      {int id,
+      String title,
       String description,
       String trainingType,
       String startDate,
@@ -117,6 +125,7 @@ class __$$_MemberTrainingCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? description = null,
     Object? trainingType = null,
@@ -124,6 +133,10 @@ class __$$_MemberTrainingCopyWithImpl<$Res>
     Object? endDate = null,
   }) {
     return _then(_$_MemberTraining(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -154,7 +167,8 @@ class _$_MemberTraining
     with DiagnosticableTreeMixin
     implements _MemberTraining {
   const _$_MemberTraining(
-      {this.title = "",
+      {this.id = 0,
+      this.title = "",
       this.description = "",
       this.trainingType = "",
       this.startDate = "",
@@ -163,6 +177,9 @@ class _$_MemberTraining
   factory _$_MemberTraining.fromJson(Map<String, dynamic> json) =>
       _$$_MemberTrainingFromJson(json);
 
+  @override
+  @JsonKey()
+  final int id;
   @override
   @JsonKey()
   final String title;
@@ -181,7 +198,7 @@ class _$_MemberTraining
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MemberTraining(title: $title, description: $description, trainingType: $trainingType, startDate: $startDate, endDate: $endDate)';
+    return 'MemberTraining(id: $id, title: $title, description: $description, trainingType: $trainingType, startDate: $startDate, endDate: $endDate)';
   }
 
   @override
@@ -189,6 +206,7 @@ class _$_MemberTraining
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'MemberTraining'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('trainingType', trainingType))
@@ -201,6 +219,7 @@ class _$_MemberTraining
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_MemberTraining &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -214,7 +233,7 @@ class _$_MemberTraining
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, title, description, trainingType, startDate, endDate);
+      runtimeType, id, title, description, trainingType, startDate, endDate);
 
   @JsonKey(ignore: true)
   @override
@@ -232,7 +251,8 @@ class _$_MemberTraining
 
 abstract class _MemberTraining implements MemberTraining {
   const factory _MemberTraining(
-      {final String title,
+      {final int id,
+      final String title,
       final String description,
       final String trainingType,
       final String startDate,
@@ -241,6 +261,8 @@ abstract class _MemberTraining implements MemberTraining {
   factory _MemberTraining.fromJson(Map<String, dynamic> json) =
       _$_MemberTraining.fromJson;
 
+  @override
+  int get id;
   @override
   String get title;
   @override

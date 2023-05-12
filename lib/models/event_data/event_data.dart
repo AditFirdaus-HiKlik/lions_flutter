@@ -8,6 +8,7 @@ part 'event_data.g.dart';
 @freezed
 class EventData with _$EventData {
   const factory EventData({
+    @Default(0) int id,
     @Default("") String title,
     @Default(SingleImage()) SingleImage coverImage,
     @Default("") String organizingClub,

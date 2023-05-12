@@ -8,6 +8,7 @@ part 'article_data.g.dart';
 @freezed
 class ArticleData with _$ArticleData {
   const factory ArticleData({
+    @Default(0) int id,
     @Default("") String title,
     @Default("") String url,
     @Default("") String author,
@@ -16,5 +17,6 @@ class ArticleData with _$ArticleData {
     @Default("") String citation,
   }) = _ArticleData;
 
-  factory ArticleData.fromJson(Map<String, dynamic> json) => _$ArticleDataFromJson(json);
+  factory ArticleData.fromJson(Map<String, dynamic> json) =>
+      _$ArticleDataFromJson(json);
 }

@@ -8,14 +8,16 @@ part of 'member_social.dart';
 
 _$_MemberSocial _$$_MemberSocialFromJson(Map<String, dynamic> json) =>
     _$_MemberSocial(
+      id: json['id'] as int? ?? 0,
       platform: json['platform'] as String? ?? "",
-      user: json['user'] as String? ?? "",
+      value: json['value'] as String? ?? "",
       visible: json['visible'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$_MemberSocialToJson(_$_MemberSocial instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'platform': instance.platform,
-      'user': instance.user,
+      'value': instance.value,
       'visible': instance.visible,
     };

@@ -7,8 +7,10 @@ part 'lions_rank.g.dart';
 @freezed
 class LionsRank with _$LionsRank {
   const factory LionsRank({
+    @Default(0) int id,
     @Default("") String title,
   }) = _LionsRank;
 
-  factory LionsRank.fromJson(Map<String, dynamic> json) => _$LionsRankFromJson(json);
+  factory LionsRank.fromJson(Map<String, dynamic> json) =>
+      _$LionsRankFromJson(json);
 }
