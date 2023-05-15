@@ -21,7 +21,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             _drawerHeader(),
-            if (AccountManager.isLoggedIn)
+            // if (AccountManager.isLoggedIn)
+            if (true)
               _drawerItem(
                 icon: Icons.person,
                 text: "Account",

@@ -5,7 +5,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:lions_flutter/models/account/account.dart';
+import 'package:lions_flutter/models/member_award/member_award.dart';
+import 'package:lions_flutter/models/member_social/member_social.dart';
+import 'package:lions_flutter/models/single_image/single_image.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class AccountEditPage extends StatefulWidget {
   const AccountEditPage({super.key});
@@ -15,7 +20,7 @@ class AccountEditPage extends StatefulWidget {
 }
 
 class _AccountEditPageState extends State<AccountEditPage> {
-  Account userData = Account();
+  Account userData = Account.accounts[0];
 
   bool _isSaving = false;
 
@@ -103,6 +108,11 @@ class _AccountEditPageState extends State<AccountEditPage> {
                   const SizedBox(
                     height: 32,
                   ),
+                  _renderAccount(),
+                  const SizedBox(
+                    height: 32,
+                  ),
+                  _renderContacts(),
                 ],
               ),
             ),
@@ -139,8 +149,374 @@ class _AccountEditPageState extends State<AccountEditPage> {
             thickness: 1,
             height: 32,
           ),
+          const SizedBox(
+            height: 16,
+          ),
+          _avatarEdit(),
+          const SizedBox(
+            height: 32,
+          ),
+          _nameEdit(),
+          const SizedBox(
+            height: 16,
+          ),
+          _aboutEdit(),
+          const SizedBox(
+            height: 16,
+          ),
+          _birthDateEdit(),
+          const SizedBox(
+            height: 16,
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _renderContacts() {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            spreadRadius: 5,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'Contacts',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          Divider(
+            color: Colors.black.withOpacity(0.1),
+            thickness: 1,
+            height: 32,
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          _phoneEdit(),
+          const SizedBox(
+            height: 16,
+          ),
+          _addressEdit(),
+          const SizedBox(
+            height: 16,
+          ),
+          _instagramEdit(),
+          const SizedBox(
+            height: 16,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _renderAccount() {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            spreadRadius: 5,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            'Account',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          Divider(
+            color: Colors.black.withOpacity(0.1),
+            thickness: 1,
+            height: 32,
+          ),
+          const SizedBox(
+            height: 32,
+          ),
+          _emailEdit(),
+          const SizedBox(
+            height: 16,
+          ),
+          _passwordEdit(),
+          const SizedBox(
+            height: 16,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _avatarEdit() {
+    Widget avatarImage = (_image != null)
+        ? Image.file(
+            File(_image!.path),
+            fit: BoxFit.cover,
+          )
+        : Image.network(
+            userData.avatar.url,
+            fit: BoxFit.cover,
+          );
+    return ZoomTapAnimation(
+      onTap: _isSaving
+          ? () {}
+          : () async {
+              final ImagePicker picker = ImagePicker();
+              _image = await picker.pickImage(
+                source: ImageSource.gallery,
+              );
+              setState(() {});
+            },
+      child: Center(
+        child: Column(
+          children: [
+            SizedBox(
+              width: 128,
+              height: 128,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: avatarImage,
+              ),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Text(
+              'Edit Avatar',
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: Colors.blue,
+                  ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _nameEdit() {
+    return TextFormField(
+      initialValue: userData.name,
+      decoration: const InputDecoration(
+        labelText: 'Name',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 16,
+        ),
+        fillColor: Colors.white,
+        filled: true,
+      ),
+      onChanged: (String value) {
+        // userData.name = value;
+      },
+    );
+  }
+
+  Widget _emailEdit() {
+    return TextFormField(
+      initialValue: userData.email,
+      decoration: const InputDecoration(
+        labelText: 'Email',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 16,
+        ),
+        fillColor: Colors.white,
+        filled: true,
+      ),
+      onChanged: (String value) {
+        // userData.name = value;
+      },
+    );
+  }
+
+  Widget _passwordEdit() {
+    return TextFormField(
+      // initialValue: userData.email,
+      decoration: const InputDecoration(
+        labelText: 'Password',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 16,
+        ),
+        fillColor: Colors.white,
+        filled: true,
+      ),
+      onChanged: (String value) {
+        // userData.name = value;
+      },
+    );
+  }
+
+  Widget _aboutEdit() {
+    return TextFormField(
+      initialValue: userData.about,
+      decoration: const InputDecoration(
+        labelText: 'About',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 16,
+        ),
+        fillColor: Colors.white,
+        filled: true,
+      ),
+      minLines: 3,
+      maxLines: 5,
+      onChanged: (String value) {
+        // userData.about = value;
+      },
+    );
+  }
+
+  Widget _phoneEdit() {
+    return TextFormField(
+      initialValue: userData.phone.value,
+      decoration: const InputDecoration(
+        labelText: 'Phone',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 16,
+        ),
+        fillColor: Colors.white,
+        filled: true,
+      ),
+      onChanged: (String value) {
+        // userData.phone = value;
+      },
+    );
+  }
+
+  Widget _birthDateEdit() {
+    return ZoomTapAnimation(
+      end: 1.1,
+      onTap: () async {
+        final DateTime? picked = await showDatePicker(
+          context: context,
+          // initialDate: userData.birthDate,
+          initialDate: DateTime.now(),
+          firstDate: DateTime(1900, 1),
+          lastDate: DateTime(2100),
+        );
+        // if (picked != null && picked != userData.birthDate) {
+        //   setState(() {
+        //     userData.birthDate = picked;
+        //   });
+        // }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 16,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.purple,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Birth Date',
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                    )),
+            Text(
+              // DateFormat('dd MMMM yyyy').format(userData.birthDate),
+              DateFormat('dd MMMM yyyy').format(DateTime.now()),
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _addressEdit() {
+    return TextFormField(
+      initialValue: userData.address,
+      decoration: const InputDecoration(
+        labelText: 'Address',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 16,
+        ),
+        fillColor: Colors.white,
+        filled: true,
+      ),
+      onChanged: (String value) {
+        // userData.address = value;
+      },
+    );
+  }
+
+  Widget _instagramEdit() {
+    return TextFormField(
+      initialValue: userData.social[0].value,
+      decoration: const InputDecoration(
+        labelText: '@ Instagram',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 16,
+        ),
+        fillColor: Colors.white,
+        filled: true,
+      ),
+      // onChanged: (String value) {
+      //   // userData.social.instagram = value;
+      // },
     );
   }
 }
