@@ -20,7 +20,7 @@ class AccountEditPage extends StatefulWidget {
 }
 
 class _AccountEditPageState extends State<AccountEditPage> {
-  Account userData = Account.accounts[0];
+  Account userData = Account.account;
 
   bool _isSaving = false;
 

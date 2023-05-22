@@ -3,25 +3,23 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:lions_flutter/models/member_award/member_award.dart';
+import 'package:lions_flutter/models/member_training/member_training.dart';
 // import 'package:lions_flutter/Classes/user/user_data.dart';
 
-class ProfileAwardEdit extends StatefulWidget {
-  ProfileAwardEdit({Key? key, required this.userAwards}) : super(key: key);
+class ProfileTrainingEdit extends StatefulWidget {
+  ProfileTrainingEdit({Key? key, required this.trainings}) : super(key: key);
 
-  List<MemberAward> userAwards = [];
+  List<MemberTraining> trainings = [];
 
   @override
-  _ProfileAwardEditState createState() => _ProfileAwardEditState();
+  _ProfileTrainingEditState createState() => _ProfileTrainingEditState();
 }
 
-class _ProfileAwardEditState extends State<ProfileAwardEdit> {
-  List<MemberAward> awards = [];
-
+class _ProfileTrainingEditState extends State<ProfileTrainingEdit> {
   @override
   void initState() {
-    awards = widget.userAwards
-        .map((e) => MemberAward(
+    widget.trainings = widget.trainings
+        .map((e) => MemberTraining(
               id: e.id,
               title: e.title,
               description: e.description,
@@ -30,50 +28,52 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
     super.initState();
   }
 
-  Future _addMemberAward() async {
-    var result = await _showAwardDialog();
+  Future _addMemberTraining() async {
+    var result = await _showTrainingDialog();
 
     if (result != null) {
       setState(() {
-        // widget.userAwards.add(result);
-        awards.add(result);
+        // widget.userTrainings.add(result);
+        widget.trainings.add(result);
       });
     }
   }
 
-  Future _updateMemberAward(MemberAward award) async {
-    var result = await _showAwardDialog(userAward: award);
+  Future _updateMemberTraining(MemberTraining award) async {
+    var result = await _showTrainingDialog(userTraining: award);
 
     if (result != null) {
       setState(() {
-        awards[widget.userAwards.indexWhere((u) => u.id == award.id)] = result;
+        widget.trainings[widget.trainings.indexWhere((u) => u.id == award.id)] =
+            result;
       });
     }
   }
 
-  Future _deleteMemberAward(MemberAward userAward) async {
+  Future _deleteMemberTraining(MemberTraining userTraining) async {
     setState(() {
-      awards.remove(userAward);
+      widget.trainings.remove(userTraining);
     });
   }
 
-  Future<MemberAward?> _showAwardDialog({MemberAward? userAward}) async {
-    bool addNew = userAward == null;
+  Future<MemberTraining?> _showTrainingDialog(
+      {MemberTraining? userTraining}) async {
+    bool addNew = userTraining == null;
 
-    userAward = addNew ? MemberAward() : userAward;
+    userTraining = addNew ? MemberTraining() : userTraining;
 
-    return showCupertinoDialog<MemberAward>(
+    return showCupertinoDialog<MemberTraining>(
       context: context,
       builder: (BuildContext context) {
         final formKey = GlobalKey<FormState>();
 
-        userAward!;
+        userTraining!;
 
-        String title = userAward!.title;
-        String body = userAward!.description;
+        String title = userTraining!.title;
+        String description = userTraining!.description;
 
         return AlertDialog(
-          title: Text(addNew ? "Add User Award" : "Edit User Award"),
+          title: Text(addNew ? "Add User Training" : "Edit User Training"),
           content: Form(
             key: formKey,
             child: Column(
@@ -93,7 +93,7 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
                   },
                 ),
                 TextFormField(
-                  initialValue: body,
+                  initialValue: description,
                   decoration: const InputDecoration(labelText: "Body"),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -102,7 +102,7 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
                     return null;
                   },
                   onSaved: (value) {
-                    body = value!;
+                    description = value!;
                   },
                 ),
               ],
@@ -121,12 +121,12 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
                 if (formKey.currentState!.validate()) {
                   formKey.currentState!.save();
 
-                  userAward = userAward?.copyWith(
+                  userTraining = userTraining?.copyWith(
                     title: title,
-                    description: body,
+                    description: description,
                   );
 
-                  Navigator.of(context).pop(userAward);
+                  Navigator.of(context).pop(userTraining);
                 }
               },
             ),
@@ -140,18 +140,18 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Awards"),
+        title: const Text("Trainings"),
       ),
       body: WillPopScope(
         onWillPop: () async {
-          Navigator.pop(context, awards);
+          Navigator.pop(context, widget.trainings);
           return Future.value(false);
         },
         child: ListView.builder(
           padding: const EdgeInsets.all(16),
-          itemCount: awards.length,
+          itemCount: widget.trainings.length,
           itemBuilder: (context, index) {
-            MemberAward userAward = awards[index];
+            MemberTraining userTraining = widget.trainings[index];
             return AnimationLimiter(
               child: AnimationConfiguration.staggeredList(
                 position: 0,
@@ -177,21 +177,21 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
                         ],
                       ),
                       child: ListTile(
-                        title: Text(userAward.title),
-                        subtitle: Text(userAward.description),
+                        title: Text(userTraining.title),
+                        subtitle: Text(userTraining.description),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             IconButton(
                               icon: const Icon(Icons.edit),
                               onPressed: () {
-                                _updateMemberAward(userAward);
+                                _updateMemberTraining(userTraining);
                               },
                             ),
                             IconButton(
                               icon: const Icon(Icons.delete),
                               onPressed: () {
-                                _deleteMemberAward(userAward);
+                                _deleteMemberTraining(userTraining);
                               },
                             ),
                           ],
@@ -208,7 +208,7 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          _addMemberAward();
+          _addMemberTraining();
         },
       ),
     );

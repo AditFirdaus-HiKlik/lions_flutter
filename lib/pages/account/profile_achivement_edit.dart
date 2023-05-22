@@ -7,26 +7,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:lions_flutter/models/member_achivement/member_achivement.dart';
 // import 'package:lions_flutter/Classes/user/user_data.dart';
 
-class AchivementTemp {
-  int id;
-  String title;
-  String description;
-
-  AchivementTemp({
-    this.id = 6,
-    this.title = '',
-    this.description = '',
-  });
-
-  void setTitle(String title) {
-    this.title = title;
-  }
-
-  void setDescription(String description) {
-    this.description = description;
-  }
-}
-
 class ProfileAchivementEdit extends StatefulWidget {
   ProfileAchivementEdit({Key? key, required this.userAchivements})
       : super(key: key);
@@ -36,13 +16,10 @@ class ProfileAchivementEdit extends StatefulWidget {
 }
 
 class _ProfileAchivementEditState extends State<ProfileAchivementEdit> {
-  // Account account = Account.accounts[0];
-  List<AchivementTemp> achivements = [];
-
   @override
   void initState() {
-    achivements = widget.userAchivements
-        .map((e) => AchivementTemp(
+    widget.userAchivements = widget.userAchivements
+        .map((e) => MemberAchivement(
               id: e.id,
               title: e.title,
               description: e.description,
@@ -58,45 +35,45 @@ class _ProfileAchivementEditState extends State<ProfileAchivementEdit> {
       setState(() {
         // widget.userAchivements.add(result);
         log('$result');
-        // account.achivements.add(result);
+        // account.widget.userAchivements.add(result);
         // widget.userAchivements.add(result!);
-        achivements.add(result);
+        widget.userAchivements.add(result);
       });
     }
   }
 
-  Future _updateUserAchivement(AchivementTemp userAchivement) async {
+  Future _updateUserAchivement(MemberAchivement userAchivement) async {
     var result = await _showAchivementDialog(userAchivement: userAchivement);
 
     if (result != null) {
       setState(() {
-        achivements[widget.userAchivements
+        widget.userAchivements[widget.userAchivements
             .indexWhere((u) => u.id == userAchivement.id)] = result;
       });
     }
   }
 
-  Future _deleteUserAchivement(AchivementTemp userAchivement) async {
+  Future _deleteUserAchivement(MemberAchivement userAchivement) async {
     setState(() {
-      achivements.remove(userAchivement);
+      widget.userAchivements.remove(userAchivement);
     });
   }
 
-  Future<AchivementTemp?> _showAchivementDialog(
-      {AchivementTemp? userAchivement}) async {
+  Future<MemberAchivement?> _showAchivementDialog(
+      {MemberAchivement? userAchivement}) async {
     bool addNew = userAchivement == null;
 
-    userAchivement = addNew ? AchivementTemp() : userAchivement;
+    userAchivement = addNew ? MemberAchivement() : userAchivement;
 
-    return showCupertinoDialog<AchivementTemp>(
+    return showCupertinoDialog<MemberAchivement>(
       context: context,
       builder: (BuildContext context) {
         final formKey = GlobalKey<FormState>();
 
         userAchivement!;
 
-        String title = userAchivement.title;
-        String description = userAchivement.description;
+        String title = userAchivement!.title;
+        String description = userAchivement!.description;
 
         return AlertDialog(
           title: Text(addNew ? "Add User Achivement" : "Edit User Achivement"),
@@ -146,8 +123,12 @@ class _ProfileAchivementEditState extends State<ProfileAchivementEdit> {
               onPressed: () {
                 if (formKey.currentState!.validate()) {
                   formKey.currentState!.save();
-                  userAchivement?.setTitle(title);
-                  userAchivement?.setDescription(description);
+
+                  userAchivement = userAchivement?.copyWith(
+                    title: title,
+                    description: description,
+                  );
+
                   Navigator.of(context).pop(userAchivement);
                 }
               },
@@ -171,9 +152,9 @@ class _ProfileAchivementEditState extends State<ProfileAchivementEdit> {
         },
         child: ListView.builder(
           padding: const EdgeInsets.all(16),
-          itemCount: achivements.length,
+          itemCount: widget.userAchivements.length,
           itemBuilder: (context, index) {
-            AchivementTemp userAchivement = achivements[index];
+            MemberAchivement userAchivement = widget.userAchivements[index];
             return AnimationLimiter(
               child: AnimationConfiguration.staggeredList(
                 position: 0,

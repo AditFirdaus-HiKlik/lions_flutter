@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -8,10 +6,11 @@ import 'package:lions_flutter/Pages/Account/account_edit_page.dart';
 import 'package:lions_flutter/models/account/account.dart';
 import 'package:lions_flutter/models/member_achivement/member_achivement.dart';
 import 'package:lions_flutter/models/member_award/member_award.dart';
-import 'package:lions_flutter/models/member_social/member_social.dart';
-import 'package:lions_flutter/models/single_image/single_image.dart';
+import 'package:lions_flutter/models/member_training/member_training.dart';
 import 'package:lions_flutter/pages/account/profile_achivement_edit.dart';
 import 'package:lions_flutter/pages/account/profile_award_edit.dart';
+import 'package:lions_flutter/pages/account/profile_training_edit.dart';
+import 'package:lions_flutter/services/account_manager.dart';
 // import 'package:lions_flutter/UserManager.dart';
 // import 'package:lions_flutter/pages/_old_account/profile_achivement_edit.dart';
 // import 'package:lions_flutter/pages/_old_account/profile_award_edit.dart';
@@ -28,7 +27,7 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   // UserData get userData => UserManager.userData;
   // set userData(UserData value) => UserManager.userData = value;
-  Account userData = Account.accounts[0];
+  Account get account => Account.account;
 
   @override
   void initState() {
@@ -70,7 +69,7 @@ class _AccountPageState extends State<AccountPage> {
                   position: 0,
                   child: ScaleAnimation(
                     scale: 1.5,
-                    duration: const Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 250),
                     curve: Curves.easeOutExpo,
                     child: FadeInAnimation(
                       child: _renderProfile(),
@@ -82,7 +81,7 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 AnimationConfiguration.staggeredList(
                   position: 1,
-                  delay: const Duration(milliseconds: 500),
+                  delay: const Duration(milliseconds: 250),
                   child: ScaleAnimation(
                     scale: 1.5,
                     duration: const Duration(milliseconds: 500),
@@ -97,7 +96,7 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 AnimationConfiguration.staggeredList(
                   position: 2,
-                  delay: const Duration(milliseconds: 500),
+                  delay: const Duration(milliseconds: 250),
                   child: ScaleAnimation(
                     scale: 1.5,
                     duration: const Duration(milliseconds: 500),
@@ -112,13 +111,28 @@ class _AccountPageState extends State<AccountPage> {
                 ),
                 AnimationConfiguration.staggeredList(
                   position: 3,
-                  delay: const Duration(milliseconds: 500),
+                  delay: const Duration(milliseconds: 250),
                   child: ScaleAnimation(
                     scale: 1.5,
                     duration: const Duration(milliseconds: 500),
                     curve: Curves.easeOutExpo,
                     child: FadeInAnimation(
                       child: _renderAchivements(),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                AnimationConfiguration.staggeredList(
+                  position: 4,
+                  delay: const Duration(milliseconds: 250),
+                  child: ScaleAnimation(
+                    scale: 1.5,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeOutExpo,
+                    child: FadeInAnimation(
+                      child: _renderTrainings(),
                     ),
                   ),
                 ),
@@ -148,9 +162,9 @@ class _AccountPageState extends State<AccountPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [],
+            children: [],
           ),
           Divider(
             color: Colors.black.withOpacity(0.1),
@@ -164,7 +178,7 @@ class _AccountPageState extends State<AccountPage> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: Image.network(
-                  userData.avatar.url,
+                  account.avatar.url,
                   fit: BoxFit.cover,
                   loadingBuilder: (BuildContext context, Widget child,
                       ImageChunkEvent? loadingProgress) {
@@ -190,7 +204,7 @@ class _AccountPageState extends State<AccountPage> {
             height: 16,
           ),
           Text(
-            userData.name,
+            account.name,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: Theme.of(context).textTheme.titleLarge!.fontSize,
@@ -198,7 +212,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
           ),
           Text(
-            userData.username,
+            account.username,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
@@ -275,7 +289,7 @@ class _AccountPageState extends State<AccountPage> {
             height: 16,
           ),
           Text(
-            userData.about,
+            account.about,
             style: TextStyle(
               fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
             ),
@@ -317,7 +331,7 @@ class _AccountPageState extends State<AccountPage> {
             dense: true,
             leading: const Icon(Icons.phone),
             title: Text(
-              userData.phone.value,
+              account.phone.value,
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
               ),
@@ -327,7 +341,7 @@ class _AccountPageState extends State<AccountPage> {
             dense: true,
             leading: const Icon(Icons.email),
             title: Text(
-              userData.email,
+              account.email,
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
               ),
@@ -337,7 +351,7 @@ class _AccountPageState extends State<AccountPage> {
             dense: true,
             leading: const Icon(Icons.location_on),
             title: Text(
-              userData.address,
+              account.address,
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
               ),
@@ -390,9 +404,9 @@ class _AccountPageState extends State<AccountPage> {
           ListView.builder(
             shrinkWrap: true,
             primary: false,
-            itemCount: userData.awards.length,
+            itemCount: account.awards.length,
             itemBuilder: (context, index) {
-              final awards = userData.awards[index];
+              final awards = account.awards[index];
               return ZoomTapAnimation(
                 end: 1.1,
                 child: ListTile(
@@ -461,9 +475,80 @@ class _AccountPageState extends State<AccountPage> {
           ListView.builder(
             shrinkWrap: true,
             primary: false,
-            itemCount: userData.achivements.length,
+            itemCount: account.achivements.length,
             itemBuilder: (context, index) {
-              final achivement = userData.achivements[index];
+              final achivement = account.achivements[index];
+              return ZoomTapAnimation(
+                end: 1.1,
+                child: ListTile(
+                  dense: true,
+                  title: Text(
+                    achivement.title,
+                    style: TextStyle(
+                      fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
+                    ),
+                  ),
+                  subtitle: Text(
+                    achivement.description,
+                    style: TextStyle(
+                      fontSize:
+                          Theme.of(context).textTheme.bodyMedium!.fontSize,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _renderTrainings() {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            spreadRadius: 5,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Trainings',
+                style: TextStyle(
+                  fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              // Edit
+              IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: editTrainings,
+                // onPressed: () {},
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            primary: false,
+            itemCount: account.trainings.length,
+            itemBuilder: (context, index) {
+              final achivement = account.trainings[index];
               return ZoomTapAnimation(
                 end: 1.1,
                 child: ListTile(
@@ -496,6 +581,7 @@ class _AccountPageState extends State<AccountPage> {
         builder: (context) => const AccountEditPage(),
       ),
     );
+
     // LoadAccount();
   }
 
@@ -503,36 +589,48 @@ class _AccountPageState extends State<AccountPage> {
     List<MemberAward> result = await Navigator.of(context).push(
       CupertinoPageRoute(
         builder: (context) => ProfileAwardEdit(
-          userAwards: userData.awards,
+          userAwards: account.awards,
         ),
       ),
     );
 
-    //   UserData _userData = userData.copyWith(awards: result);
+    Account.account = account.copyWith(awards: result);
 
-    //   userData = _userData;
+    setState(() {});
 
-    //   await UserManager.saveUser();
-
-    //   setState(() {});
+    await AccountManager.setAccount(Account.account, sync: true);
   }
 
   Future editAchivements() async {
     List<MemberAchivement> result = await Navigator.of(context).push(
       CupertinoPageRoute(
         builder: (context) => ProfileAchivementEdit(
-          userAchivements: userData.achivements,
+          userAchivements: account.achivements,
         ),
       ),
     );
 
-    //   UserData _userData = userData.copyWith(achivements: result);
+    Account.account = account.copyWith(achivements: result);
 
-    //   userData = _userData;
+    setState(() {});
 
-    //   await UserManager.saveUser();
+    await AccountManager.setAccount(Account.account, sync: true);
+  }
 
-    //   setState(() {});
+  Future editTrainings() async {
+    List<MemberTraining> result = await Navigator.of(context).push(
+      CupertinoPageRoute(
+        builder: (context) => ProfileTrainingEdit(
+          trainings: account.trainings,
+        ),
+      ),
+    );
+
+    Account.account = account.copyWith(trainings: result);
+
+    setState(() {});
+
+    await AccountManager.setAccount(Account.account, sync: true);
   }
 }
 

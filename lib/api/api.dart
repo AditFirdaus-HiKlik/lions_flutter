@@ -8,8 +8,9 @@ const String apiKey =
 set userJWT(String jwt) => LionsPrefs.instance.setString("user_jwt", jwt);
 String get userJWT => LionsPrefs.instance.getString("user_jwt") ?? "";
 
-String get apiEndpoint =>
-    FirebaseRemoteConfig.instance.getString("server_endpoint");
+// String get apiEndpoint =>
+//     FirebaseRemoteConfig.instance.getString("server_endpoint");
+String get apiEndpoint => "https://lions.up.railway.app";
 
 class LionsPrefs {
   static late SharedPreferences instance;

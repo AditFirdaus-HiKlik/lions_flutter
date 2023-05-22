@@ -3,25 +3,23 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:lions_flutter/models/member_award/member_award.dart';
+// import 'package:lions_flutter/models/account/account.dart';
+import 'package:lions_flutter/models/member_achivement/member_achivement.dart';
 // import 'package:lions_flutter/Classes/user/user_data.dart';
 
-class ProfileAwardEdit extends StatefulWidget {
-  ProfileAwardEdit({Key? key, required this.userAwards}) : super(key: key);
-
-  List<MemberAward> userAwards = [];
-
+class ProfileSocialEdit extends StatefulWidget {
+  ProfileSocialEdit({Key? key, required this.userAchivements})
+      : super(key: key);
+  List<MemberAchivement> userAchivements;
   @override
-  _ProfileAwardEditState createState() => _ProfileAwardEditState();
+  _ProfileSocialEditState createState() => _ProfileSocialEditState();
 }
 
-class _ProfileAwardEditState extends State<ProfileAwardEdit> {
-  List<MemberAward> awards = [];
-
+class _ProfileSocialEditState extends State<ProfileSocialEdit> {
   @override
   void initState() {
-    awards = widget.userAwards
-        .map((e) => MemberAward(
+    widget.userAchivements = widget.userAchivements
+        .map((e) => MemberAchivement(
               id: e.id,
               title: e.title,
               description: e.description,
@@ -30,50 +28,55 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
     super.initState();
   }
 
-  Future _addMemberAward() async {
-    var result = await _showAwardDialog();
+  Future _addUserAchivement() async {
+    var result = await _showSocialDialog();
 
     if (result != null) {
       setState(() {
-        // widget.userAwards.add(result);
-        awards.add(result);
+        // widget.userAchivements.add(result);
+        log('$result');
+        // account.widget.userAchivements.add(result);
+        // widget.userAchivements.add(result!);
+        widget.userAchivements.add(result);
       });
     }
   }
 
-  Future _updateMemberAward(MemberAward award) async {
-    var result = await _showAwardDialog(userAward: award);
+  Future _updateUserAchivement(MemberAchivement userAchivement) async {
+    var result = await _showSocialDialog(userAchivement: userAchivement);
 
     if (result != null) {
       setState(() {
-        awards[widget.userAwards.indexWhere((u) => u.id == award.id)] = result;
+        widget.userAchivements[widget.userAchivements
+            .indexWhere((u) => u.id == userAchivement.id)] = result;
       });
     }
   }
 
-  Future _deleteMemberAward(MemberAward userAward) async {
+  Future _deleteUserAchivement(MemberAchivement userAchivement) async {
     setState(() {
-      awards.remove(userAward);
+      widget.userAchivements.remove(userAchivement);
     });
   }
 
-  Future<MemberAward?> _showAwardDialog({MemberAward? userAward}) async {
-    bool addNew = userAward == null;
+  Future<MemberAchivement?> _showSocialDialog(
+      {MemberAchivement? userAchivement}) async {
+    bool addNew = userAchivement == null;
 
-    userAward = addNew ? MemberAward() : userAward;
+    userAchivement = addNew ? const MemberAchivement() : userAchivement;
 
-    return showCupertinoDialog<MemberAward>(
+    return showCupertinoDialog<MemberAchivement>(
       context: context,
       builder: (BuildContext context) {
         final formKey = GlobalKey<FormState>();
 
-        userAward!;
+        userAchivement!;
 
-        String title = userAward!.title;
-        String body = userAward!.description;
+        String title = userAchivement!.title;
+        String description = userAchivement!.description;
 
         return AlertDialog(
-          title: Text(addNew ? "Add User Award" : "Edit User Award"),
+          title: Text(addNew ? "Add User Achivement" : "Edit User Achivement"),
           content: Form(
             key: formKey,
             child: Column(
@@ -93,16 +96,16 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
                   },
                 ),
                 TextFormField(
-                  initialValue: body,
-                  decoration: const InputDecoration(labelText: "Body"),
+                  initialValue: description,
+                  decoration: const InputDecoration(labelText: "description"),
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "Please enter a body";
+                      return "Please enter a description";
                     }
                     return null;
                   },
                   onSaved: (value) {
-                    body = value!;
+                    description = value!;
                   },
                 ),
               ],
@@ -121,12 +124,12 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
                 if (formKey.currentState!.validate()) {
                   formKey.currentState!.save();
 
-                  userAward = userAward?.copyWith(
+                  userAchivement = userAchivement?.copyWith(
                     title: title,
-                    description: body,
+                    description: description,
                   );
 
-                  Navigator.of(context).pop(userAward);
+                  Navigator.of(context).pop(userAchivement);
                 }
               },
             ),
@@ -140,18 +143,18 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Awards"),
+        title: const Text("Achivements"),
       ),
       body: WillPopScope(
         onWillPop: () async {
-          Navigator.pop(context, awards);
+          Navigator.pop(context, widget.userAchivements);
           return Future.value(false);
         },
         child: ListView.builder(
           padding: const EdgeInsets.all(16),
-          itemCount: awards.length,
+          itemCount: widget.userAchivements.length,
           itemBuilder: (context, index) {
-            MemberAward userAward = awards[index];
+            MemberAchivement userAchivement = widget.userAchivements[index];
             return AnimationLimiter(
               child: AnimationConfiguration.staggeredList(
                 position: 0,
@@ -177,21 +180,21 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
                         ],
                       ),
                       child: ListTile(
-                        title: Text(userAward.title),
-                        subtitle: Text(userAward.description),
+                        title: Text(userAchivement.title),
+                        subtitle: Text(userAchivement.description),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             IconButton(
                               icon: const Icon(Icons.edit),
                               onPressed: () {
-                                _updateMemberAward(userAward);
+                                _updateUserAchivement(userAchivement);
                               },
                             ),
                             IconButton(
                               icon: const Icon(Icons.delete),
                               onPressed: () {
-                                _deleteMemberAward(userAward);
+                                _deleteUserAchivement(userAchivement);
                               },
                             ),
                           ],
@@ -208,7 +211,7 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          _addMemberAward();
+          _addUserAchivement();
         },
       ),
     );

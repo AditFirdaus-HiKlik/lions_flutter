@@ -38,43 +38,41 @@ class Account with _$Account {
   factory Account.fromJson(Map<String, dynamic> json) =>
       _$AccountFromJson(json);
 
-  static List<Account> accounts = [
-    const Account(
-      name: 'Yanuar Rizki Sanjaya',
-      email: 'yanuar@lions.co.id',
-      about: 'enggak ada apa-apa',
-      avatar: SingleImage(
-          url:
-              'https://lions-space.sgp1.digitaloceanspaces.com/Power_Bank_Mockup_v02_484ae3ccf2.png'),
-      phone: MemberSocial(
-        value: '085697837912',
-      ),
-      address: 'Jakarta, Indonesia',
-      social: [
-        MemberSocial(
-          platform: 'instagram',
-          value: '@ynrrizki',
-        )
-      ],
-      achivements: [
-        MemberAchivement(
-          id: 1,
-          title: 'Best Employee of the Year 2020',
-          description: 'lions.id',
-        ),
-        MemberAchivement(
-          id: 2,
-          title: 'Best Employee of the Year 2021',
-          description: 'lions.id',
-        ),
-      ],
-      awards: [
-        MemberAward(
-          id: 1,
-          title: 'Best Employee of the Year 2020',
-          description: 'lions.id',
-        ),
-      ],
+  static Account account = const Account(
+    name: 'Yanuar Rizki Sanjaya',
+    email: 'yanuar@lions.co.id',
+    about: 'enggak ada apa-apa',
+    avatar: SingleImage(
+        url:
+            'https://lions-space.sgp1.digitaloceanspaces.com/Power_Bank_Mockup_v02_484ae3ccf2.png'),
+    phone: MemberSocial(
+      value: '085697837912',
     ),
-  ];
+    address: 'Jakarta, Indonesia',
+    social: [
+      MemberSocial(
+        platform: 'instagram',
+        value: '@ynrrizki',
+      )
+    ],
+    achivements: [
+      MemberAchivement(
+        id: 1,
+        title: 'Best Employee of the Year 2020',
+        description: 'lions.id',
+      ),
+      MemberAchivement(
+        id: 2,
+        title: 'Best Employee of the Year 2021',
+        description: 'lions.id',
+      ),
+    ],
+    awards: [
+      MemberAward(
+        id: 1,
+        title: 'Best Employee of the Year 2020',
+        description: 'lions.id',
+      ),
+    ],
+  );
 }
