@@ -1,11 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lions_flutter/models/article_data/article_data.dart';
 import 'package:lions_flutter/models/event_data/event_data.dart';
 import 'package:lions_flutter/models/single_image/single_image.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard(this.eventData, {super.key, this.onTap});

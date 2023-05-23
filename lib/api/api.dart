@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String apiKey =

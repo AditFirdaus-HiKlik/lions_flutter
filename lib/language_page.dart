@@ -1,12 +1,13 @@
-import 'dart:developer';
-
 import 'package:flag/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:lions_flutter/locale_provider.dart';
 import 'package:provider/provider.dart';
 
 class LanguagePage extends StatefulWidget {
+  const LanguagePage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _LanguagePageState createState() => _LanguagePageState();
 }
 

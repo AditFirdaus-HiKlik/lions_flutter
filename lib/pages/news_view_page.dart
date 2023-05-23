@@ -15,8 +15,6 @@ class NewsViewPage extends StatefulWidget {
 }
 
 class _NewsViewPageState extends State<NewsViewPage> {
-  final ScrollController _scrollController = ScrollController();
-
   void toBack() {
     Navigator.of(context).pop();
   }

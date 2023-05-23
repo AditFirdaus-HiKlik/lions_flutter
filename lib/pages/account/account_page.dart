@@ -25,21 +25,13 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  // UserData get userData => UserManager.userData;
-  // set userData(UserData value) => UserManager.userData = value;
-  Account get account => Account.account;
+  Account account = Account();
 
   @override
   void initState() {
     super.initState();
     // LoadAccount();
   }
-
-  // Load
-  // Future LoadAccount() async {
-  //   await UserManager.loadUser();
-  //   setState(() {});
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -594,11 +586,11 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
 
-    Account.account = account.copyWith(awards: result);
+    account = account.copyWith(awards: result);
 
     setState(() {});
 
-    await AccountManager.setAccount(Account.account, sync: true);
+    await AccountManager.setAccount(account, sync: true);
   }
 
   Future editAchivements() async {
@@ -610,11 +602,11 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
 
-    Account.account = account.copyWith(achivements: result);
+    account = account.copyWith(achivements: result);
 
     setState(() {});
 
-    await AccountManager.setAccount(Account.account, sync: true);
+    await AccountManager.setAccount(account, sync: true);
   }
 
   Future editTrainings() async {
@@ -626,18 +618,10 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
 
-    Account.account = account.copyWith(trainings: result);
+    account = account.copyWith(trainings: result);
 
     setState(() {});
 
-    await AccountManager.setAccount(Account.account, sync: true);
+    await AccountManager.setAccount(account, sync: true);
   }
 }
-
-// class AccountAPI {
-//   static Future<void> logout() async {
-//     UserManager.logout();
-//   }
-
-//   static Future<void> login() async {}
-// }

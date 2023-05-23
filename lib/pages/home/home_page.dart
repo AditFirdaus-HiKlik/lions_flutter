@@ -8,7 +8,6 @@ import 'Tabs/home_locations.dart';
 import 'Tabs/home_members.dart';
 import 'Tabs/home_news.dart';
 import 'package:lions_flutter/Pages/settings_page.dart';
-import 'package:lions_flutter/app/app_config.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

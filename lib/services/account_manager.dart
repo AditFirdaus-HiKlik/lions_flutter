@@ -27,8 +27,7 @@ class AccountManager {
 
       Map<String, dynamic> body = encodeAccount(account);
 
-      var result =
-          await http.post(Uri.parse(endpoint), headers: headers, body: body);
+      await http.post(Uri.parse(endpoint), headers: headers, body: body);
     }
   }
 

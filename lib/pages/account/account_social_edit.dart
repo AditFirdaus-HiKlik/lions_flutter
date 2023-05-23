@@ -4,13 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 // import 'package:lions_flutter/models/account/account.dart';
-import 'package:lions_flutter/models/member_achivement/member_achivement.dart';
+import 'package:lions_flutter/models/member_social/member_social.dart';
 // import 'package:lions_flutter/Classes/user/user_data.dart';
 
 class ProfileSocialEdit extends StatefulWidget {
   ProfileSocialEdit({Key? key, required this.userAchivements})
       : super(key: key);
-  List<MemberAchivement> userAchivements;
+  List<MemberSocial> userAchivements;
   @override
   _ProfileSocialEditState createState() => _ProfileSocialEditState();
 }
@@ -19,10 +19,10 @@ class _ProfileSocialEditState extends State<ProfileSocialEdit> {
   @override
   void initState() {
     widget.userAchivements = widget.userAchivements
-        .map((e) => MemberAchivement(
+        .map((e) => MemberSocial(
               id: e.id,
-              title: e.title,
-              description: e.description,
+              platform: e.platform,
+              value: e.value,
             ))
         .toList();
     super.initState();
@@ -42,7 +42,7 @@ class _ProfileSocialEditState extends State<ProfileSocialEdit> {
     }
   }
 
-  Future _updateUserAchivement(MemberAchivement userAchivement) async {
+  Future _updateUserAchivement(MemberSocial userAchivement) async {
     var result = await _showSocialDialog(userAchivement: userAchivement);
 
     if (result != null) {
@@ -53,27 +53,27 @@ class _ProfileSocialEditState extends State<ProfileSocialEdit> {
     }
   }
 
-  Future _deleteUserAchivement(MemberAchivement userAchivement) async {
+  Future _deleteUserAchivement(MemberSocial userAchivement) async {
     setState(() {
       widget.userAchivements.remove(userAchivement);
     });
   }
 
-  Future<MemberAchivement?> _showSocialDialog(
-      {MemberAchivement? userAchivement}) async {
+  Future<MemberSocial?> _showSocialDialog(
+      {MemberSocial? userAchivement}) async {
     bool addNew = userAchivement == null;
 
-    userAchivement = addNew ? const MemberAchivement() : userAchivement;
+    userAchivement = addNew ? const MemberSocial() : userAchivement;
 
-    return showCupertinoDialog<MemberAchivement>(
+    return showCupertinoDialog<MemberSocial>(
       context: context,
       builder: (BuildContext context) {
         final formKey = GlobalKey<FormState>();
 
         userAchivement!;
 
-        String title = userAchivement!.title;
-        String description = userAchivement!.description;
+        String platform = userAchivement!.platform;
+        String value = userAchivement!.value;
 
         return AlertDialog(
           title: Text(addNew ? "Add User Achivement" : "Edit User Achivement"),
@@ -83,7 +83,7 @@ class _ProfileSocialEditState extends State<ProfileSocialEdit> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 TextFormField(
-                  initialValue: title,
+                  initialValue: platform,
                   decoration: const InputDecoration(labelText: "Title"),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -92,11 +92,11 @@ class _ProfileSocialEditState extends State<ProfileSocialEdit> {
                     return null;
                   },
                   onSaved: (value) {
-                    title = value!;
+                    platform = value!;
                   },
                 ),
                 TextFormField(
-                  initialValue: description,
+                  initialValue: value,
                   decoration: const InputDecoration(labelText: "description"),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -105,7 +105,7 @@ class _ProfileSocialEditState extends State<ProfileSocialEdit> {
                     return null;
                   },
                   onSaved: (value) {
-                    description = value!;
+                    value = value!;
                   },
                 ),
               ],
@@ -125,8 +125,8 @@ class _ProfileSocialEditState extends State<ProfileSocialEdit> {
                   formKey.currentState!.save();
 
                   userAchivement = userAchivement?.copyWith(
-                    title: title,
-                    description: description,
+                    platform: platform,
+                    value: value,
                   );
 
                   Navigator.of(context).pop(userAchivement);
@@ -154,7 +154,7 @@ class _ProfileSocialEditState extends State<ProfileSocialEdit> {
           padding: const EdgeInsets.all(16),
           itemCount: widget.userAchivements.length,
           itemBuilder: (context, index) {
-            MemberAchivement userAchivement = widget.userAchivements[index];
+            MemberSocial userAchivement = widget.userAchivements[index];
             return AnimationLimiter(
               child: AnimationConfiguration.staggeredList(
                 position: 0,
@@ -180,24 +180,16 @@ class _ProfileSocialEditState extends State<ProfileSocialEdit> {
                         ],
                       ),
                       child: ListTile(
-                        title: Text(userAchivement.title),
-                        subtitle: Text(userAchivement.description),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            IconButton(
-                              icon: const Icon(Icons.edit),
-                              onPressed: () {
-                                _updateUserAchivement(userAchivement);
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () {
-                                _deleteUserAchivement(userAchivement);
-                              },
-                            ),
-                          ],
+                        title: Text(userAchivement.platform),
+                        subtitle: Text(userAchivement.value),
+                        trailing: Switch(
+                          value: userAchivement.visible,
+                          onChanged: (value) {
+                            setState(() {
+                              widget.userAchivements[index] =
+                                  userAchivement.copyWith(visible: value);
+                            });
+                          },
                         ),
                       ),
                     ),

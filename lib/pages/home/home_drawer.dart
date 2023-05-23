@@ -21,8 +21,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             _drawerHeader(),
-            // if (AccountManager.isLoggedIn)
-            if (true)
+            if (AccountManager.isLoggedIn)
               _drawerItem(
                 icon: Icons.person,
                 text: "Account",
@@ -39,7 +38,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               text: "Language",
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => LanguagePage()),
+                  MaterialPageRoute(builder: (context) => const LanguagePage()),
                 );
               },
             ),
@@ -87,10 +86,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
           ),
           const SizedBox(width: 16),
-          Column(
+          const Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
                 "lions",
                 style: TextStyle(

@@ -1,12 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:lions_flutter/api/models/LionsCollection.dart';
-import 'package:lions_flutter/api/network.dart';
-import 'package:lions_flutter/api/rest_api.dart';
+import 'package:lions_flutter/api/models/lions_collection.dart';
 import 'package:lions_flutter/models/lions_member/lions_member.dart';
 import 'package:lions_flutter/pages/members_page.dart';
 import 'package:shimmer/shimmer.dart';

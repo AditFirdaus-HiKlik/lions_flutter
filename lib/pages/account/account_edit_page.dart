@@ -7,9 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:lions_flutter/models/account/account.dart';
-import 'package:lions_flutter/models/member_award/member_award.dart';
-import 'package:lions_flutter/models/member_social/member_social.dart';
-import 'package:lions_flutter/models/single_image/single_image.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class AccountEditPage extends StatefulWidget {
@@ -20,7 +17,7 @@ class AccountEditPage extends StatefulWidget {
 }
 
 class _AccountEditPageState extends State<AccountEditPage> {
-  Account userData = Account.account;
+  Account account = Account();
 
   bool _isSaving = false;
 
@@ -203,10 +200,6 @@ class _AccountEditPageState extends State<AccountEditPage> {
           const SizedBox(
             height: 16,
           ),
-          _phoneEdit(),
-          const SizedBox(
-            height: 16,
-          ),
           _addressEdit(),
           const SizedBox(
             height: 16,
@@ -270,7 +263,7 @@ class _AccountEditPageState extends State<AccountEditPage> {
             fit: BoxFit.cover,
           )
         : Image.network(
-            userData.avatar.url,
+            account.avatar.url,
             fit: BoxFit.cover,
           );
     return ZoomTapAnimation(
@@ -311,7 +304,7 @@ class _AccountEditPageState extends State<AccountEditPage> {
 
   Widget _nameEdit() {
     return TextFormField(
-      initialValue: userData.name,
+      initialValue: account.name,
       decoration: const InputDecoration(
         labelText: 'Name',
         border: OutlineInputBorder(
@@ -334,7 +327,7 @@ class _AccountEditPageState extends State<AccountEditPage> {
 
   Widget _emailEdit() {
     return TextFormField(
-      initialValue: userData.email,
+      initialValue: account.email,
       decoration: const InputDecoration(
         labelText: 'Email',
         border: OutlineInputBorder(
@@ -380,7 +373,7 @@ class _AccountEditPageState extends State<AccountEditPage> {
 
   Widget _aboutEdit() {
     return TextFormField(
-      initialValue: userData.about,
+      initialValue: account.about,
       decoration: const InputDecoration(
         labelText: 'About',
         border: OutlineInputBorder(
@@ -399,29 +392,6 @@ class _AccountEditPageState extends State<AccountEditPage> {
       maxLines: 5,
       onChanged: (String value) {
         // userData.about = value;
-      },
-    );
-  }
-
-  Widget _phoneEdit() {
-    return TextFormField(
-      initialValue: userData.phone.value,
-      decoration: const InputDecoration(
-        labelText: 'Phone',
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(16),
-          ),
-        ),
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 24,
-          vertical: 16,
-        ),
-        fillColor: Colors.white,
-        filled: true,
-      ),
-      onChanged: (String value) {
-        // userData.phone = value;
       },
     );
   }
@@ -476,7 +446,7 @@ class _AccountEditPageState extends State<AccountEditPage> {
 
   Widget _addressEdit() {
     return TextFormField(
-      initialValue: userData.address,
+      initialValue: account.address,
       decoration: const InputDecoration(
         labelText: 'Address',
         border: OutlineInputBorder(
@@ -499,7 +469,7 @@ class _AccountEditPageState extends State<AccountEditPage> {
 
   Widget _instagramEdit() {
     return TextFormField(
-      initialValue: userData.social[0].value,
+      initialValue: account.social[0].value,
       decoration: const InputDecoration(
         labelText: '@ Instagram',
         border: OutlineInputBorder(

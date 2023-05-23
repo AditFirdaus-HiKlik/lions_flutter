@@ -1,9 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:lions_flutter/api/models/LionsCollection.dart';
+import 'package:lions_flutter/api/models/lions_collection.dart';
 import 'package:lions_flutter/models/event_data/event_data.dart';
-import 'package:lions_flutter/models/single_image/single_image.dart';
 import 'package:lions_flutter/widgets/event_card.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -21,7 +19,6 @@ class _HomeEventsState extends State<HomeEvents> {
   late final ValueNotifier<List<EventData>> _selectedEvents =
       ValueNotifier(_getEventsForDay(_focusedDay));
 
-  CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
@@ -117,12 +114,12 @@ class _HomeEventsState extends State<HomeEvents> {
   }
 
   Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+    return const Padding(
+      padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
+        children: [
           Text(
             'Event Calendar',
             style: TextStyle(

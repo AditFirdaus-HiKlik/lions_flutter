@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:lions_flutter/api/models/LionsCollection.dart';
+import 'package:lions_flutter/api/models/lions_collection.dart';
 import 'package:lions_flutter/models/article_data/article_data.dart';
 import 'package:lions_flutter/widgets/article_card.dart';
 

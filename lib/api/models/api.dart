@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:lions_flutter/api/api.dart';
 import 'package:http/http.dart' as http;
 
 class LionsAPI {
@@ -14,7 +13,7 @@ class LionsAPI {
   String url = 'https://lions.up.railway.app/api';
   String path = '';
 
-  Future<String> get endpoint async => await url + await path;
+  Future<String> get endpoint async => url + path;
 
   LionsAPI({this.useJWT = false, this.useApiKey = false});
 
