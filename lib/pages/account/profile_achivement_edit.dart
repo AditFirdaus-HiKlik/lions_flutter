@@ -151,7 +151,7 @@ class _ProfileAchivementEditState extends State<ProfileAchivementEdit> {
           return Future.value(false);
         },
         child: ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(8),
           itemCount: widget.userAchivements.length,
           itemBuilder: (context, index) {
             MemberAchivement userAchivement = widget.userAchivements[index];
@@ -166,7 +166,7 @@ class _ProfileAchivementEditState extends State<ProfileAchivementEdit> {
                   child: FadeInAnimation(
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 16),
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),

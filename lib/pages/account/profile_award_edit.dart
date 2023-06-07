@@ -148,7 +148,7 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
           return Future.value(false);
         },
         child: ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(8),
           itemCount: awards.length,
           itemBuilder: (context, index) {
             MemberAward userAward = awards[index];
@@ -163,7 +163,7 @@ class _ProfileAwardEditState extends State<ProfileAwardEdit> {
                   child: FadeInAnimation(
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 16),
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),

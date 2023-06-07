@@ -84,7 +84,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: textH4,
                   ),
                   DropdownButton2<Locale>(
-                    buttonPadding: const EdgeInsets.all(16),
+                    buttonPadding: const EdgeInsets.all(8),
                     isExpanded: true,
                     value: Provider.of<LocaleProvider>(context).locale,
                     items: [
@@ -117,7 +117,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: textH4,
                   ),
                   DropdownButton2(
-                    buttonPadding: const EdgeInsets.all(16),
+                    buttonPadding: const EdgeInsets.all(8),
                     isExpanded: true,
                     value: appSportMode,
                     items: [

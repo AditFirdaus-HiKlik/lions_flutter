@@ -1,16 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:lions_flutter/Pages/Auth/register_page.dart';
-import 'package:lions_flutter/Pages/Auth/verification_page.dart';
-import 'package:lions_flutter/api/api.dart';
 import 'package:lions_flutter/pages/auth/recovery_page.dart';
-import 'package:lions_flutter/sports_widget.dart';
+import 'package:lions_flutter/pages/home/home_page.dart';
+import 'package:lions_flutter/services/account_manager.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -80,35 +77,27 @@ class _LoginPageState extends State<LoginPage> {
 
   // ? Logic Section
   Future login() async {
+    log("login()");
     setState(() => _submitting = true);
 
     try {
       if (_key.currentState!.validate()) {
-        var endpoint = "$apiEndpoint/auth/local";
+        String errorCode = "";
 
-        var response = await http.post(Uri.parse(endpoint), body: {
-          "identifier": emailController.text,
-          "password": passwordController.text
-        });
+        await AccountManager.login(
+          emailController.text,
+          passwordController.text,
+          onFailed: (message) => errorCode = message,
+        );
 
-        var body = jsonDecode(response.body);
-
-        var bodyJwt = body['jwt'];
-        var bodyUser = body['user'];
-        var bodyError = body['error'];
-
-        if (bodyError != null) {
-          var errorMessage = bodyError['message'];
-
-          if (errorMessage == "Your account email is not confirmed") {
-            _navigateToVerificationPage();
-          } else {
-            scaffoldMessage(context, errorMessage);
-          }
-        }
-
-        if (bodyJwt != null) {
-          Navigator.pop(context);
+        if (AccountManager.isLoggedIn) {
+          _navigateToHomePage();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(errorCode),
+            ),
+          );
         }
       }
     } catch (e) {
@@ -139,14 +128,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _navigateToVerificationPage() {
+  void _navigateToHomePage() {
     Navigator.push(
       context,
       PageTransition(
-        child: VerificationPage(
-          email: emailController.text,
-          password: passwordController.text,
-        ),
+        child: HomePage(),
         type: PageTransitionType.rightToLeft,
       ),
     );
@@ -283,7 +269,7 @@ class _LoginPageState extends State<LoginPage> {
     return Column(
       children: const [
         Text(
-          'Indonesian Sports On Community 2023',
+          'Lions Club 307 B1 2023',
           style: TextStyle(
             fontSize: 12,
             color: Colors.grey,

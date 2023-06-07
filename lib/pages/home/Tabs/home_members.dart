@@ -208,7 +208,7 @@ class _HomeMembersState extends State<HomeMembers> {
         onTap: () => HomeMembers.toMembersPage(context, memberData),
         child: Container(
           margin: const EdgeInsets.all(8),
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),

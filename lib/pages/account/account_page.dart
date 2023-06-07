@@ -11,9 +11,6 @@ import 'package:lions_flutter/pages/account/profile_achivement_edit.dart';
 import 'package:lions_flutter/pages/account/profile_award_edit.dart';
 import 'package:lions_flutter/pages/account/profile_training_edit.dart';
 import 'package:lions_flutter/services/account_manager.dart';
-// import 'package:lions_flutter/UserManager.dart';
-// import 'package:lions_flutter/pages/_old_account/profile_achivement_edit.dart';
-// import 'package:lions_flutter/pages/_old_account/profile_award_edit.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -25,12 +22,18 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  Account account = Account();
+  Account account = const Account();
 
   @override
   void initState() {
+    account = AccountManager.account;
     super.initState();
-    // LoadAccount();
+    LoadAccount();
+  }
+
+  Future LoadAccount() async {
+    account = await AccountManager.getAccount();
+    setState(() {});
   }
 
   @override
@@ -323,7 +326,7 @@ class _AccountPageState extends State<AccountPage> {
             dense: true,
             leading: const Icon(Icons.phone),
             title: Text(
-              account.phone.value,
+              account.phone,
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
               ),
@@ -568,13 +571,17 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Future editAccount() async {
-    await Navigator.of(context).push(
+    Account result = await Navigator.of(context).push(
       CupertinoPageRoute(
         builder: (context) => const AccountEditPage(),
       ),
     );
 
-    // LoadAccount();
+    account = result;
+
+    setState(() {});
+
+    await AccountManager.setAccount(account);
   }
 
   Future editAwards() async {
@@ -590,7 +597,7 @@ class _AccountPageState extends State<AccountPage> {
 
     setState(() {});
 
-    await AccountManager.setAccount(account, sync: true);
+    await AccountManager.setAccount(account);
   }
 
   Future editAchivements() async {
@@ -606,7 +613,7 @@ class _AccountPageState extends State<AccountPage> {
 
     setState(() {});
 
-    await AccountManager.setAccount(account, sync: true);
+    await AccountManager.setAccount(account);
   }
 
   Future editTrainings() async {
@@ -622,6 +629,6 @@ class _AccountPageState extends State<AccountPage> {
 
     setState(() {});
 
-    await AccountManager.setAccount(account, sync: true);
+    await AccountManager.setAccount(account);
   }
 }

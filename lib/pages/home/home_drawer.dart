@@ -33,12 +33,22 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 text: "Sign In",
                 onTap: _navigateToLoginPage,
               ),
+            if (AccountManager.isLoggedIn)
+              _drawerItem(
+                icon: Icons.logout,
+                text: "Sign Out",
+                onTap: () async {
+                  await AccountManager.logout();
+                  setState(() {});
+                },
+              ),
             _drawerItem(
               icon: Icons.language,
               text: "Language",
               onTap: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const LanguagePage()),
+                  CupertinoPageRoute(
+                      builder: (context) => const LanguagePage()),
                 );
               },
             ),
@@ -69,7 +79,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   Widget _drawerHeader() {
     return DrawerHeader(
       decoration: const BoxDecoration(
-        color: Colors.black87,
+        color: Color(0xFFFECF07),
       ),
       child: Row(
         children: [

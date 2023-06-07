@@ -20,6 +20,9 @@ class _MemberPageState extends State<MemberPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text(
+          'Account',
+        ),
         leading: const BackButton(),
       ),
       body: SafeArea(
@@ -34,7 +37,7 @@ class _MemberPageState extends State<MemberPage> {
                   position: 0,
                   child: ScaleAnimation(
                     scale: 1.5,
-                    duration: const Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 250),
                     curve: Curves.easeOutExpo,
                     child: FadeInAnimation(
                       child: _renderProfile(),
@@ -46,7 +49,7 @@ class _MemberPageState extends State<MemberPage> {
                 ),
                 AnimationConfiguration.staggeredList(
                   position: 1,
-                  delay: const Duration(milliseconds: 500),
+                  delay: const Duration(milliseconds: 250),
                   child: ScaleAnimation(
                     scale: 1.5,
                     duration: const Duration(milliseconds: 500),
@@ -61,7 +64,7 @@ class _MemberPageState extends State<MemberPage> {
                 ),
                 AnimationConfiguration.staggeredList(
                   position: 2,
-                  delay: const Duration(milliseconds: 500),
+                  delay: const Duration(milliseconds: 250),
                   child: ScaleAnimation(
                     scale: 1.5,
                     duration: const Duration(milliseconds: 500),
@@ -76,13 +79,28 @@ class _MemberPageState extends State<MemberPage> {
                 ),
                 AnimationConfiguration.staggeredList(
                   position: 3,
-                  delay: const Duration(milliseconds: 500),
+                  delay: const Duration(milliseconds: 250),
                   child: ScaleAnimation(
                     scale: 1.5,
                     duration: const Duration(milliseconds: 500),
                     curve: Curves.easeOutExpo,
                     child: FadeInAnimation(
                       child: _renderAchivements(),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                AnimationConfiguration.staggeredList(
+                  position: 4,
+                  delay: const Duration(milliseconds: 250),
+                  child: ScaleAnimation(
+                    scale: 1.5,
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeOutExpo,
+                    child: FadeInAnimation(
+                      child: _renderTrainings(),
                     ),
                   ),
                 ),
@@ -112,32 +130,9 @@ class _MemberPageState extends State<MemberPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Shimmer.fromColors(
-                baseColor: Colors.orange,
-                highlightColor: Colors.yellow,
-                child: Text(
-                  memberData.district.title,
-                  style: TextStyle(
-                    fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Shimmer.fromColors(
-                baseColor: Colors.blue,
-                highlightColor: Colors.lightBlue[100]!,
-                child: Text(
-                  memberData.club.title,
-                  style: TextStyle(
-                    fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
+            children: [],
           ),
           Divider(
             color: Colors.black.withOpacity(0.1),
@@ -194,58 +189,58 @@ class _MemberPageState extends State<MemberPage> {
           const SizedBox(
             height: 16,
           ),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      memberData.awards.toString(),
-                      style: TextStyle(
-                        fontSize:
-                            Theme.of(context).textTheme.titleLarge!.fontSize,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      'Awards',
-                      style: TextStyle(
-                        fontSize:
-                            Theme.of(context).textTheme.bodyMedium!.fontSize,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Text(
-                      memberData.achivements.length.toString(),
-                      style: TextStyle(
-                        fontSize:
-                            Theme.of(context).textTheme.titleLarge!.fontSize,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      'Achivements',
-                      style: TextStyle(
-                        fontSize:
-                            Theme.of(context).textTheme.bodyMedium!.fontSize,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: Column(
+          //         children: [
+          //           Text(
+          //             '1',
+          //             style: TextStyle(
+          //               fontSize:
+          //                   Theme.of(context).textTheme.titleLarge!.fontSize,
+          //               fontWeight: FontWeight.bold,
+          //             ),
+          //           ),
+          //           const SizedBox(
+          //             height: 8,
+          //           ),
+          //           Text(
+          //             'Awards',
+          //             style: TextStyle(
+          //               fontSize:
+          //                   Theme.of(context).textTheme.bodyMedium!.fontSize,
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //     Expanded(
+          //       child: Column(
+          //         children: [
+          //           Text(
+          //             '1',
+          //             style: TextStyle(
+          //               fontSize:
+          //                   Theme.of(context).textTheme.titleLarge!.fontSize,
+          //               fontWeight: FontWeight.bold,
+          //             ),
+          //           ),
+          //           const SizedBox(
+          //             height: 8,
+          //           ),
+          //           Text(
+          //             'Achivements',
+          //             style: TextStyle(
+          //               fontSize:
+          //                   Theme.of(context).textTheme.bodyMedium!.fontSize,
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ],
+          // ),
           Divider(
             color: Colors.black.withOpacity(0.1),
             thickness: 1,
@@ -304,7 +299,7 @@ class _MemberPageState extends State<MemberPage> {
             dense: true,
             leading: const Icon(Icons.phone),
             title: Text(
-              memberData.phone.value,
+              memberData.phone,
               style: TextStyle(
                 fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
               ),
@@ -353,6 +348,7 @@ class _MemberPageState extends State<MemberPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              // Edit
             ],
           ),
           const SizedBox(
@@ -362,24 +358,28 @@ class _MemberPageState extends State<MemberPage> {
             shrinkWrap: true,
             primary: false,
             itemCount: memberData.awards.length,
-            itemBuilder: (context, index) => ZoomTapAnimation(
-              end: 1.1,
-              child: ListTile(
-                dense: true,
-                title: Text(
-                  memberData.awards[index].title,
-                  style: TextStyle(
-                    fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
+            itemBuilder: (context, index) {
+              final awards = memberData.awards[index];
+              return ZoomTapAnimation(
+                end: 1.1,
+                child: ListTile(
+                  dense: true,
+                  title: Text(
+                    awards.title,
+                    style: TextStyle(
+                      fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
+                    ),
+                  ),
+                  subtitle: Text(
+                    awards.description,
+                    style: TextStyle(
+                      fontSize:
+                          Theme.of(context).textTheme.bodyMedium!.fontSize,
+                    ),
                   ),
                 ),
-                subtitle: Text(
-                  memberData.awards[index].title,
-                  style: TextStyle(
-                    fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize,
-                  ),
-                ),
-              ),
-            ),
+              );
+            },
           ),
         ],
       ),
@@ -425,6 +425,71 @@ class _MemberPageState extends State<MemberPage> {
             itemCount: memberData.achivements.length,
             itemBuilder: (context, index) {
               final achivement = memberData.achivements[index];
+              return ZoomTapAnimation(
+                end: 1.1,
+                child: ListTile(
+                  dense: true,
+                  title: Text(
+                    achivement.title,
+                    style: TextStyle(
+                      fontSize: Theme.of(context).textTheme.bodyLarge!.fontSize,
+                    ),
+                  ),
+                  subtitle: Text(
+                    achivement.description,
+                    style: TextStyle(
+                      fontSize:
+                          Theme.of(context).textTheme.bodyMedium!.fontSize,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _renderTrainings() {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            spreadRadius: 5,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Trainings',
+                style: TextStyle(
+                  fontSize: Theme.of(context).textTheme.titleMedium!.fontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            primary: false,
+            itemCount: memberData.trainings.length,
+            itemBuilder: (context, index) {
+              final achivement = memberData.trainings[index];
               return ZoomTapAnimation(
                 end: 1.1,
                 child: ListTile(

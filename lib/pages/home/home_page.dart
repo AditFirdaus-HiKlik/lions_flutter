@@ -1,8 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
+import 'package:lions_flutter/pages/district_select_page.dart';
 import 'package:lions_flutter/pages/home/home_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:lions_flutter/Pages/Auth/login_page.dart';
+import 'package:lions_flutter/pages/rank_select_page.dart';
 import 'Tabs/home_events.dart';
 import 'Tabs/home_locations.dart';
 import 'Tabs/home_members.dart';
@@ -42,7 +47,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      // length: 4,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -67,15 +73,13 @@ class _HomePageState extends State<HomePage> {
             physics: const BouncingScrollPhysics(),
             clipBehavior: Clip.none,
             children: [
-              HomeNews(),
+              // HomeArticles(),
               HomeEvents(),
               HomeMembers(),
               HomeLocations(),
             ],
           ),
         ),
-        extendBody: true,
-        extendBodyBehindAppBar: true,
         bottomNavigationBar: _bottomBar(),
         drawer: DrawerWidget(),
       ),
@@ -99,10 +103,10 @@ class _HomePageState extends State<HomePage> {
         child: TabBar(
           labelColor: Colors.black,
           tabs: [
-            Tab(
-              icon: const Icon(Icons.newspaper),
-              text: "News",
-            ),
+            // Tab(
+            //   icon: const Icon(Icons.newspaper),
+            //   text: "News",
+            // ),
             Tab(
               icon: const Icon(Icons.calendar_month),
               text: "Events",

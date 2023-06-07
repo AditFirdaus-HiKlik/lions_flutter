@@ -1,16 +1,16 @@
 # flutter_native_splash-production.yaml
 flutter_native_splash:
-  color: "#ffffff"
+  color: "#FECF07"
   image: assets/icon-sports-splash.png
   branding: assets/icon-hiklik.png
-  color_dark: "#ffffff"
+  color_dark: "#FECF07"
   image_dark: assets/icon-sports-splash.png
   branding_dark: assets/icon-hiklik.png
 
   android_12:
     image: assets/icon-sports-splash-12.png
-    icon_background_color: "#ffffff"
+    icon_background_color: "#FECF07"
     image_dark: assets/icon-sports-splash-12.png
-    icon_background_color_dark: "#ffffff"
+    icon_background_color_dark: "#FECF07"
 
   web: true

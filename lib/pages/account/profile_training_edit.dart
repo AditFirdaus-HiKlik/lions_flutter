@@ -148,7 +148,7 @@ class _ProfileTrainingEditState extends State<ProfileTrainingEdit> {
           return Future.value(false);
         },
         child: ListView.builder(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(8),
           itemCount: widget.trainings.length,
           itemBuilder: (context, index) {
             MemberTraining userTraining = widget.trainings[index];
@@ -163,7 +163,7 @@ class _ProfileTrainingEditState extends State<ProfileTrainingEdit> {
                   child: FadeInAnimation(
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 16),
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),

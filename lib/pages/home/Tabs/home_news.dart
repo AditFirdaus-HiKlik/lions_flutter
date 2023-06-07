@@ -1,19 +1,29 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:lions_flutter/api/models/lions_collection.dart';
 import 'package:lions_flutter/models/article_data/article_data.dart';
+import 'package:lions_flutter/pages/news_view_page.dart';
 import 'package:lions_flutter/widgets/article_card.dart';
 
 import 'package:shimmer/shimmer.dart';
 
-class HomeNews extends StatefulWidget {
-  const HomeNews({super.key});
+class HomeArticles extends StatefulWidget {
+  const HomeArticles({super.key});
+
+  void toNewsPage(BuildContext context, ArticleData articleData) {
+    Navigator.push(
+        context,
+        CupertinoPageRoute(
+            fullscreenDialog: true,
+            builder: (context) => NewsViewPage(articleData)));
+  }
 
   @override
-  State<HomeNews> createState() => _HomeNewsState();
+  State<HomeArticles> createState() => _HomeArticlesState();
 }
 
-class _HomeNewsState extends State<HomeNews> {
+class _HomeArticlesState extends State<HomeArticles> {
   late LionsCollection _collection;
 
   Future<List<ArticleData>> _fetchData() async {
@@ -96,7 +106,7 @@ class _HomeNewsState extends State<HomeNews> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: const [
           Text(
-            'News',
+            'Articles',
             style: TextStyle(
               color: Colors.black,
               fontSize: 24,
@@ -133,7 +143,10 @@ class _HomeNewsState extends State<HomeNews> {
           duration: const Duration(milliseconds: 500),
           curve: Curves.easeOutExpo,
           child: FadeInAnimation(
-            child: ArticleCard(articleData),
+            child: ArticleCard(
+              articleData,
+              onTap: () => widget.toNewsPage(context, articleData),
+            ),
           ),
         ),
       ),

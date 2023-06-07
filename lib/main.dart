@@ -30,11 +30,9 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         final provider = Provider.of<LocaleProvider>(context);
         return MaterialApp(
-          title: 'Lions 307 ',
-          debugShowCheckedModeBanner: false,
+          title: 'Lions 307 B1',
           locale: provider.locale,
           supportedLocales: L10n.all,
-          theme: ThemeData(useMaterial3: true),
           home: const HomePage(),
         );
       },

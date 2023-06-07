@@ -20,11 +20,9 @@ _$_Account _$$_AccountFromJson(Map<String, dynamic> json) => _$_Account(
       about: json['about'] as String? ?? "",
       address: json['address'] as String? ?? "",
       rank: json['rank'] == null
-          ? const MemberRank()
-          : MemberRank.fromJson(json['rank'] as Map<String, dynamic>),
-      phone: json['phone'] == null
-          ? const MemberSocial()
-          : MemberSocial.fromJson(json['phone'] as Map<String, dynamic>),
+          ? const LionsRank()
+          : LionsRank.fromJson(json['rank'] as Map<String, dynamic>),
+      phone: json['phone'] as String? ?? "",
       district: json['district'] == null
           ? const LionsDistrict()
           : LionsDistrict.fromJson(json['district'] as Map<String, dynamic>),
@@ -39,7 +37,7 @@ _$_Account _$$_AccountFromJson(Map<String, dynamic> json) => _$_Account(
               ?.map((e) => MemberAchivement.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [MemberAchivement()],
-      social: (json['social'] as List<dynamic>?)
+      socials: (json['socials'] as List<dynamic>?)
               ?.map((e) => MemberSocial.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [MemberSocial()],
@@ -67,6 +65,6 @@ Map<String, dynamic> _$$_AccountToJson(_$_Account instance) =>
       'club': instance.club,
       'awards': instance.awards,
       'achivements': instance.achivements,
-      'social': instance.social,
+      'socials': instance.socials,
       'trainings': instance.trainings,
     };

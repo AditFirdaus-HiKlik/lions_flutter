@@ -176,7 +176,7 @@ class _RecoveryPageState extends State<RecoveryPage> {
     return Column(
       children: const [
         Text(
-          'Indonesian Sports On Community 2023',
+          'Lions Club 307 B1 2023',
           style: TextStyle(
             fontSize: 12,
             color: Colors.grey,

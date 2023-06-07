@@ -92,8 +92,6 @@ class _HomeEventsState extends State<HomeEvents> {
             children: [
               _buildHeader(),
               TableCalendar<EventData>(
-                // Indonesia
-                locale: 'id_ID',
                 firstDay: DateTime.utc(2010, 10, 16),
                 lastDay: DateTime.utc(2030, 3, 14),
                 focusedDay: _focusedDay,

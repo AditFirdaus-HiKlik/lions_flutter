@@ -101,7 +101,6 @@ class _RegisterPageState extends State<RegisterPage> {
           "username": usernameController.text,
           "email": emailController.text,
           "password": passwordController.text,
-          "phone": phoneController.text,
         });
 
         var body = jsonDecode(response.body);
@@ -292,7 +291,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Column(
       children: const [
         Text(
-          'Indonesian Sports On Community 2023',
+          'Lions Club 307 B1 2023',
           style: TextStyle(
             fontSize: 12,
             color: Colors.grey,

@@ -1,13 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:lions_flutter/Pages/home/home_page.dart';
-import 'package:lions_flutter/api/api.dart';
-import 'package:lions_flutter/sports_widget.dart';
 
 class VerificationPage extends StatefulWidget {
   const VerificationPage(
@@ -134,7 +127,7 @@ class _VerificationPageState extends State<VerificationPage> {
     return Column(
       children: const [
         Text(
-          'Indonesian Sports On Community 2023',
+          'Lions Club 307 B1 2023',
           style: TextStyle(
             fontSize: 12,
             color: Colors.grey,

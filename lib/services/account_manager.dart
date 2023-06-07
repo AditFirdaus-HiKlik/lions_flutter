@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:lions_flutter/api/api.dart';
 import 'package:lions_flutter/models/account/account.dart';
@@ -12,48 +13,57 @@ class AccountManager {
   static get isLoggedIn => jwt != "";
 
   static Account get account => getLocalAccount();
-  static Future setAccount(Account account, {bool sync = false}) async {
-    Map<String, dynamic> accountMap = account.toJson();
+  static set account(Account account) => setLocalAccount(account);
 
-    LionsPrefs.instance.setString("account", accountMap.toString());
+  static Future setAccount(Account account) async {
+    String endpoint = "$apiEndpoint/users/${account.id}";
 
-    if (sync) {
-      String endpoint = "$apiEndpoint/users/${account.id}";
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
 
-      Map<String, String> headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $jwt"
-      };
+    log(endpoint);
 
-      Map<String, dynamic> body = encodeAccount(account);
+    Map<String, dynamic> body = encodeAccount(account);
 
-      await http.post(Uri.parse(endpoint), headers: headers, body: body);
-    }
+    String bodyString = jsonEncode(body);
+
+    log(bodyString);
+
+    await http.put(Uri.parse(endpoint), headers: headers, body: bodyString);
   }
 
-  static Future<Account> getAccount({bool sync = false}) async {
-    if (sync) {
-      String endpoint = "$apiEndpoint/users/me";
+  static Future<Account> getAccount() async {
+    String endpoint = "$apiEndpoint/users/me?";
 
-      Map<String, String> headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $jwt"
-      };
+    Map<String, String> parameters = {
+      'populate': '*',
+      'populate[0]': 'avatar',
+      'populate[1]': 'phone',
+      'populate[2]': 'district',
+      'populate[3]': 'club',
+      'populate[4]': 'awards',
+      'populate[5]': 'achivements',
+      'populate[6]': 'social',
+      'populate[7]': 'trainings',
+    };
 
-      var result = await http.get(Uri.parse(endpoint), headers: headers);
+    endpoint += Uri(queryParameters: parameters).query;
 
-      if (result.statusCode == 200) {
-        Map<String, dynamic> accountMap = jsonDecode(result.body);
-        Account account = decodeAccount(accountMap);
-        return account;
-      } else {
-        throw Exception("Failed to load account");
-      }
-    } else {
-      String accountString = LionsPrefs.instance.getString("account") ?? "";
-      Map<String, dynamic> accountMap = jsonDecode(accountString);
-      Account account = Account.fromJson(accountMap);
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $jwt"
+    };
+
+    var result = await http.get(Uri.parse(endpoint), headers: headers);
+
+    if (result.statusCode == 200) {
+      Map<String, dynamic> accountMap = jsonDecode(result.body);
+      Account account = decodeAccount(accountMap);
       return account;
+    } else {
+      throw Exception("Failed to load account");
     }
   }
 
@@ -65,52 +75,48 @@ class AccountManager {
     return account;
   }
 
-  static Future<bool> checkEmailVerified() async {
-    Account account = await getAccount(sync: true);
+  static void setLocalAccount(Account account) {
+    Map<String, dynamic> accountMap = account.toJson();
 
-    return account.confirmed;
+    String json = jsonEncode(accountMap);
+
+    LionsPrefs.instance.setString("account", json);
   }
 
   static Future<http.Response> login(String identifier, String password,
       {Function? onSuccess, Function(String)? onFailed}) async {
     String endpoint = "$apiEndpoint/auth/local";
 
-    Map<String, String> headers = {"Content-Type": "application/json"};
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+    };
+
+    log(endpoint);
 
     Map<String, String> body = {};
 
     body["identifier"] = identifier;
     body["password"] = password;
 
-    String bodyJson = jsonEncode(body);
+    String json = jsonEncode(body);
 
     var result =
-        await http.post(Uri.parse(endpoint), body: bodyJson, headers: headers);
+        await http.post(Uri.parse(endpoint), body: json, headers: headers);
+
+    var responseJson = jsonDecode(result.body);
 
     if (result.statusCode == 200) {
-      var body = jsonDecode(result.body);
-      AccountManager.jwt = body[["jwt"]];
+      AccountManager.jwt = responseJson["jwt"];
 
-      bool isConfirmed = body["user"]["confirmed"];
-
-      if (!isConfirmed) {
-        onFailed?.call("Email is not confirmed");
-        return result;
-      }
-
-      Account account = decodeAccount(body);
-
-      setAccount(account);
+      account = decodeAccount(responseJson["user"]);
 
       onSuccess?.call(account);
     } else {
-      var body = jsonDecode(result.body);
-
       String message = "Unknown Error";
 
-      if (body["error"]) {
-        if (body["error"]["message"] != null) {
-          message = body["error"]["message"];
+      if (responseJson["error"]) {
+        if (responseJson["error"]["message"] != null) {
+          message = responseJson["error"]["message"];
         }
       }
 
@@ -150,9 +156,7 @@ class AccountManager {
       var body = jsonDecode(result.body);
       AccountManager.jwt = body[["jwt"]];
 
-      Account account = decodeAccount(body[["jwt"]]);
-
-      setAccount(account);
+      account = decodeAccount(body[["user"]]);
 
       onSuccess?.call(account);
     } else {
@@ -201,7 +205,48 @@ class AccountManager {
   }
 
   static Map<String, dynamic> encodeAccount(Account account) {
-    return account.toJson();
+    Map<String, dynamic> map = account.toJson();
+
+    int achivementsIteration = 0;
+    map["achivements"] = account.achivements
+        .map((e) => {
+              "title": e.title,
+              "description": e.description,
+              "__temp_key__": achivementsIteration++,
+            })
+        .toList();
+
+    int awardsIteration = 0;
+    map["awards"] = account.awards
+        .map((e) => {
+              "title": e.title,
+              "description": e.description,
+              "__temp_key__": awardsIteration++,
+            })
+        .toList();
+
+    int socialsIteration = 0;
+    map["socials"] = account.socials
+        .map((e) => {
+              "platform": e.platform,
+              "value": e.value,
+              "visible": e.visible,
+              "__temp_key__": socialsIteration++,
+            })
+        .toList();
+
+    int trainingsIteration = 0;
+    map["trainings"] = account.trainings
+        .map((e) => {
+              "title": e.title,
+              "description": e.description,
+              "__temp_key__": trainingsIteration++,
+            })
+        .toList();
+
+    map.remove("phone");
+
+    return map;
   }
 
   static Account decodeAccount(Map<String, dynamic> map) {

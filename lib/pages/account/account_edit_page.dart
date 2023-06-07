@@ -469,7 +469,7 @@ class _AccountEditPageState extends State<AccountEditPage> {
 
   Widget _instagramEdit() {
     return TextFormField(
-      initialValue: account.social[0].value,
+      initialValue: account.socials[0].value,
       decoration: const InputDecoration(
         labelText: '@ Instagram',
         border: OutlineInputBorder(

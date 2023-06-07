@@ -9,7 +9,7 @@ String get userJWT => LionsPrefs.instance.getString("user_jwt") ?? "";
 
 // String get apiEndpoint =>
 //     FirebaseRemoteConfig.instance.getString("server_endpoint");
-String get apiEndpoint => "https://lions.up.railway.app";
+String get apiEndpoint => "https://lions.up.railway.app/api";
 
 class LionsPrefs {
   static late SharedPreferences instance;
