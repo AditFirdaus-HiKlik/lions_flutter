@@ -27,7 +27,7 @@ mixin _$LionsMember {
   String get name => throw _privateConstructorUsedError;
   String get about => throw _privateConstructorUsedError;
   String get address => throw _privateConstructorUsedError;
-  LionsRank get rank => throw _privateConstructorUsedError;
+  LionsPosition get position => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
   LionsDistrict get district => throw _privateConstructorUsedError;
   LionsClub get club => throw _privateConstructorUsedError;
@@ -56,7 +56,7 @@ abstract class $LionsMemberCopyWith<$Res> {
       String name,
       String about,
       String address,
-      LionsRank rank,
+      LionsPosition position,
       String phone,
       LionsDistrict district,
       LionsClub club,
@@ -66,7 +66,7 @@ abstract class $LionsMemberCopyWith<$Res> {
       List<MemberTraining> trainings});
 
   $SingleImageCopyWith<$Res> get avatar;
-  $LionsRankCopyWith<$Res> get rank;
+  $LionsPositionCopyWith<$Res> get position;
   $LionsDistrictCopyWith<$Res> get district;
   $LionsClubCopyWith<$Res> get club;
 }
@@ -91,7 +91,7 @@ class _$LionsMemberCopyWithImpl<$Res, $Val extends LionsMember>
     Object? name = null,
     Object? about = null,
     Object? address = null,
-    Object? rank = null,
+    Object? position = null,
     Object? phone = null,
     Object? district = null,
     Object? club = null,
@@ -129,10 +129,10 @@ class _$LionsMemberCopyWithImpl<$Res, $Val extends LionsMember>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String,
-      rank: null == rank
-          ? _value.rank
-          : rank // ignore: cast_nullable_to_non_nullable
-              as LionsRank,
+      position: null == position
+          ? _value.position
+          : position // ignore: cast_nullable_to_non_nullable
+              as LionsPosition,
       phone: null == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
@@ -174,9 +174,9 @@ class _$LionsMemberCopyWithImpl<$Res, $Val extends LionsMember>
 
   @override
   @pragma('vm:prefer-inline')
-  $LionsRankCopyWith<$Res> get rank {
-    return $LionsRankCopyWith<$Res>(_value.rank, (value) {
-      return _then(_value.copyWith(rank: value) as $Val);
+  $LionsPositionCopyWith<$Res> get position {
+    return $LionsPositionCopyWith<$Res>(_value.position, (value) {
+      return _then(_value.copyWith(position: value) as $Val);
     });
   }
 
@@ -213,7 +213,7 @@ abstract class _$$_LionsMemberCopyWith<$Res>
       String name,
       String about,
       String address,
-      LionsRank rank,
+      LionsPosition position,
       String phone,
       LionsDistrict district,
       LionsClub club,
@@ -225,7 +225,7 @@ abstract class _$$_LionsMemberCopyWith<$Res>
   @override
   $SingleImageCopyWith<$Res> get avatar;
   @override
-  $LionsRankCopyWith<$Res> get rank;
+  $LionsPositionCopyWith<$Res> get position;
   @override
   $LionsDistrictCopyWith<$Res> get district;
   @override
@@ -250,7 +250,7 @@ class __$$_LionsMemberCopyWithImpl<$Res>
     Object? name = null,
     Object? about = null,
     Object? address = null,
-    Object? rank = null,
+    Object? position = null,
     Object? phone = null,
     Object? district = null,
     Object? club = null,
@@ -288,10 +288,10 @@ class __$$_LionsMemberCopyWithImpl<$Res>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String,
-      rank: null == rank
-          ? _value.rank
-          : rank // ignore: cast_nullable_to_non_nullable
-              as LionsRank,
+      position: null == position
+          ? _value.position
+          : position // ignore: cast_nullable_to_non_nullable
+              as LionsPosition,
       phone: null == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
@@ -335,7 +335,7 @@ class _$_LionsMember with DiagnosticableTreeMixin implements _LionsMember {
       this.name = "",
       this.about = "",
       this.address = "",
-      this.rank = const LionsRank(),
+      this.position = const LionsPosition(),
       this.phone = "",
       this.district = const LionsDistrict(),
       this.club = const LionsClub(),
@@ -374,7 +374,7 @@ class _$_LionsMember with DiagnosticableTreeMixin implements _LionsMember {
   final String address;
   @override
   @JsonKey()
-  final LionsRank rank;
+  final LionsPosition position;
   @override
   @JsonKey()
   final String phone;
@@ -422,7 +422,7 @@ class _$_LionsMember with DiagnosticableTreeMixin implements _LionsMember {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'LionsMember(id: $id, memberID: $memberID, username: $username, avatar: $avatar, name: $name, about: $about, address: $address, rank: $rank, phone: $phone, district: $district, club: $club, awards: $awards, achivements: $achivements, socials: $socials, trainings: $trainings)';
+    return 'LionsMember(id: $id, memberID: $memberID, username: $username, avatar: $avatar, name: $name, about: $about, address: $address, position: $position, phone: $phone, district: $district, club: $club, awards: $awards, achivements: $achivements, socials: $socials, trainings: $trainings)';
   }
 
   @override
@@ -437,7 +437,7 @@ class _$_LionsMember with DiagnosticableTreeMixin implements _LionsMember {
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('about', about))
       ..add(DiagnosticsProperty('address', address))
-      ..add(DiagnosticsProperty('rank', rank))
+      ..add(DiagnosticsProperty('position', position))
       ..add(DiagnosticsProperty('phone', phone))
       ..add(DiagnosticsProperty('district', district))
       ..add(DiagnosticsProperty('club', club))
@@ -461,7 +461,8 @@ class _$_LionsMember with DiagnosticableTreeMixin implements _LionsMember {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.about, about) || other.about == about) &&
             (identical(other.address, address) || other.address == address) &&
-            (identical(other.rank, rank) || other.rank == rank) &&
+            (identical(other.position, position) ||
+                other.position == position) &&
             (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.district, district) ||
                 other.district == district) &&
@@ -485,7 +486,7 @@ class _$_LionsMember with DiagnosticableTreeMixin implements _LionsMember {
       name,
       about,
       address,
-      rank,
+      position,
       phone,
       district,
       club,
@@ -517,7 +518,7 @@ abstract class _LionsMember implements LionsMember {
       final String name,
       final String about,
       final String address,
-      final LionsRank rank,
+      final LionsPosition position,
       final String phone,
       final LionsDistrict district,
       final LionsClub club,
@@ -544,7 +545,7 @@ abstract class _LionsMember implements LionsMember {
   @override
   String get address;
   @override
-  LionsRank get rank;
+  LionsPosition get position;
   @override
   String get phone;
   @override

@@ -2,23 +2,23 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:lions_flutter/models/lions_rank/lions_rank.dart';
+import 'package:lions_flutter/models/lions_position/lions_position.dart';
 
-class RankSelectPage extends StatefulWidget {
-  RankSelectPage({Key? key, this.selectedRank}) : super(key: key);
+class PositionSelectPage extends StatefulWidget {
+  PositionSelectPage({Key? key, this.selectedPosition}) : super(key: key);
 
-  LionsRank? selectedRank;
+  LionsPosition? selectedPosition;
 
   @override
-  State<RankSelectPage> createState() => _RankSelectPageState();
+  State<PositionSelectPage> createState() => _PositionSelectPageState();
 }
 
-class _RankSelectPageState extends State<RankSelectPage> {
-  Future<List<LionsRank>> fetchRanks() async {
+class _PositionSelectPageState extends State<PositionSelectPage> {
+  Future<List<LionsPosition>> fetchPositions() async {
     var result =
-        await http.get(Uri.parse("https://lions.up.railway.app/api/ranks"));
+        await http.get(Uri.parse("https://lions.up.railway.app/api/positions"));
 
-    List<LionsRank> data = [];
+    List<LionsPosition> data = [];
 
     var body = jsonDecode(result.body);
 
@@ -30,28 +30,28 @@ class _RankSelectPageState extends State<RankSelectPage> {
     return data;
   }
 
-  LionsRank processItem(item) {
+  LionsPosition processItem(item) {
     item.addAll(item['attributes']);
     item.remove('attributes');
 
-    var rank = LionsRank.fromJson(item);
+    var position = LionsPosition.fromJson(item);
 
-    return rank;
+    return position;
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pop(context, widget.selectedRank);
+        Navigator.pop(context, widget.selectedPosition);
         return false;
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Select Rank"),
+          title: const Text("Select Position"),
         ),
-        body: FutureBuilder<List<LionsRank>>(
-          future: fetchRanks(),
+        body: FutureBuilder<List<LionsPosition>>(
+          future: fetchPositions(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return Padding(
@@ -59,13 +59,13 @@ class _RankSelectPageState extends State<RankSelectPage> {
                 child: ListView.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
-                    var rank = snapshot.data![index];
+                    var position = snapshot.data![index];
                     return Card(
                       child: ListTile(
-                        title: Text(rank.title),
+                        title: Text(position.title),
                         onTap: () {
-                          widget.selectedRank = rank;
-                          Navigator.pop(context, widget.selectedRank);
+                          widget.selectedPosition = position;
+                          Navigator.pop(context, widget.selectedPosition);
                         },
                       ),
                     );

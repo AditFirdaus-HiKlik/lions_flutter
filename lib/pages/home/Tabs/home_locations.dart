@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:lions_flutter/api/models/lions_collection.dart';
+import 'package:lions_flutter/services/content_service/content_service.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:lions_flutter/models/location_data/location_data.dart';
@@ -16,21 +16,26 @@ class HomeLocations extends StatefulWidget {
 }
 
 class _HomeLocationsState extends State<HomeLocations> {
-  late LionsCollection _collection;
-
   Future<List<LocationData>> _fetchData() async {
     Map<String, String> parameters = {'populate': '*'};
 
-    dynamic result = await _collection.fetch(parameters: parameters);
+    var result = await ContentService.fetchCollection(
+      'locations',
+      parameters: parameters,
+    );
 
-    List<LocationData> data = [];
+    return _processData(result['data']);
+  }
 
-    for (dynamic item in result['data']) {
+  List<LocationData> _processData(data) {
+    List<LocationData> processedData = [];
+
+    for (dynamic item in data) {
       var article = _processItem(item);
-      data.add(article);
+      processedData.add(article);
     }
 
-    return data;
+    return processedData;
   }
 
   LocationData _processItem(item) {
@@ -40,14 +45,6 @@ class _HomeLocationsState extends State<HomeLocations> {
     var article = LocationData.fromJson(item);
 
     return article;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    _collection = LionsCollection();
-    _collection.path = '/locations';
   }
 
   @override
@@ -66,12 +63,12 @@ class _HomeLocationsState extends State<HomeLocations> {
   }
 
   Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+    return const Padding(
+      padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
+        children: [
           Text(
             'Locations',
             style: TextStyle(
@@ -278,12 +275,12 @@ class _HomeLocationsState extends State<HomeLocations> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                const Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: const [
+                    children: [
                       Expanded(
                         child: Text(
                           "Slide to expand",

@@ -1,17 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
-import 'package:lions_flutter/pages/district_select_page.dart';
 import 'package:lions_flutter/pages/home/home_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:lions_flutter/Pages/Auth/login_page.dart';
-import 'package:lions_flutter/pages/rank_select_page.dart';
+import 'Tabs/home_articles.dart';
 import 'Tabs/home_events.dart';
 import 'Tabs/home_locations.dart';
 import 'Tabs/home_members.dart';
-import 'Tabs/home_news.dart';
 import 'package:lions_flutter/Pages/settings_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,11 +16,6 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
-List<String> sportToogle = ['football', 'volley', 'basket', 'fencing'];
-List<bool> sportToogleSelected = [true, false, false, false];
-
-List<String> sportCategories = [];
 
 class _HomePageState extends State<HomePage> {
   void toSettings() async {
@@ -47,8 +38,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      // length: 4,
-      length: 3,
+      length: 4,
+      // length: 3,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -73,7 +64,7 @@ class _HomePageState extends State<HomePage> {
             physics: const BouncingScrollPhysics(),
             clipBehavior: Clip.none,
             children: [
-              // HomeArticles(),
+              HomeArticles(),
               HomeEvents(),
               HomeMembers(),
               HomeLocations(),
@@ -103,10 +94,10 @@ class _HomePageState extends State<HomePage> {
         child: TabBar(
           labelColor: Colors.black,
           tabs: [
-            // Tab(
-            //   icon: const Icon(Icons.newspaper),
-            //   text: "News",
-            // ),
+            Tab(
+              icon: const Icon(Icons.newspaper),
+              text: "Articles",
+            ),
             Tab(
               icon: const Icon(Icons.calendar_month),
               text: "Events",

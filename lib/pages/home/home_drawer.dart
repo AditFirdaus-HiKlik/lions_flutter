@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lions_flutter/language_page.dart';
 import 'package:lions_flutter/pages/Auth/login_page.dart';
 import 'package:lions_flutter/pages/account/account_page.dart';
-import 'package:lions_flutter/services/account_manager.dart';
+import 'package:lions_flutter/services/account_service/account_service.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({super.key});
@@ -13,6 +12,22 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends State<DrawerWidget> {
+  bool isAuthenticated = false;
+
+  @override
+  void initState() {
+    _checkAuthentication();
+    super.initState();
+  }
+
+  Future _checkAuthentication() async {
+    var isAuthenticated = await AccountService.isAuthenticated();
+
+    setState(() {
+      this.isAuthenticated = isAuthenticated;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -21,7 +36,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             _drawerHeader(),
-            if (AccountManager.isLoggedIn)
+            if (isAuthenticated)
               _drawerItem(
                 icon: Icons.person,
                 text: "Account",
@@ -33,25 +48,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 text: "Sign In",
                 onTap: _navigateToLoginPage,
               ),
-            if (AccountManager.isLoggedIn)
+            if (isAuthenticated)
               _drawerItem(
                 icon: Icons.logout,
                 text: "Sign Out",
-                onTap: () async {
-                  await AccountManager.logout();
-                  setState(() {});
+                onTap: () {
+                  AccountService.logout();
+
+                  Navigator.of(context).pop();
                 },
               ),
-            _drawerItem(
-              icon: Icons.language,
-              text: "Language",
-              onTap: () {
-                Navigator.of(context).push(
-                  CupertinoPageRoute(
-                      builder: (context) => const LanguagePage()),
-                );
-              },
-            ),
           ],
         ),
       ),
@@ -60,8 +66,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   Future _navigateToAccountPage() async {
     await Navigator.of(context).push(
-      CupertinoPageRoute(
-          fullscreenDialog: true, builder: (context) => const AccountPage()),
+      CupertinoPageRoute(builder: (context) => const AccountPage()),
     );
 
     setState(() {});
@@ -69,8 +74,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
   Future _navigateToLoginPage() async {
     await Navigator.of(context).push(
-      CupertinoPageRoute(
-          fullscreenDialog: true, builder: (context) => const LoginPage()),
+      CupertinoPageRoute(builder: (context) => const LoginPage()),
     );
 
     setState(() {});

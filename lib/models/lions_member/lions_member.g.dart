@@ -17,9 +17,9 @@ _$_LionsMember _$$_LionsMemberFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String? ?? "",
       about: json['about'] as String? ?? "",
       address: json['address'] as String? ?? "",
-      rank: json['rank'] == null
-          ? const LionsRank()
-          : LionsRank.fromJson(json['rank'] as Map<String, dynamic>),
+      position: json['position'] == null
+          ? const LionsPosition()
+          : LionsPosition.fromJson(json['position'] as Map<String, dynamic>),
       phone: json['phone'] as String? ?? "",
       district: json['district'] == null
           ? const LionsDistrict()
@@ -54,7 +54,7 @@ Map<String, dynamic> _$$_LionsMemberToJson(_$_LionsMember instance) =>
       'name': instance.name,
       'about': instance.about,
       'address': instance.address,
-      'rank': instance.rank,
+      'position': instance.position,
       'phone': instance.phone,
       'district': instance.district,
       'club': instance.club,

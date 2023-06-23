@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '239621082642',
     projectId: 'lions-abc39',
     storageBucket: 'lions-abc39.appspot.com',
-    iosClientId: '239621082642-k2j795ajngunc1otm46nhnl3gbmah731.apps.googleusercontent.com',
+    iosClientId:
+        '239621082642-k2j795ajngunc1otm46nhnl3gbmah731.apps.googleusercontent.com',
     iosBundleId: 'com.hiklik.lions',
   );
 }

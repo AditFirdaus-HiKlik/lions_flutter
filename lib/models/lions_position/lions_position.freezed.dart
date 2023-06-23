@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'lions_rank.dart';
+part of 'lions_position.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,33 +14,34 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-LionsRank _$LionsRankFromJson(Map<String, dynamic> json) {
-  return _LionsRank.fromJson(json);
+LionsPosition _$LionsPositionFromJson(Map<String, dynamic> json) {
+  return _LionsPosition.fromJson(json);
 }
 
 /// @nodoc
-mixin _$LionsRank {
+mixin _$LionsPosition {
   int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $LionsRankCopyWith<LionsRank> get copyWith =>
+  $LionsPositionCopyWith<LionsPosition> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $LionsRankCopyWith<$Res> {
-  factory $LionsRankCopyWith(LionsRank value, $Res Function(LionsRank) then) =
-      _$LionsRankCopyWithImpl<$Res, LionsRank>;
+abstract class $LionsPositionCopyWith<$Res> {
+  factory $LionsPositionCopyWith(
+          LionsPosition value, $Res Function(LionsPosition) then) =
+      _$LionsPositionCopyWithImpl<$Res, LionsPosition>;
   @useResult
   $Res call({int id, String title});
 }
 
 /// @nodoc
-class _$LionsRankCopyWithImpl<$Res, $Val extends LionsRank>
-    implements $LionsRankCopyWith<$Res> {
-  _$LionsRankCopyWithImpl(this._value, this._then);
+class _$LionsPositionCopyWithImpl<$Res, $Val extends LionsPosition>
+    implements $LionsPositionCopyWith<$Res> {
+  _$LionsPositionCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -67,21 +68,22 @@ class _$LionsRankCopyWithImpl<$Res, $Val extends LionsRank>
 }
 
 /// @nodoc
-abstract class _$$_LionsRankCopyWith<$Res> implements $LionsRankCopyWith<$Res> {
-  factory _$$_LionsRankCopyWith(
-          _$_LionsRank value, $Res Function(_$_LionsRank) then) =
-      __$$_LionsRankCopyWithImpl<$Res>;
+abstract class _$$_LionsPositionCopyWith<$Res>
+    implements $LionsPositionCopyWith<$Res> {
+  factory _$$_LionsPositionCopyWith(
+          _$_LionsPosition value, $Res Function(_$_LionsPosition) then) =
+      __$$_LionsPositionCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int id, String title});
 }
 
 /// @nodoc
-class __$$_LionsRankCopyWithImpl<$Res>
-    extends _$LionsRankCopyWithImpl<$Res, _$_LionsRank>
-    implements _$$_LionsRankCopyWith<$Res> {
-  __$$_LionsRankCopyWithImpl(
-      _$_LionsRank _value, $Res Function(_$_LionsRank) _then)
+class __$$_LionsPositionCopyWithImpl<$Res>
+    extends _$LionsPositionCopyWithImpl<$Res, _$_LionsPosition>
+    implements _$$_LionsPositionCopyWith<$Res> {
+  __$$_LionsPositionCopyWithImpl(
+      _$_LionsPosition _value, $Res Function(_$_LionsPosition) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -90,7 +92,7 @@ class __$$_LionsRankCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
   }) {
-    return _then(_$_LionsRank(
+    return _then(_$_LionsPosition(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -105,11 +107,11 @@ class __$$_LionsRankCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_LionsRank with DiagnosticableTreeMixin implements _LionsRank {
-  const _$_LionsRank({this.id = 0, this.title = ""});
+class _$_LionsPosition with DiagnosticableTreeMixin implements _LionsPosition {
+  const _$_LionsPosition({this.id = 0, this.title = ""});
 
-  factory _$_LionsRank.fromJson(Map<String, dynamic> json) =>
-      _$$_LionsRankFromJson(json);
+  factory _$_LionsPosition.fromJson(Map<String, dynamic> json) =>
+      _$$_LionsPositionFromJson(json);
 
   @override
   @JsonKey()
@@ -120,14 +122,14 @@ class _$_LionsRank with DiagnosticableTreeMixin implements _LionsRank {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'LionsRank(id: $id, title: $title)';
+    return 'LionsPosition(id: $id, title: $title)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'LionsRank'))
+      ..add(DiagnosticsProperty('type', 'LionsPosition'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title));
   }
@@ -136,7 +138,7 @@ class _$_LionsRank with DiagnosticableTreeMixin implements _LionsRank {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_LionsRank &&
+            other is _$_LionsPosition &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title));
   }
@@ -148,22 +150,23 @@ class _$_LionsRank with DiagnosticableTreeMixin implements _LionsRank {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LionsRankCopyWith<_$_LionsRank> get copyWith =>
-      __$$_LionsRankCopyWithImpl<_$_LionsRank>(this, _$identity);
+  _$$_LionsPositionCopyWith<_$_LionsPosition> get copyWith =>
+      __$$_LionsPositionCopyWithImpl<_$_LionsPosition>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_LionsRankToJson(
+    return _$$_LionsPositionToJson(
       this,
     );
   }
 }
 
-abstract class _LionsRank implements LionsRank {
-  const factory _LionsRank({final int id, final String title}) = _$_LionsRank;
+abstract class _LionsPosition implements LionsPosition {
+  const factory _LionsPosition({final int id, final String title}) =
+      _$_LionsPosition;
 
-  factory _LionsRank.fromJson(Map<String, dynamic> json) =
-      _$_LionsRank.fromJson;
+  factory _LionsPosition.fromJson(Map<String, dynamic> json) =
+      _$_LionsPosition.fromJson;
 
   @override
   int get id;
@@ -171,6 +174,6 @@ abstract class _LionsRank implements LionsRank {
   String get title;
   @override
   @JsonKey(ignore: true)
-  _$$_LionsRankCopyWith<_$_LionsRank> get copyWith =>
+  _$$_LionsPositionCopyWith<_$_LionsPosition> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:lions_flutter/api/models/lions_collection.dart';
 import 'package:lions_flutter/models/article_data/article_data.dart';
+import 'package:lions_flutter/services/content_service/content_service.dart';
 import 'package:lions_flutter/pages/news_view_page.dart';
 import 'package:lions_flutter/widgets/article_card.dart';
 
@@ -12,11 +12,8 @@ class HomeArticles extends StatefulWidget {
   const HomeArticles({super.key});
 
   void toNewsPage(BuildContext context, ArticleData articleData) {
-    Navigator.push(
-        context,
-        CupertinoPageRoute(
-            fullscreenDialog: true,
-            builder: (context) => NewsViewPage(articleData)));
+    Navigator.push(context,
+        CupertinoPageRoute(builder: (context) => NewsViewPage(articleData)));
   }
 
   @override
@@ -24,21 +21,26 @@ class HomeArticles extends StatefulWidget {
 }
 
 class _HomeArticlesState extends State<HomeArticles> {
-  late LionsCollection _collection;
-
   Future<List<ArticleData>> _fetchData() async {
-    Map<String, String> parameters = {'populate': '*'};
+    Map<String, String> parameters = {'populate': '*', 'sort': 'id:desc'};
 
-    dynamic data = await _collection.fetch(parameters: parameters);
+    var result = await ContentService.fetchCollection(
+      'articles',
+      parameters: parameters,
+    );
 
-    List<ArticleData> articles = [];
+    return _processData(result['data']);
+  }
 
-    for (dynamic item in data['data']) {
+  List<ArticleData> _processData(data) {
+    List<ArticleData> processedData = [];
+
+    for (dynamic item in data) {
       var article = _processItem(item);
-      articles.add(article);
+      processedData.add(article);
     }
 
-    return articles;
+    return processedData;
   }
 
   ArticleData _processItem(item) {
@@ -54,14 +56,6 @@ class _HomeArticlesState extends State<HomeArticles> {
     var article = ArticleData.fromJson(item);
 
     return article;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    _collection = LionsCollection();
-    _collection.path = '/articles';
   }
 
   @override
@@ -99,12 +93,12 @@ class _HomeArticlesState extends State<HomeArticles> {
   }
 
   Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
+    return const Padding(
+      padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
+        children: [
           Text(
             'Articles',
             style: TextStyle(

@@ -11,6 +11,7 @@ class ProfileAchivementEdit extends StatefulWidget {
   ProfileAchivementEdit({Key? key, required this.userAchivements})
       : super(key: key);
   List<MemberAchivement> userAchivements;
+
   @override
   _ProfileAchivementEditState createState() => _ProfileAchivementEditState();
 }

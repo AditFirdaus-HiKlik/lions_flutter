@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:lions_flutter/Pages/Auth/register_page.dart';
 import 'package:lions_flutter/pages/auth/recovery_page.dart';
 import 'package:lions_flutter/pages/home/home_page.dart';
-import 'package:lions_flutter/services/account_manager.dart';
+import 'package:lions_flutter/services/account_service/account_service.dart';
 import 'package:page_transition/page_transition.dart';
 
 class LoginPage extends StatefulWidget {
@@ -84,13 +84,12 @@ class _LoginPageState extends State<LoginPage> {
       if (_key.currentState!.validate()) {
         String errorCode = "";
 
-        await AccountManager.login(
+        await AccountService.login(
           emailController.text,
           passwordController.text,
-          onFailed: (message) => errorCode = message,
         );
 
-        if (AccountManager.isLoggedIn) {
+        if (await AccountService.isAuthenticated()) {
           _navigateToHomePage();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -266,8 +265,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildBottomText() {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         Text(
           'Lions Club 307 B1 2023',
           style: TextStyle(
@@ -278,7 +277,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         SizedBox(height: 16),
         Text(
-          '© 2023 Indonesian Sports On Community',
+          '© 2023 Lions Club 307 B1 2023',
           style: TextStyle(
             fontSize: 12,
             color: Colors.grey,

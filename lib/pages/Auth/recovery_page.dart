@@ -111,8 +111,8 @@ class _RecoveryPageState extends State<RecoveryPage> {
 
   // UI Section
   Widget _buildHeader() {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         Text(
           'Recover your password',
           style: TextStyle(
@@ -173,8 +173,8 @@ class _RecoveryPageState extends State<RecoveryPage> {
   }
 
   Widget _buildBottomText() {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         Text(
           'Lions Club 307 B1 2023',
           style: TextStyle(
@@ -185,7 +185,7 @@ class _RecoveryPageState extends State<RecoveryPage> {
         ),
         SizedBox(height: 16),
         Text(
-          '© 2023 Indonesian Sports On Community',
+          '© 2023 Lions Club 307 B1 2023',
           style: TextStyle(
             fontSize: 12,
             color: Colors.grey,

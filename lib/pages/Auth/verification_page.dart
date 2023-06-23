@@ -124,8 +124,8 @@ class _VerificationPageState extends State<VerificationPage> {
   }
 
   Widget _buildBottomText() {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         Text(
           'Lions Club 307 B1 2023',
           style: TextStyle(
@@ -136,7 +136,7 @@ class _VerificationPageState extends State<VerificationPage> {
         ),
         SizedBox(height: 16),
         Text(
-          '© 2023 Indonesian Sports On Community',
+          '© 2023 Lions Club 307 B1 2023',
           style: TextStyle(
             fontSize: 12,
             color: Colors.grey,

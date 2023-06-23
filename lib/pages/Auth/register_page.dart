@@ -3,9 +3,12 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lions_flutter/api/api.dart';
+import 'package:lions_flutter/pages/home/home_page.dart';
+import 'package:lions_flutter/services/account_service/account_service.dart';
 import 'package:lions_flutter/sports_widget.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -95,28 +98,22 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try {
       if (_key.currentState!.validate()) {
-        var endpoint = "$apiEndpoint/api/auth/local/register";
+        String errorCode = "";
 
-        var response = await http.post(Uri.parse(endpoint), body: {
-          "username": usernameController.text,
-          "email": emailController.text,
-          "password": passwordController.text,
-        });
+        await AccountService.register(
+          usernameController.text,
+          emailController.text,
+          passwordController.text,
+        );
 
-        var body = jsonDecode(response.body);
-
-        var bodyJwt = body['jwt'];
-        var bodyUser = body['user'];
-        var bodyError = body['error'];
-
-        if (bodyError != null) {
-          var errorMessage = bodyError['message'];
-
-          scaffoldMessage(context, errorMessage);
+        if (await AccountService.isAuthenticated()) {
+          _navigateToHomePage();
         } else {
-          scaffoldMessage(context,
-              "Account created successfully, check your email for verification");
-          Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(errorCode),
+            ),
+          );
         }
       }
     } catch (e) {
@@ -126,10 +123,19 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() => _submitting = false);
   }
 
+  void _navigateToHomePage() {
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => const HomePage(),
+      ),
+    );
+  }
+
   // ? UI Section
   Widget _buildHeader() {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         Text(
           'Sign Up',
           style: TextStyle(
@@ -288,8 +294,8 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Widget _buildBottomText() {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         Text(
           'Lions Club 307 B1 2023',
           style: TextStyle(
@@ -300,7 +306,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         SizedBox(height: 16),
         Text(
-          '© 2023 Indonesian Sports On Community',
+          '© 2023 Lions Club 307 B1 2023',
           style: TextStyle(
             fontSize: 12,
             color: Colors.grey,

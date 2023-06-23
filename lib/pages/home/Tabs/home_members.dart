@@ -1,8 +1,9 @@
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:lions_flutter/api/models/lions_collection.dart';
+import 'package:lions_flutter/services/content_service/content_service.dart';
 import 'package:lions_flutter/models/lions_member/lions_member.dart';
 import 'package:lions_flutter/pages/members_page.dart';
 import 'package:shimmer/shimmer.dart';
@@ -12,23 +13,20 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 class HomeMembers extends StatefulWidget {
   const HomeMembers({super.key});
 
-  static void toMembersPage(BuildContext context, LionsMember memberData) {
-    Navigator.push(
-        context,
-        CupertinoPageRoute(
-            fullscreenDialog: true,
-            builder: (context) => MemberPage(memberData: memberData)));
-  }
-
   @override
   State<HomeMembers> createState() => _HomeMembersState();
 }
 
 class _HomeMembersState extends State<HomeMembers> {
-  late LionsCollection _collection;
+  String searchQuery = '';
+
+  void toMembersPage(LionsMember member) {
+    Navigator.push(context,
+        CupertinoPageRoute(builder: (context) => MemberPage(member: member)));
+  }
 
   Future<List<LionsMember>> _fetchData() async {
-    Map<String, String> parameters = {
+    var parameters = {
       'populate': '*',
       'populate[0]': 'avatar',
       'populate[1]': 'phone',
@@ -38,18 +36,30 @@ class _HomeMembersState extends State<HomeMembers> {
       'populate[5]': 'achivements',
       'populate[6]': 'social',
       'populate[7]': 'trainings',
+      'populate[8]': 'position'
     };
 
-    dynamic data = await _collection.fetch(parameters: parameters);
-
-    List<LionsMember> members = [];
-
-    for (dynamic item in data) {
-      var member = _processItem(item);
-      members.add(member);
+    if (searchQuery.isNotEmpty) {
+      parameters['filters[name][\$contains]'] = 'position';
     }
 
-    return members;
+    var result = await ContentService.fetchCollection(
+      'users',
+      parameters: parameters,
+    );
+
+    return _processData(result);
+  }
+
+  List<LionsMember> _processData(data) {
+    List<LionsMember> processedData = [];
+
+    for (dynamic item in data) {
+      var article = _processItem(item);
+      processedData.add(article);
+    }
+
+    return processedData;
   }
 
   LionsMember _processItem(item) {
@@ -59,38 +69,20 @@ class _HomeMembersState extends State<HomeMembers> {
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    _collection = LionsCollection();
-    _collection.path = '/users';
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // Collumn with search
     return SingleChildScrollView(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
           CupertinoSearchTextField(
             placeholder: 'Search',
-            onSubmitted: (value) {
-              print(value);
+            padding: const EdgeInsets.all(8.0),
+            onChanged: (value) async {
+              searchQuery = value;
+              setState(() {});
             },
           ),
-          // Filter button on the right
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton.icon(
-                icon: const Icon(Icons.filter_alt),
-                label: const Text('Filter'),
-                onPressed: () {},
-              ),
-            ],
-          ),
-          // Members list
+          const SizedBox(height: 8.0),
           FutureBuilder<List<LionsMember>>(
             future: _fetchData(),
             builder: (context, snapshot) {
@@ -173,7 +165,7 @@ class _HomeMembersState extends State<HomeMembers> {
     );
   }
 
-  Widget _buildMemberCard(LionsMember memberData) {
+  Widget _buildMemberCard(LionsMember member) {
     Widget avatarWidget = Center(
       child: SizedBox(
         width: 64,
@@ -181,7 +173,7 @@ class _HomeMembersState extends State<HomeMembers> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(16),
           child: Image.network(
-            memberData.avatar.url,
+            member.avatar.url,
             fit: BoxFit.cover,
             loadingBuilder: (BuildContext context, Widget child,
                 ImageChunkEvent? loadingProgress) {
@@ -199,13 +191,20 @@ class _HomeMembersState extends State<HomeMembers> {
 
               return child;
             },
+            errorBuilder: (BuildContext context, Object exception,
+                StackTrace? stackTrace) {
+              return Image.asset(
+                'assets/icon-sports.png',
+                fit: BoxFit.cover,
+              );
+            },
           ),
         ),
       ),
     );
 
     return ZoomTapAnimation(
-        onTap: () => HomeMembers.toMembersPage(context, memberData),
+        onTap: () => toMembersPage(member),
         child: Container(
           margin: const EdgeInsets.all(8),
           padding: const EdgeInsets.all(8),
@@ -234,7 +233,7 @@ class _HomeMembersState extends State<HomeMembers> {
                 height: 16,
               ),
               Text(
-                memberData.name,
+                member.name,
                 maxLines: 2,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
@@ -247,7 +246,7 @@ class _HomeMembersState extends State<HomeMembers> {
                 height: 8,
               ),
               Text(
-                memberData.username,
+                member.username,
                 maxLines: 2,
                 textAlign: TextAlign.center,
                 style: const TextStyle(

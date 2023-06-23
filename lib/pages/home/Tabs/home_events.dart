@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:lions_flutter/api/models/lions_collection.dart';
+import 'package:lions_flutter/services/content_service/content_service.dart';
 import 'package:lions_flutter/models/event_data/event_data.dart';
 import 'package:lions_flutter/widgets/event_card.dart';
 import 'package:shimmer/shimmer.dart';
@@ -22,21 +22,26 @@ class _HomeEventsState extends State<HomeEvents> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
-  late LionsCollection collection;
-
   Future<List<EventData>> _fetchData() async {
     Map<String, String> parameters = {'populate': '*'};
 
-    var result = await collection.fetch(parameters: parameters);
+    var result = await ContentService.fetchCollection(
+      'events',
+      parameters: parameters,
+    );
 
-    data = [];
+    return _processData(result['data']);
+  }
 
-    for (dynamic item in result['data']) {
+  List<EventData> _processData(data) {
+    List<EventData> processedData = [];
+
+    for (dynamic item in data) {
       var article = _processItem(item);
-      data.add(article);
+      processedData.add(article);
     }
 
-    return data;
+    return processedData;
   }
 
   EventData _processItem(item) {
@@ -52,14 +57,6 @@ class _HomeEventsState extends State<HomeEvents> {
     var article = EventData.fromJson(item);
 
     return article;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    collection = LionsCollection();
-    collection.path = '/events';
   }
 
   List<EventData> _getEventsForDay(DateTime day) {

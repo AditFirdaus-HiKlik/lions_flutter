@@ -10,7 +10,9 @@ import 'package:lions_flutter/models/member_social/member_social.dart';
 class ProfileSocialEdit extends StatefulWidget {
   ProfileSocialEdit({Key? key, required this.userAchivements})
       : super(key: key);
+
   List<MemberSocial> userAchivements;
+
   @override
   _ProfileSocialEditState createState() => _ProfileSocialEditState();
 }
