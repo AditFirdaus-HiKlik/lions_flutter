@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lions_flutter/app/app_config.dart';
 import 'package:lions_flutter/l10n/l10n.dart';
@@ -21,28 +20,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void toBack() {
     Navigator.of(context).pop();
-  }
-
-  Future signOut() async {
-    setState(() {
-      _submitting = true;
-    });
-
-    try {
-      await FirebaseAuth.instance.signOut();
-
-      FirebaseAuth.instance.authStateChanges.call();
-
-      setState(() {
-        _submitting = false;
-      });
-
-      toBack();
-    } catch (e) {
-      setState(() {
-        _submitting = false;
-      });
-    }
   }
 
   @override
