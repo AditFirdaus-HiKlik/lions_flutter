@@ -3,7 +3,7 @@ description: A Lions 307 Club App
 
 publish_to: "none"
 
-version: 1.0.0+7
+version: 1.0.0+10
 
 environment:
   sdk: ">=2.18.2 <3.0.0"
