@@ -360,10 +360,43 @@ class _AccountPageState extends State<AccountPage> {
                     );
                   },
                 ),
+                const SizedBox(height: 16),
+                TextButton.icon(
+                  onPressed: deleteAccount,
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.red,
+                  ),
+                  icon: const Icon(Icons.delete),
+                  label: const Text('Delete account'),
+                ),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Future deleteAccount() async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete account'),
+        content: const Text('Are you sure you want to delete your account?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await AccountService.deleteAccount();
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            },
+            child: const Text('Delete'),
+          ),
+        ],
       ),
     );
   }

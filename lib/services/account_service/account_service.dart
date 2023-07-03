@@ -184,6 +184,24 @@ class AccountService {
     }
   }
 
+  static Future deleteAccount() async {
+    Account account = await getLocalAccount();
+
+    var bearerToken = await getBearerToken();
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $bearerToken"
+    };
+
+    var response = await ApiClient.delete(
+      "api/users/${account.id}",
+      headers: headers,
+    );
+
+    logout();
+  }
+
   static Future<void> logout() async {
     await secureStorage.delete(key: 'jwt');
   }

@@ -77,7 +77,6 @@ class _LoginPageState extends State<LoginPage> {
 
   // ? Logic Section
   Future login() async {
-    log("login()");
     setState(() => _submitting = true);
 
     try {
@@ -100,7 +99,11 @@ class _LoginPageState extends State<LoginPage> {
         }
       }
     } catch (e) {
-      log(e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
     }
 
     setState(() => _submitting = false);

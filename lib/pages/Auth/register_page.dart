@@ -117,7 +117,9 @@ class _RegisterPageState extends State<RegisterPage> {
         }
       }
     } catch (e) {
-      log(e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     }
 
     setState(() => _submitting = false);
