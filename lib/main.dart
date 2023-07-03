@@ -39,6 +39,7 @@ class _MyAppState extends State<MyApp> {
           title: 'Lions 307 B1',
           locale: provider.locale,
           supportedLocales: L10n.all,
+          debugShowCheckedModeBanner: false,
           theme: theme,
           home: const HomePage(),
         );
