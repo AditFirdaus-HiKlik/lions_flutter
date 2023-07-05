@@ -293,6 +293,31 @@ class _AccountEditPageState extends State<AccountEditPage> {
                   TextFormField(
                     initialValue: widget.account.address,
                     decoration: const InputDecoration(
+                      labelText: 'Phone',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(16),
+                        ),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 16,
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                    ),
+                    onChanged: (String value) {
+                      widget.account = widget.account.copyWith(
+                        phone: value,
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  TextFormField(
+                    initialValue: widget.account.address,
+                    decoration: const InputDecoration(
                       labelText: 'Address',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
@@ -307,7 +332,9 @@ class _AccountEditPageState extends State<AccountEditPage> {
                       filled: true,
                     ),
                     onChanged: (String value) {
-                      // userData.address = value;
+                      widget.account = widget.account.copyWith(
+                        address: value,
+                      );
                     },
                   ),
                 ],

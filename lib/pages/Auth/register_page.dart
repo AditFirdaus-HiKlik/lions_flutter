@@ -25,7 +25,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
@@ -67,8 +66,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     _buildUsernameField(),
                     const SizedBox(height: 16),
                     _buildEmailField(),
-                    const SizedBox(height: 16),
-                    _buildPhoneField(),
                     const SizedBox(height: 16),
                     _buildPasswordField(),
                     const SizedBox(height: 16),
@@ -201,27 +198,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
         if (!value.contains('@')) return "Please enter a valid email";
 
-        return null;
-      },
-    );
-  }
-
-  Widget _buildPhoneField() {
-    return TextFormField(
-      controller: phoneController,
-      decoration: const InputDecoration(
-        icon: Icon(Icons.phone),
-        hintText: 'Enter your phone number',
-        labelText: 'Phone Number',
-        isDense: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(10.0),
-          ),
-        ),
-      ),
-      validator: (value) {
-        if (value!.isEmpty) return "Phone number is required";
         return null;
       },
     );
